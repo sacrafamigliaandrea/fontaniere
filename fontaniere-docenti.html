@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il Fontaniere — Scheda didattica per il docente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blu:#123E90; --blu-chiaro:#2E5BBF; --verde:#1B6D3F; --verde-scuro:#114B2B;
+  --oro:#C8861E; --carta:#F7F4EC; --inchiostro:#1B2330; --grigio:#5A6470;
+  --bordo:#D9D2C2; --azzurro:#E7EFFA;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--carta);color:var(--inchiostro);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px}
+
+/* ---- intestazione ---- */
+header{background:linear-gradient(150deg,#0E327A 0%,#123E90 55%,#1B4FA8 100%);color:#fff;padding:42px 0 34px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-60px;bottom:-90px;width:280px;height:280px;border:30px solid rgba(255,255,255,.07);border-radius:50%}
+header .eyebrow{font-family:'Fredoka',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#A9C6F2;font-weight:600}
+header h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(2rem,5vw,3.1rem);margin:.1em 0 .15em;line-height:1.05}
+header .sub{font-size:1.05rem;color:#DCE8F8;max-width:600px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 13px;font-size:.82rem;font-family:'Fredoka',sans-serif;font-weight:500}
+
+/* ---- colpo d'occhio ---- */
+.snapshot{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:-28px auto 0;position:relative;z-index:2}
+.snap{background:#fff;border:1px solid var(--bordo);border-radius:14px;padding:16px 14px;box-shadow:0 8px 22px rgba(18,62,144,.10)}
+.snap .n{font-family:'Fredoka',sans-serif;font-weight:700;font-size:2rem;color:var(--blu);line-height:1}
+.snap .l{font-size:.82rem;color:var(--grigio);margin-top:3px}
+
+section{padding:30px 0 6px}
+h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.5rem;color:var(--blu);margin:.2em 0 .1em;display:flex;align-items:center;gap:11px}
+h2 .tag{font-family:'Atkinson Hyperlegible',sans-serif;font-weight:700;font-size:.72rem;color:#fff;background:var(--verde);border-radius:6px;padding:3px 8px;letter-spacing:.04em}
+.lead{color:var(--grigio);max-width:660px;margin:.3em 0 1.2em}
+
+/* ---- obiettivi (cards) ---- */
+.obj{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border:1px solid var(--bordo);border-left:4px solid var(--blu);border-radius:0 12px 12px 0;padding:15px 17px}
+.card.verde{border-left-color:var(--verde)}
+.card.oro{border-left-color:var(--oro)}
+.card h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.02rem;margin:0 0 .35em;color:var(--inchiostro)}
+.card p{margin:0;font-size:.92rem;color:#444}
+
+/* ---- progressione (timeline zone) ---- */
+.zone{border-left:3px solid var(--azzurro);margin-left:8px;padding-left:0}
+.zona{position:relative;padding:0 0 18px 26px}
+.zona::before{content:"";position:absolute;left:-9px;top:3px;width:15px;height:15px;border-radius:50%;background:var(--blu);border:3px solid var(--carta)}
+.zona.z2::before{background:var(--blu-chiaro)} .zona.z3::before{background:var(--verde)} .zona.z4::before{background:var(--oro)}
+.zona .zt{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--blu);font-size:1.05rem}
+.zona .zr{font-size:.8rem;color:var(--grigio);font-family:'Fredoka',sans-serif;text-transform:uppercase;letter-spacing:.05em}
+.zona .zd{font-size:.93rem;color:#3a3a3a;margin-top:2px}
+.concept{display:inline-block;background:var(--azzurro);color:var(--blu);font-family:'Fredoka',sans-serif;font-weight:600;font-size:.78rem;border-radius:6px;padding:2px 9px;margin:5px 5px 0 0}
+
+/* ---- comandi ---- */
+.cmd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cmd{display:flex;gap:12px;align-items:baseline;background:#fff;border:1px solid var(--bordo);border-radius:10px;padding:11px 14px}
+.cmd code{font-family:'Fredoka',monospace;background:var(--inchiostro);color:#CFE3F2;border-radius:5px;padding:2px 9px;font-size:.86rem;font-weight:500;white-space:nowrap}
+.cmd span{font-size:.9rem;color:#444}
+
+/* ---- box generici ---- */
+.box{background:#fff;border:1px solid var(--bordo);border-radius:14px;padding:18px 20px;margin-top:8px}
+.box.blu{background:var(--azzurro);border-color:#C6D8F2}
+.box.verde{background:#E8F3EC;border-color:#C3E2CE}
+ul.clean{list-style:none;padding:0;margin:8px 0 0}
+ul.clean li{position:relative;padding-left:24px;margin-bottom:9px;font-size:.94rem}
+ul.clean li::before{content:"";position:absolute;left:0;top:7px;width:9px;height:9px;border-radius:2px;background:var(--verde);transform:rotate(45deg)}
+ul.clean.blu li::before{background:var(--blu)}
+
+table.val{width:100%;border-collapse:collapse;margin-top:6px;font-size:.92rem;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--bordo)}
+table.val th{background:var(--blu);color:#fff;text-align:left;padding:10px 14px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:.88rem}
+table.val td{padding:10px 14px;border-top:1px solid var(--bordo);vertical-align:top}
+table.val tr:nth-child(even) td{background:#FBFAF6}
+
+.spec{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.spec .s{background:#fff;border:1px solid var(--bordo);border-radius:12px;padding:14px}
+.spec .s .st{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--verde);font-size:.95rem;margin-bottom:3px}
+.spec .s p{margin:0;font-size:.87rem;color:#444}
+
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.cta a{font-family:'Fredoka',sans-serif;font-weight:500;text-decoration:none;font-size:.92rem;border-radius:10px;padding:11px 20px}
+.cta a.primary{background:var(--blu);color:#fff}
+.cta a.ghost{background:#fff;color:var(--blu);border:1.5px solid var(--blu)}
+
+footer{margin-top:34px;background:var(--inchiostro);color:#C7CEDA;padding:24px 0;font-size:.85rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer strong{color:#fff;font-family:'Fredoka',sans-serif}
+
+@media (max-width:680px){
+  .snapshot{grid-template-columns:1fr 1fr}
+  .obj,.cmd-grid,.spec{grid-template-columns:1fr}
+}
+@media print{
+  body{background:#fff}
+  header{background:#123E90 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .snap,.card,.box,.spec .s,table.val,.cmd{break-inside:avoid}
+  section{break-inside:avoid-page}
+  .cta,header::after{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow"><a href="index.html" style="color:#A9C6F2;text-decoration:none">&larr; Torna al gioco</a> &nbsp;·&nbsp; Scheda didattica · trilogia del coding · gioco 3</div>
+    <h1>Il Fontaniere</h1>
+    <p class="sub">Un gioco-web per imparare il pensiero computazionale governando la rete idrica di Orzinuovi: una valvola alla volta, senza sprecare una goccia.</p>
+    <div class="chips">
+      <span class="chip">Primaria · Secondaria I grado</span>
+      <span class="chip">Coding &amp; pensiero computazionale</span>
+      <span class="chip">Educazione ambientale</span>
+      <span class="chip">Cittadinanza digitale</span>
+      <span class="chip">Single-file · nessun account</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="snapshot">
+    <div class="snap"><div class="n">12</div><div class="l">missioni in 4 zone</div></div>
+    <div class="snap"><div class="n">4</div><div class="l">story-premio di Luigi</div></div>
+    <div class="snap"><div class="n">6</div><div class="l">comandi del linguaggio</div></div>
+    <div class="snap"><div class="n">1=1</div><div class="l">un minuto, un litro</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <h2>In una frase</h2>
+  <p class="lead">Lo studente è l'apprendista del fontaniere <strong>Luigi</strong>. Per ogni missione scrive un piccolo programma — apri e chiudi valvole, attendi, ripeti, decidi con una condizione — che porta l'acqua dall'acquedotto fino alle utenze (fontane, scuole, case) <strong>senza sprechi</strong>. Il punteggio non è un voto astratto: sono i litri risparmiati. L'obiettivo ecologico e l'obiettivo del gioco coincidono.</p>
+</section>
+
+<section>
+  <h2><span class="tag">PERCHÉ</span> Obiettivi di apprendimento</h2>
+  <p class="lead">Il gioco lavora su tre piani che si rinforzano a vicenda: si impara a programmare risolvendo un problema concreto, che a sua volta educa al risparmio idrico.</p>
+  <div class="obj">
+    <div class="card">
+      <h3>Pensiero computazionale</h3>
+      <p>Sequenza, attesa temporizzata, iterazione (<code>repeat</code>) e selezione (<code>if</code>): i quattro mattoni del coding, introdotti uno alla volta e sempre al servizio di un compito reale.</p>
+    </div>
+    <div class="card verde">
+      <h3>Pianificazione e problem solving</h3>
+      <p>Prima di scrivere bisogna leggere lo schema della rete: quale tubo serve, quale evitare, in che ordine agire. Si progetta una strategia, non si tira a indovinare.</p>
+    </div>
+    <div class="card oro">
+      <h3>Educazione ambientale</h3>
+      <p>Ogni litro mandato dove non serve è uno spreco che abbassa il punteggio. Il valore civico è la regola del gioco, non una morale aggiunta in coda.</p>
+    </div>
+    <div class="card">
+      <h3>Cittadinanza digitale</h3>
+      <p>Le tappe-premio mostrano il profilo social di Luigi: spunto pronto per analizzare in classe tono, promesse e geolocalizzazione di un account.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="tag">COSA</span> Il linguaggio FLOW</h2>
+  <p class="lead">Sei comandi in inglese, introdotti gradualmente. La sintassi essenziale rende visibile la logica; i messaggi d'errore sono in italiano e spiegano cosa correggere.</p>
+  <div class="cmd-grid">
+    <div class="cmd"><code>open v1</code><span>apre una valvola</span></div>
+    <div class="cmd"><code>close v1</code><span>chiude una valvola</span></div>
+    <div class="cmd"><code>wait 12</code><span>lascia scorrere 12 minuti = 12 litri</span></div>
+    <div class="cmd"><code>repeat 3</code><span>ripete un blocco (rientro di 2 spazi)</span></div>
+    <div class="cmd"><code>if full t1</code><span>decide in base allo stato (full, empty, leak, done)</span></div>
+    <div class="cmd"><code>pump p1 on</code><span>aziona la pompa per l'acqua in salita</span></div>
+  </div>
+  <div class="box blu" style="margin-top:14px">
+    <strong>La regola d'oro: 1 minuto = 1 litro.</strong> La portata è unitaria ovunque, così la quantità d'acqua è leggibile a colpo d'occhio senza conversioni: se la fontana vuole 12 litri, l'acqua scorre per 12 minuti. Una scelta pensata per abbassare il carico cognitivo e tenere il focus sulla logica.
+  </div>
+</section>
+
+<section>
+  <h2><span class="tag">COME</span> Progressione in 4 zone</h2>
+  <p class="lead">Dodici missioni a difficoltà crescente. Ogni zona introduce un concetto nuovo e lo consolida prima di passare al successivo: una struttura a spirale che riprende e amplia.</p>
+  <div class="zone">
+    <div class="zona z1">
+      <div class="zr">missioni 1–3</div>
+      <div class="zt">La Piazza</div>
+      <div class="zd">Sequenza pura: aprire, attendere, chiudere. Si scopre che un ramo "morto" finisce nello scarico e va evitato; si servono due utenze a turno.</div>
+      <span class="concept">sequenza</span><span class="concept">selezione del percorso</span>
+    </div>
+    <div class="zona z2">
+      <div class="zr">missioni 4–6</div>
+      <div class="zt">La Scuola</div>
+      <div class="zd">Entra la cisterna di accumulo (prima riempi, poi distribuisci) e l'iterazione: serbatoi piccoli che vanno riempiti e svuotati più volte.</div>
+      <span class="concept">accumulo</span><span class="concept">repeat</span>
+    </div>
+    <div class="zona z3">
+      <div class="zr">missioni 7–9</div>
+      <div class="zt">Le Case</div>
+      <div class="zd">La condizione <code>if</code>: un sensore di livello sconosciuto, una perdita nascosta da individuare e isolare. Si decide in base allo stato della rete.</div>
+      <span class="concept">if · condizioni</span><span class="concept">diagnosi guasti</span>
+    </div>
+    <div class="zona z4">
+      <div class="zr">missioni 10–12</div>
+      <div class="zt">La Torre</div>
+      <div class="zd">La pompa porta l'acqua in salita a costo di energia (da spegnere appena finito). L'esame finale combina accumulo, sollevamento, distribuzione e perdite.</div>
+      <span class="concept">pump · energia</span><span class="concept">sintesi</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="tag">CHI</span> Luigi e le story-premio</h2>
+  <p class="lead">Luigi, il fontaniere di Orzinuovi, dà un volto e una voce al compito: accoglie nello splash, commenta ogni vittoria, e tra una zona e l'altra sblocca quattro <strong>tappe-premio</strong> — story in stile social, senza missione, in cui racconta un suo intervento contro lo spreco e lascia un consiglio pratico agli studenti.</p>
+  <div class="box verde">
+    <ul class="clean">
+      <li><strong>I tombini del cortile</strong> — niente rifiuti né foglie sugli scarichi; segnala se un tombino trabocca.</li>
+      <li><strong>La sala tecnica</strong> — prima di dire che è rotto, chiediti se va solo curato: la manutenzione è il primo risparmio.</li>
+      <li><strong>Per studenti attenti</strong> — rubinetto chiuso mentre ci si insapona, doccia di 5 minuti, gocciolamenti segnalati subito.</li>
+      <li><strong>Le perdite silenziose</strong> — una perdita nascosta sotto la strada spreca per settimane: meno spreco, bollette più basse per tutti.</li>
+    </ul>
+  </div>
+  <p class="lead" style="margin-top:14px">Sono quattro micro-lezioni di educazione al risparmio idrico travestite da ricompensa: il giocatore vuole vederle, e così legge il consiglio. Ottimo aggancio per una discussione di classe.</p>
+</section>
+
+<section>
+  <h2><span class="tag">VALUTARE</span> Dati per la rubrica</h2>
+  <p class="lead">Al termine di ogni missione il gioco restituisce tre numeri oggettivi, utili come evidenze per una valutazione di processo più che di prodotto.</p>
+  <table class="val">
+    <tr><th>Indicatore</th><th>Cosa misura</th><th>Come leggerlo</th></tr>
+    <tr><td><strong>Litri consegnati</strong></td><td>se l'obiettivo è stato raggiunto</td><td>competenza di base: il compito è risolto?</td></tr>
+    <tr><td><strong>Litri sprecati</strong></td><td>efficienza della soluzione</td><td>zero sprechi = padronanza; lo spreco rivela un errore di pianificazione</td></tr>
+    <tr><td><strong>Energia (pompa)</strong></td><td>uso parsimonioso delle risorse</td><td>pompare il minimo indispensabile: ottimizzazione</td></tr>
+  </table>
+  <div class="box" style="margin-top:14px">
+    <strong>Le tre gocce.</strong> Il punteggio sintetico (1–3 gocce) premia la soluzione che non spreca nulla e non consuma energia oltre il necessario. Spunti osservabili per la rubrica: <em>uso dell'iterazione</em> dove serve, <em>uso corretto della condizione</em>, <em>capacità di pianificare in fasi</em> (riempi-poi-distribuisci), <em>autonomia crescente</em> man mano che i suggerimenti si diradano.
+  </div>
+</section>
+
+<section>
+  <h2><span class="tag">METODO</span> Scaffolding e inclusione</h2>
+  <div class="spec">
+    <div class="s"><div class="st">Aiuti a dissolvenza</div><p>Il livello 1 mostra la sequenza completa (modeling); dal 2 i suggerimenti diventano strategia e poi solo principio, fino all'autonomia (Gradual Release of Responsibility).</p></div>
+    <div class="s"><div class="st">Errori che insegnano</div><p>Mai il rosso: gli avvisi sono in ambra e spiegano cosa manca ("manca acqua alla fontana: 6 litri su 12"). L'errore è un'informazione, non una bocciatura.</p></div>
+    <div class="s"><div class="st">Accessibilità</div><p>Font ad alta leggibilità, icone vettoriali, contrasto curato, animazioni che rispettano la riduzione del movimento. Funziona da tastiera e su iPad.</p></div>
+    <div class="s"><div class="st">Ritmo personale</div><p>Nessun timer reale: si ragiona con calma. La simulazione mostra l'acqua scorrere e l'orologio della torre avanzare a fine programma.</p></div>
+    <div class="s"><div class="st">Riprova senza penalità</div><p>"Pulisci" azzera l'editor, "Rigioca" ricomincia la missione. Provare e correggere è parte del metodo, non un fallimento.</p></div>
+    <div class="s"><div class="st">Privacy by design</div><p>Nessun login, nessun dato personale, nessun localStorage sui Mac condivisi. La progressione si trasmette con un codice-toponimo (es. POZZO).</p></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="tag">IN CLASSE</span> Come usarlo</h2>
+  <div class="box blu">
+    <ul class="clean blu">
+      <li><strong>Laboratorio guidato:</strong> primo livello insieme alla LIM (modeling), poi a coppie sui dispositivi. La discussione sui diversi modi di risolvere la stessa missione è il cuore dell'attività.</li>
+      <li><strong>A staffetta:</strong> il codice-toponimo permette di sbloccare una missione specifica per gruppi a velocità diverse, o di riprendere da dove si era arrivati la volta prima.</li>
+      <li><strong>Ponte interdisciplinare:</strong> tecnologia (reti idriche, pompe, pressione), scienze (ciclo e risparmio dell'acqua), educazione civica (bene comune), italiano (le story di Luigi come testo da analizzare).</li>
+      <li><strong>Modalità docente:</strong> cinque tocchi sul logo a goccia sbloccano tutti i livelli e mostrano le soluzioni di riferimento, per preparare la lezione.</li>
+    </ul>
+  </div>
+  <div class="cta">
+    <a class="primary" href="index.html">Apri il gioco</a>
+    <a class="ghost" href="javascript:window.print()">Stampa questa scheda</a>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Scuola Sacra Famiglia</strong> · Orzinuovi (BS) · sacrafamiglia.edu.it</div>
+    <div>© 2026 Andrea Cerioli — Animatore Digitale</div>
+  </div>
+</footer>
+
+</body>
+</html>

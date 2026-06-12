@@ -54,6 +54,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 #splash h1{font-size:clamp(2.1rem,6vw,3.5rem);color:#fff;font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.35)}
 #splash .occhiello{color:#9CCAE6;font-family:'Fredoka',sans-serif;font-size:1.05rem;margin-bottom:4px}
 #splash p{color:#EFE7D8;margin-top:14px;line-height:1.5}
+.splash-foot{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15)}
+.splash-foot img{height:46px;border-radius:8px;background:#fff;padding:3px}
+.splash-foot .cr{color:#CFC4B0;font-size:.74rem;line-height:1.45;text-align:left;font-family:'Fredoka',sans-serif}
+.splash-foot .cr strong{color:#EFE7D8}
+@media (max-width:700px){.splash-foot{justify-content:center}.splash-foot .cr{text-align:center}}
 .splash-luigi{display:flex;align-items:center;gap:12px;margin:16px auto 2px;max-width:520px;text-align:left}
 .splash-luigi img{width:62px;height:62px;border-radius:50%;flex:none;border:3px solid #fff;background:#CFE3F2;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.35)}
 .splash-luigi .fumetto{position:relative;background:rgba(255,255,255,.96);color:#123A24;border-radius:14px;padding:10px 14px;font-size:.95rem;line-height:1.45}
@@ -71,13 +76,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .btn-musica svg{display:block}
 .btn-musica.on{background:#FFFFFF;border-color:#FFFFFF}
 .badge-docente{background:var(--oro);color:#4a3500;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.85rem;display:none}
-.mappa-corpo{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:14px;gap:14px}
-.mappa-svg-box{width:min(1060px,100%);background:#fff;border:2px solid var(--bordo);border-radius:18px;overflow:hidden}
+.mappa-corpo{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:14px;gap:12px}
+.mappa-svg-box{width:min(1180px,100%);background:#1B2330;border:3px solid #1B6D3F;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(20,40,25,.35)}
+.mappa-scena{display:block}
+.pulse-ring{animation:pulsering 1.6s ease-in-out infinite;transform-origin:center}
+@keyframes pulsering{0%,100%{opacity:.35;stroke-width:4}50%{opacity:1;stroke-width:7}}
+.lv-dot.corrente,.story-dot{transition:transform .12s ease}
+.lv-dot:not(.bloccato):hover,.story-dot:not(.bloccato):hover{transform:translateY(-3px)}
 .mappa-piedi{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
 .codice-box{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid var(--bordo);border-radius:999px;padding:5px 6px 5px 16px}
 .codice-box input{border:none;background:none;font-family:'Fredoka',sans-serif;font-size:.95rem;text-transform:uppercase;width:160px;color:var(--inchiostro)}
 .codice-box button{background:var(--verde);color:#fff;border-radius:999px;padding:7px 16px;font-weight:600}
-.avviso{font-size:.88rem;color:var(--grigio);text-align:center}
+.avviso{font-size:.95rem;color:var(--verde-scuro);text-align:center;background:#fff;border:2px solid var(--verde);border-radius:14px;padding:8px 16px;max-width:760px;line-height:1.4}
 .lv-dot{cursor:pointer}
 .lv-dot.bloccato{cursor:default;opacity:.6}
 .lv-dot:not(.bloccato):hover .fondo{stroke-width:3}
@@ -145,6 +155,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .social-luigi{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0}
 .social-luigi img{max-width:240px;width:46%;min-width:170px;border-radius:14px;border:2px solid var(--bordo);box-shadow:0 6px 16px rgba(0,0,0,.25)}
 .btn-social{background:none;border:none;color:var(--verde);font-weight:600;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:8px}
+.storia-box{display:flex;gap:16px;align-items:flex-start;margin-top:6px}
+.storia-box img{width:44%;max-width:200px;border-radius:14px;border:2px solid var(--bordo);box-shadow:0 6px 16px rgba(0,0,0,.25);flex:none}
+.storia-box .racconto{font-size:.92rem;line-height:1.55}
+.consiglio-luigi{background:#E8F3EC;border-left:3px solid var(--verde);padding:8px 12px;border-radius:6px;font-weight:600;color:var(--verde-scuro);margin-top:10px;font-size:.9rem}
+.parla-vittoria{max-width:430px;margin:12px auto 0;text-align:left}
+.story-dot{cursor:pointer}
+.story-dot.bloccato{cursor:default}
+@media (max-width:620px){.storia-box{flex-direction:column;align-items:center}.storia-box img{width:60%;max-width:180px}}
 .cont.minuti .num{color:#BFE3F7}
 .corrente{animation:scorri .55s linear infinite}
 @keyframes scorri{to{stroke-dashoffset:-18}}
@@ -183,6 +201,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
         <div class="fumetto">«L'hai vista la mia story? <strong>Zero sprechi</strong> è una promessa — ma da solo non ce la faccio. Mi serve un apprendista in gamba: scendi con me nel sottosuolo!»</div>
       </div>
       <button class="btn-big" id="btn-gioca">Scendi nel sottosuolo</button>
+    </div>
+    <div class="splash-foot">
+      <img src="logo_petrolio.jpg" alt="Scuola Sacra Famiglia" onerror="this.style.display='none'">
+      <div class="cr"><strong>Scuola Sacra Famiglia</strong> &middot; Orzinuovi (BS)<br>&copy; 2026 Andrea Cerioli &mdash; Animatore Digitale<br>Trilogia del coding &middot; gioco 3</div>
     </div>
   </div>
 </div>
@@ -615,12 +637,36 @@ const CODICI = {2:'FONTANA',3:'POZZO',4:'SERIOLA',5:'ROGGIA',6:'CHIUSA',7:'CISTE
 function codicePerLivello(id){ return CODICI[id] || ('LIV'+id); }
 
 // suggerimenti operativi (stile tutorial): solo per i primi livelli
+// suggerimenti a dissolvenza (scaffolding): L1 modello completo, poi sempre meno
 const HINTS = {
  1:'Ogni minuto scorre 1 litro: per 12 litri aspetta 12 minuti. Prova: <code>open main</code> &rarr; <code>open v1</code> &rarr; <code>wait 12</code> &rarr; <code>close main</code> &rarr; <code>close v1</code>',
- 2:'La valvola giusta e\' <code>v2</code>: apri quella e poi la mandata <code>main</code>, <code>wait 12</code>, chiudi tutto. <code>v1</code> porta allo scarico: lasciala chiusa.',
- 3:'Prima la doccia: <code>open main</code> e <code>open v1</code>, <code>wait 12</code>, poi <code>close v1</code>. Poi il lavandino: <code>open v2</code>, <code>wait 6</code>. Alla fine chiudi tutto.',
- 4:'Due fasi: riempi la cisterna (<code>open main</code>, <code>wait 12</code>, <code>close main</code>), poi svuotala nei lavandini (<code>open v1</code>, <code>wait 12</code>, <code>close v1</code>).'
+ 2:'Osserva lo schema: dal bivio partono due tubi, e uno finisce nello scarico. <strong>Trova tu</strong> la valvola che porta alla fontanella, aprila insieme alla mandata, conta i minuti che servono per 12 litri... e ricorda di chiudere tutto.',
+ 3:'Una casa alla volta, in <strong>due fasi</strong>: servi la doccia, chiudi la sua valvola, poi servi il lavandino. Quanti minuti servono per 12 litri? E per 6? Decidi tu i comandi.',
+ 4:'Strategia in <strong>due tempi</strong>: prima accumuli nella cisterna, poi distribuisci. La cisterna tiene 12 litri: riempila tutta prima di aprire verso i lavandini.'
 };
+// tappe premio: le story di Luigi (nessuna missione, solo buoni consigli)
+const STORIE = [
+ {dopo:1, img:'10.jpg', nome:'I tombini del cortile',
+  racconto:'Proprio qui, nel cortile della Sacra Famiglia! Dopo la ricreazione ho trovato un tombino intasato: cartacce, una merendina, un mucchio di foglie spazzate male. Alla prima pioggia e\u0300 traboccato e il cortile era un lago. L\'ho stappato con la mia asta, ma ricordate: niente rifiuti la\u0300 dentro, le foglie vanno raccolte e non ammucchiate sugli scarichi, e se vedete acqua che si accumula sopra un tombino avvisate subito. Ah, e il chewing gum va nel cestino: raschiarlo dai tombini e\u0300 una fatica!',
+  consiglio:'I tombini sono le porte del mio mondo: tenetele libere e l\'acqua sapra\u0300 sempre dove andare.'},
+ {dopo:3, img:'7.jpg', nome:'La sala tecnica',
+  racconto:'Stamattina ero nella sala tecnica idrica. I rubinetti dei bagni schizzavano dappertutto e qualcuno diceva: \u00absono rotti, va cambiato tutto!\u00bb. Macche\u0301: erano i rompigetto incrostati di calcare e i filtri da pulire. Mezz\'ora di lavoro: stessa acqua, niente schizzi, consumi dimezzati. E gia\u0300 che c\'ero ho controllato la pressione: troppo alta vuol dire tubi sotto sforzo, e prima o poi... perdite.',
+  consiglio:'Prima di dire che una cosa e\u0300 rotta, chiediti se va solo curata: la manutenzione e\u0300 il primo risparmio.'},
+ {dopo:6, img:'9.jpg', nome:'Per studenti attenti',
+  racconto:'Dopo l\'ora di ginnastica sono passato dagli spogliatoi: docce aperte senza nessuno sotto, rubinetti che scorrevano mentre vi insaponavate le mani... In una sola mattinata se n\'e\u0300 andata piu\u0300 acqua che in tutte le missioni che hai completato finora! Tre regole d\'oro: chiudi il rubinetto mentre ti insaponi, la doccia dopo ginnastica dura 5 minuti, e se un rubinetto gocciola dillo subito a un bidello. Ah: niente fazzoletti nel WC, ogni scarico inutile sono litri buttati.',
+  consiglio:'Io riparo i tubi, ma lo spreco lo fermate voi: un\'abitudine giusta vale piu\u0300 di cento riparazioni.'},
+ {dopo:9, img:'8.jpg', nome:'Le perdite silenziose',
+  racconto:'Giro di controllo notturno con i sensori digitali: tutto chiuso in paese, eppure un contatore continuava a girare. Sotto la strada, un giunto vecchio e crepato perdeva da settimane senza che nessuno se ne accorgesse: una perdita silenziosa. L\'abbiamo sigillato e ora si salvano centinaia di litri al giorno. Meno acqua sprecata vuol dire anche bollette piu\u0300 basse per tutto il paese: il risparmio e\u0300 collettivo.',
+  consiglio:'Se vedi acqua che affiora dall\'asfalto, segnalala subito: una perdita stradale non si ripara da sola.'}
+];
+let storieViste={};
+const FRASI_ZONA = {
+ 'La Piazza':'Bel lavoro in piazza! I nonni sulla panchina ti ringraziano.',
+ 'La Scuola':'La scuola e\u0300 a posto: si torna a bere alla fontanella senza pensieri!',
+ 'Le Case':'Hai trovato e isolato il guasto: questo e\u0300 il fiuto del fontaniere vero.',
+ 'La Torre':'Hai portato l\'acqua in salita! La pompa e\u0300 una grande amica, ma solo quando serve davvero.'
+};
+
 // litri richiesti da ogni utenza ('?' se cambiano da scenario a scenario)
 function targetUtenze(lv){
   const t={};
@@ -813,12 +859,22 @@ function giunzione(x,y){ return S('circle',{cx:x,cy:y,r:7,fill:'url(#g_ghisa)',s
 // edifici di superficie (scenografia, volutamente piatti)
 function edificio(node){
   const [x,y]=node.pos, nm=(node.name||'').toLowerCase();
-  let g='';
-  function casa(cx,base,w,h,col,tetto){ let s=S('rect',{x:cx-w/2,y:base-h,width:w,height:h,fill:col,stroke:'#A78F6E','stroke-width':1}); s+=S('polygon',{points:(cx-w/2-4)+' '+(base-h)+' '+(cx+w/2+4)+' '+(base-h)+' '+(cx+w/2-6)+' '+(base-h-16)+' '+(cx-w/2+6)+' '+(base-h-16),fill:tetto,stroke:'#7E4631','stroke-width':1}); return s; }
+  let g=S('ellipse',{cx:x,cy:GROUND+3,rx:(nm.indexOf('orto')>=0?38:32),ry:4,fill:'#1E160D','fill-opacity':0.18});
+  function casa(cx,base,w,h,col,tetto){
+    let s=S('rect',{x:cx+w/2-16,y:base-h-25,width:8,height:14,fill:'#A06A4A',stroke:'#7E4631','stroke-width':0.8});
+    s+=S('rect',{x:cx+w/2-17.5,y:base-h-27,width:11,height:3.5,rx:1.5,fill:'#7E4631'});
+    s+=S('rect',{x:cx-w/2,y:base-h,width:w,height:h,fill:col,stroke:'#A78F6E','stroke-width':1});
+    s+=S('rect',{x:cx-w/2,y:base-h,width:w,height:5,fill:'#000','fill-opacity':0.08});
+    s+=S('polygon',{points:(cx-w/2-4)+' '+(base-h)+' '+(cx+w/2+4)+' '+(base-h)+' '+(cx+w/2-6)+' '+(base-h-16)+' '+(cx-w/2+6)+' '+(base-h-16),fill:tetto,stroke:'#7E4631','stroke-width':1});
+    s+=S('line',{x1:cx-(w-4)/2,y1:base-h-6,x2:cx+(w-4)/2,y2:base-h-6,stroke:'#7E4631','stroke-width':1,'stroke-opacity':0.5});
+    s+=S('line',{x1:cx-(w-14)/2,y1:base-h-11,x2:cx+(w-14)/2,y2:base-h-11,stroke:'#7E4631','stroke-width':1,'stroke-opacity':0.45});
+    s+=S('rect',{x:cx-(w/2-7),y:base-h-18.5,width:w-14,height:3.4,rx:1.7,fill:'#7E4631'});
+    return s; }
   if(nm.indexOf('scuola')>=0||nm.indexOf('materna')>=0){ g+=casa(x,GROUND,72,52,'#C9B79A','#9C5B3F'); g+=S('rect',{x:x-9,y:GROUND-26,width:18,height:26,fill:'#6E4A2C'}); g+=S('rect',{x:x-26,y:GROUND-44,width:16,height:14,fill:'#A9CBDD',stroke:'#7E4631','stroke-width':1}); g+=S('rect',{x:x+10,y:GROUND-44,width:16,height:14,fill:'#A9CBDD',stroke:'#7E4631','stroke-width':1}); }
   else if(nm.indexOf('docc')>=0||nm.indexOf('palestra')>=0){ g+=casa(x,GROUND,64,46,'#D7C9AE','#7E8B6E'); g+=S('rect',{x:x-18,y:GROUND-34,width:14,height:14,fill:'#A9CBDD',stroke:'#7E4631','stroke-width':1}); g+=S('rect',{x:x+4,y:GROUND-34,width:14,height:14,fill:'#A9CBDD',stroke:'#7E4631','stroke-width':1}); }
   else if(nm.indexOf('orto')>=0){ g+=S('rect',{x:x-34,y:GROUND-22,width:68,height:22,fill:'#6E4A2C',stroke:'#4E3420','stroke-width':1}); for(let i=0;i<4;i++){ const px=x-26+i*18; g+=S('path',{d:'M'+px+' '+(GROUND-22)+' q3 -14 0 -22',fill:'none',stroke:'#3E8A3E','stroke-width':3}); g+=S('circle',{cx:px,cy:GROUND-46,r:5,fill:'#5CB85C'}); } }
-  else if(nm.indexOf('fontan')>=0){ g+=S('path',{d:'M'+(x-26)+' '+GROUND+' q0 -18 26 -18 q26 0 26 18 Z',fill:'#C2CBD0',stroke:'#94A0A6','stroke-width':1}); g+=S('ellipse',{cx:x,cy:GROUND-16,rx:23,ry:5,fill:'url(#g_aq)'}); g+=S('rect',{x:x-3,y:GROUND-36,width:6,height:20,fill:'#9AA6AC'}); g+=S('path',{d:'M'+x+' '+(GROUND-40)+' q-6 5 0 9 q6 -4 0 -9',fill:'#5AB1E8'}); }
+  else if(nm.indexOf('fontan')>=0){ g+=S('path',{d:'M'+(x-26)+' '+GROUND+' q0 -18 26 -18 q26 0 26 18 Z',fill:'#C2CBD0',stroke:'#94A0A6','stroke-width':1}); g+=S('ellipse',{cx:x,cy:GROUND-16,rx:23,ry:5,fill:'url(#g_aq)'}); g+=S('rect',{x:x-3,y:GROUND-36,width:6,height:20,fill:'#9AA6AC'}); g+=S('path',{d:'M'+x+' '+(GROUND-40)+' q-6 5 0 9 q6 -4 0 -9',fill:'#5AB1E8'});
+    g+=S('path',{d:'M'+x+' '+(GROUND-35)+' q-11 5 -14 15 M'+x+' '+(GROUND-35)+' q11 5 14 15',fill:'none',stroke:'#5AB1E8','stroke-width':2,'stroke-linecap':'round','stroke-opacity':0.8}); }
   else { g+=casa(x,GROUND,52,44,'#E2CFB4','#B5694A'); g+=S('rect',{x:x-8,y:GROUND-24,width:16,height:24,fill:'#7A5536'}); g+=S('rect',{x:x-19,y:GROUND-38,width:13,height:13,fill:'#A9CBDD',stroke:'#8A6A4A','stroke-width':1}); g+=S('rect',{x:x+6,y:GROUND-38,width:13,height:13,fill:'#A9CBDD',stroke:'#8A6A4A','stroke-width':1}); }
   g+=S('text',{x:x,y:GROUND-h0(nm),'font-family':'Fredoka,sans-serif','font-size':10,fill:'#5A4A33','text-anchor':'middle','font-weight':600},node.name||'');
   return g;
@@ -897,22 +953,30 @@ function renderStage(level, stato, minutiOrol){
     let inc=false; for(const sc of level.scenarios) if(sc.caps && sc.caps[id]!=null) inc=true;
     incTanks[id]=inc;
   }
-  let svg='<svg viewBox="0 0 480 520" preserveAspectRatio="xMidYMid meet" xmlns="'+SVGNS+'">';
+  let svg='<svg viewBox="0 0 480 465" preserveAspectRatio="xMidYMid meet" xmlns="'+SVGNS+'">';
   svg+='<defs>'+defsStage()+'</defs>';
   // cielo, sole, nuvole
   svg+=S('rect',{x:0,y:0,width:480,height:GROUND,fill:'url(#g_cielo)'});
-  svg+='<g>'+S('circle',{cx:372,cy:36,r:15,fill:'#F7D154'});
+  svg+='<g>'+S('circle',{cx:372,cy:36,r:27,fill:'#F7D154','fill-opacity':0.16})+S('circle',{cx:372,cy:36,r:20,fill:'#F7D154','fill-opacity':0.22})+S('circle',{cx:372,cy:36,r:15,fill:'#F7D154'})+S('circle',{cx:368,cy:32,r:5.5,fill:'#FBE99B'});
   for(let r=0;r<8;r++){ const a=r*Math.PI/4; svg+=S('line',{x1:372+19*Math.cos(a),y1:36+19*Math.sin(a),x2:372+26*Math.cos(a),y2:36+26*Math.sin(a),stroke:'#F7D154','stroke-width':2.5,'stroke-linecap':'round'}); }
   svg+='</g>';
-  svg+=S('ellipse',{cx:120,cy:48,rx:44,ry:14,fill:'#FFFFFF','fill-opacity':0.65});
-  svg+=S('ellipse',{cx:286,cy:36,rx:50,ry:15,fill:'#FFFFFF','fill-opacity':0.5});
+  function nuvola(cx,cy,sc,op){
+    return '<g fill="#FFFFFF" fill-opacity="'+op+'">'+
+      S('ellipse',{cx:cx,cy:cy,rx:34*sc,ry:12*sc})+
+      S('ellipse',{cx:cx-22*sc,cy:cy+4*sc,rx:20*sc,ry:9*sc})+
+      S('ellipse',{cx:cx+24*sc,cy:cy+3*sc,rx:22*sc,ry:10*sc})+
+      S('ellipse',{cx:cx+4*sc,cy:cy-8*sc,rx:18*sc,ry:9*sc})+'</g>';
+  }
+  svg+=nuvola(120,48,1,0.75)+nuvola(286,34,0.8,0.55);
   // prato e sezione di sottosuolo a strati
   svg+=S('rect',{x:0,y:GROUND-6,width:480,height:8,fill:'#5E8C3A'});
-  svg+=S('rect',{x:0,y:GROUND+2,width:480,height:520-GROUND,fill:'#4A3824'});
+  for(let k=0;k<16;k++){ const gx=16+k*30;
+    svg+=S('path',{d:'M'+gx+' '+(GROUND-5)+' q1.6 -7 3.4 0 M'+(gx+5)+' '+(GROUND-5)+' q1.4 -5 3 0',fill:'none',stroke:'#4F7C31','stroke-width':1.6,'stroke-linecap':'round'}); }
+  svg+=S('rect',{x:0,y:GROUND+2,width:480,height:465-GROUND,fill:'#4A3824'});
   svg+=S('rect',{x:0,y:GROUND+2,width:480,height:30,fill:'#6B5236'});
-  svg+=S('rect',{x:0,y:462,width:480,height:58,fill:'#3A2C1D'});
+  svg+=S('rect',{x:0,y:418,width:480,height:47,fill:'#3A2C1D'});
   for(let k=0;k<9;k++){ svg+=S('ellipse',{cx:30+k*54,cy:GROUND+14+(k%3)*7,rx:5,ry:3,fill:'#7E6647','fill-opacity':0.8}); }
-  for(let k=0;k<6;k++){ svg+=S('ellipse',{cx:55+k*80,cy:300+(k%2)*120,rx:7,ry:4,fill:'#5A452C','fill-opacity':0.7}); }
+  for(let k=0;k<6;k++){ svg+=S('ellipse',{cx:55+k*80,cy:285+(k%2)*100,rx:7,ry:4,fill:'#5A452C','fill-opacity':0.7}); }
   // l'apprendista fontaniere
   svg+=mascotte(62,GROUND);
   // edifici + torre
@@ -964,7 +1028,7 @@ function renderStage(level, stato, minutiOrol){
 }
 // Luigi, il fontaniere (piedi a terra in x,y): berretto rosso, occhiali, barba
 function mascotte(x,y){
-  let g='<g>';
+  let g='<g>'+S('ellipse',{cx:x,cy:y+2,rx:17,ry:3.5,fill:'#1E160D','fill-opacity':0.18});
   g+=S('rect',{x:x-9,y:y-24,width:7,height:24,rx:3,fill:'#3D5A78'});
   g+=S('rect',{x:x+2,y:y-24,width:7,height:24,rx:3,fill:'#33506C'});
   g+=S('rect',{x:x-11,y:y-3,width:10,height:4,rx:2,fill:'#2A2118'});
@@ -1023,34 +1087,109 @@ function show(id){ $$('.screen').forEach(e=>e.classList.remove('attiva')); $(id)
 
 // === MAPPA ===
 function buildMappa(){
-  const box=$('#mappa-svg'); 
+  const box=$('#mappa-svg');
+  // proporzioni dello sfondo mappa.jpg (1842x822)
+  const W=1842, H=822;
   const zone=['La Piazza','La Scuola','Le Case','La Torre'];
-  let svg='<svg viewBox="0 0 1040 240" xmlns="'+SVGNS+'" width="100%">';
-  svg+=S('rect',{x:0,y:0,width:1040,height:240,fill:'#EDE3CE'});
-  svg+=S('rect',{x:0,y:150,width:1040,height:30,fill:'#5C656B'});
-  svg+=S('rect',{x:0,y:158,width:1040,height:4,fill:'#FFE08A','fill-opacity':0.5,'stroke-dasharray':'30 24',stroke:'#FFE08A','stroke-width':4});
+  let svg='<svg viewBox="0 0 '+W+' '+H+'" xmlns="'+SVGNS+'" width="100%" preserveAspectRatio="xMidYMid slice" class="mappa-scena">';
+  svg+='<defs>'+
+    '<linearGradient id="g_velo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E2C1A" stop-opacity="0.04"/><stop offset="0.6" stop-color="#0E2C1A" stop-opacity="0.10"/><stop offset="1" stop-color="#0E2C1A" stop-opacity="0.42"/></linearGradient>'+
+    '<filter id="omb" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1A1208" flood-opacity="0.45"/></filter>'+
+  '</defs>';
+  // sfondo illustrato + velo per leggibilita' dei tombini in basso
+  svg+='<image href="mappa.jpg" x="0" y="0" width="'+W+'" height="'+H+'" preserveAspectRatio="xMidYMid slice"/>';
+  svg+=S('rect',{x:0,y:0,width:W,height:H,fill:'url(#g_velo)'});
+
+  // fila dei 12 tombini sulla pavimentazione (fascia bassa)
+  const cy=694, r=52, x0=150, dx=(W-2*x0)/11;
+  const cx=i=>x0+i*dx;
+  // tubo che collega i tombini
+  svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#3A4248','stroke-width':30,'stroke-linecap':'round'});
+  svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#586169','stroke-width':22,'stroke-linecap':'round'});
+  // progresso percorso (verde fino all'ultimo completato)
+  let ultimo=0; for(let i=0;i<12;i++){ if(gocceLivello[LEVELS[i].id]) ultimo=i; }
+  if(ultimo>0) svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#2E8A52','stroke-width':12,'stroke-linecap':'round'});
+
   for(let i=0;i<12;i++){
-    const lv=LEVELS[i]; const cx=70+i*82; const cy=165;
+    const lv=LEVELS[i];
     const sbloccato = docente || (lv.id<=maxSbloccato);
-    const g3 = gocceLivello[lv.id]===3;
-    const col = !sbloccato?'#7E8B92':(g3?'#1B6D3F':'#2E8A52');
-    svg+='<g class="lv-dot'+(sbloccato?'':' bloccato')+'" data-lv="'+lv.id+'">';
-    svg+=S('circle',{cx:cx,cy:cy,r:18,class:'fondo',fill:col,stroke:'#3A4146','stroke-width':2});
-    svg+=S('circle',{cx:cx,cy:cy,r:13,fill:'#2A2F33','fill-opacity':0.25});
-    if(sbloccato) svg+=S('text',{x:cx,y:cy+6,'font-family':'Fredoka,sans-serif','font-size':16,fill:'#FFFFFF','text-anchor':'middle','font-weight':700},lv.id);
-    else svg+=S('path',{d:'M'+(cx-5)+' '+(cy-1)+' v-4 a5 5 0 0 1 10 0 v4 M'+(cx-7)+' '+(cy-1)+' h14 v10 h-14 Z',fill:'#D9CDB8',stroke:'#3A4146','stroke-width':1});
-    if(sbloccato){ for(let s=0;s<3;s++){ const on=(gocceLivello[lv.id]||0)>s; svg+=S('circle',{cx:cx-8+s*8,cy:cy+30,r:3.5,fill:on?'#2D7DD2':'#C9C0AC'}); } }
-    if(i>0 && (LEVELS[i].zona!==LEVELS[i-1].zona)) svg+=S('line',{x1:cx-41,y1:120,x2:cx-41,y2:210,stroke:'#B5A98C','stroke-width':1,'stroke-dasharray':'4 4'});
+    const completato = !!gocceLivello[lv.id];
+    const corrente = sbloccato && !completato && (lv.id===maxSbloccato);
+    const gg = gocceLivello[lv.id]||0;
+    const x=cx(i);
+    svg+='<g class="lv-dot'+(sbloccato?'':' bloccato')+(corrente?' corrente':'')+'" data-lv="'+lv.id+'" style="cursor:'+(sbloccato?'pointer':'default')+'">';
+    // pulsazione per il tombino corrente (anello che respira)
+    if(corrente) svg+=S('circle',{cx:x,cy:cy,r:r+10,fill:'none',stroke:'#E8A33D','stroke-width':4,class:'pulse-ring'});
+    // corpo tombino in ghisa
+    svg+=S('circle',{cx:x,cy:cy,r:r,fill: completato?'#1B6D3F':(sbloccato?'#46515A':'#3C444B'),stroke:'#23292E','stroke-width':3,filter:'url(#omb)'});
+    svg+=S('circle',{cx:x,cy:cy,r:r-6,fill:'none',stroke:'#2B3338','stroke-width':2,'stroke-opacity':0.6});
+    // texture ghisa: raggi (solo se non completato, per non sporcare il verde)
+    if(!completato){ for(let k=0;k<12;k++){ const a=k*Math.PI/6; svg+=S('line',{x1:x+(r-12)*Math.cos(a),y1:cy+(r-12)*Math.sin(a),x2:x+(r-26)*Math.cos(a),y2:cy+(r-26)*Math.sin(a),stroke:'#2B3338','stroke-width':2,'stroke-opacity':0.5}); } }
+    // anello dorato sui completati
+    if(completato) svg+=S('circle',{cx:x,cy:cy,r:r+5,fill:'none',stroke:'#E8A33D','stroke-width':3.5});
+    // contenuto: numero / lucchetto
+    if(sbloccato){
+      svg+=S('text',{x:x,y:cy+10,'font-family':'Fredoka,sans-serif','font-size':34,fill:'#FFFFFF','text-anchor':'middle','font-weight':700},lv.id);
+    } else {
+      svg+=S('path',{d:'M'+(x-10)+' '+(cy-2)+' v-7 a10 10 0 0 1 20 0 v7 M'+(x-15)+' '+(cy-2)+' h30 v22 h-30 Z',fill:'#C9BFAE',stroke:'#23292E','stroke-width':2.4});
+      svg+=S('circle',{cx:x,cy:cy+8,r:3,fill:'#23292E'});
+    }
+    // gocce conquistate sotto il tombino
+    if(sbloccato){ for(let s=0;s<3;s++){ const on=gg>s;
+      svg+='<g transform="translate('+(x-22+s*22)+','+(cy+r+22)+')">'+
+        S('path',{d:'M0 -9 C0 -9 -7 2 -7 7 a7 7 0 0 0 14 0 C7 2 0 -9 0 -9 Z',fill:on?'#2D7DD2':'#B9C2C8',stroke:on?'#1B5A9E':'#9AA4AB','stroke-width':1.4})+'</g>';
+    } }
     svg+='</g>';
   }
-  // etichette zone
-  const zx=[150,400,640,880];
-  zone.forEach((z,i)=>{ svg+=S('text',{x:zx[i],y:40,'font-family':'Fredoka,sans-serif','font-size':15,fill:'#1B6D3F','text-anchor':'middle','font-weight':600},z); });
+
+  // medaglioni story di Luigi (tappe premio) appena sopra la fila
+  STORIE.forEach((s,idx)=>{
+    const x=cx(s.dopo-1)+dx/2, y=cy-118;
+    const sb = docente || !!gocceLivello[s.dopo];
+    const vista = !!storieViste[idx];
+    svg+='<g class="story-dot'+(sb?'':' bloccato')+'" data-st="'+idx+'" style="cursor:'+(sb?'pointer':'default')+'">';
+    svg+=S('circle',{cx:x,cy:y,r:34,fill:'none',stroke: sb?(vista?'#1B6D3F':'#E8A33D'):'#7E868C','stroke-width':4.5,'stroke-dasharray':(sb&&!vista)?'9 6':'',filter:'url(#omb)'});
+    svg+='<clipPath id="clipm'+idx+'"><circle cx="'+x+'" cy="'+y+'" r="29"/></clipPath>';
+    svg+=S('circle',{cx:x,cy:y,r:29,fill:'#CFE3F2'});
+    svg+='<image href="luigi.jpg" x="'+(x-29)+'" y="'+(y-29)+'" width="58" height="58" clip-path="url(#clipm'+idx+')" preserveAspectRatio="xMidYMid slice"/>';
+    if(!sb){ svg+=S('circle',{cx:x,cy:y,r:29,fill:'#23292E','fill-opacity':0.55}); svg+=S('path',{d:'M'+(x-6)+' '+(y-2)+' v-4 a6 6 0 0 1 12 0 v4 M'+(x-9)+' '+(y-2)+' h18 v13 h-18 Z',fill:'#C9BFAE'}); }
+    else if(!vista){ svg+=S('circle',{cx:x+24,cy:y-22,r:8,fill:'#E8A33D',stroke:'#FFFFFF','stroke-width':2}); svg+=S('text',{x:x+24,y:y-18,'font-family':'Fredoka,sans-serif','font-size':11,fill:'#fff','text-anchor':'middle','font-weight':700},'!'); }
+    svg+=S('text',{x:x,y:y+50,'font-family':'Fredoka,sans-serif','font-size':15,fill:'#FFFFFF','text-anchor':'middle','font-weight':600,filter:'url(#omb)'},'story di Luigi');
+    svg+='</g>';
+  });
+
+  // etichette zone su targhette, allineate al centro di ogni gruppo di 3
+  zone.forEach((z,i)=>{
+    const zx=cx(i*3)+dx; const zy=300;
+    const w=z.length*15+40;
+    svg+=S('rect',{x:zx-w/2,y:zy-26,width:w,height:38,rx:19,fill:'#FFFFFF','fill-opacity':0.92,stroke:'#1B6D3F','stroke-width':2,filter:'url(#omb)'});
+    svg+=S('text',{x:zx,y:zy,'font-family':'Fredoka,sans-serif','font-size':24,fill:'#1B6D3F','text-anchor':'middle','font-weight':600},z);
+  });
+
   svg+='</svg>';
   box.innerHTML=svg;
   box.querySelectorAll('.lv-dot').forEach(d=>{
     d.addEventListener('click',()=>{ const id=+d.getAttribute('data-lv'); if(docente||id<=maxSbloccato){ apriLivello(id); } });
   });
+  box.querySelectorAll('.story-dot').forEach(d=>{
+    d.addEventListener('click',()=>{ const i=+d.getAttribute('data-st'); const s=STORIE[i]; if(docente || gocceLivello[s.dopo]) apriStoria(i); });
+  });
+}
+
+// tappa premio: la story di Luigi con i suoi buoni consigli
+function apriStoria(i){
+  const s=STORIE[i];
+  storieViste[i]=true;
+  $('#scheda-luigi').innerHTML='<h2>La story di Luigi: '+s.nome+'</h2>'+
+    '<div class="storia-box">'+
+    '<img src="'+s.img+'" alt="La story di Luigi: '+s.nome+'" onerror="this.style.display=\'none\'">'+
+    '<div class="racconto"><div class="parla" style="margin-top:0"><img src="luigi.jpg" alt="Luigi" onerror="this.style.display=\'none\'"><div><span class="nome-luigi">Luigi, il fontaniere</span>'+s.racconto+'</div></div>'+
+    '<div class="consiglio-luigi">'+s.consiglio+'</div></div>'+
+    '</div>'+
+    '<div class="riga-bottoni"><button class="btn-big" style="margin-top:12px;padding:10px 24px" id="chiudi-storia">Grazie, Luigi!</button></div>';
+  $('#overlay-luigi').classList.add('attiva');
+  $('#chiudi-storia').onclick=()=>{ $('#overlay-luigi').classList.remove('attiva'); if($('#mappa').classList.contains('attiva')) buildMappa(); };
+  telemetria('storia',{n:i+1});
 }
 
 // === LIVELLO ===
@@ -1189,6 +1328,9 @@ function mostraVittoria(lv, stelle, st){
   }
   html+='<h2>'+lv.nome+'</h2>';
   html+='<div class="stelle-box">'+gocce+'</div>';
+  const fraseLuigi = (lv.id===12)? 'Da oggi la rete di Orzinuovi ha un nuovo fontaniere: tu. Sono orgoglioso di te!' :
+    ((stelle===3? 'Tre gocce! Nemmeno un litro perso. ' : '')+(FRASI_ZONA[lv.zona]||''));
+  html+='<div class="parla parla-vittoria"><img src="luigi.jpg" alt="Luigi" onerror="this.style.display=\'none\'"><div><span class="nome-luigi">Luigi</span>'+fraseLuigi+'</div></div>';
   html+='<div class="dato-vittoria"><span>Acqua consegnata</span><strong>'+Math.round(consTot)+' litri</strong></div>';
   html+='<div class="dato-vittoria"><span>Acqua sprecata</span><strong>'+Math.round(st.waste)+' litri</strong></div>';
   if(lv.edges.some(e=>e.pump)) html+='<div class="dato-vittoria"><span>Energia pompa</span><strong>'+st.energy+'</strong></div>';
@@ -1201,12 +1343,15 @@ function mostraVittoria(lv, stelle, st){
   if(next<=12) html+='<button class="btn-big" style="margin-top:0;padding:12px 26px" id="vit-next">Prossima missione</button>';
   html+='</div>';
   if(lv.id===12) html+='<button class="btn-social" id="vit-social">Il profilo social di Luigi</button>';
+  const idxStoria = STORIE.findIndex(s=>s.dopo===lv.id);
+  if(idxStoria>=0) html+='<button class="btn-social" id="vit-story">Luigi ha pubblicato una nuova story: guardala!</button>';
   sc.innerHTML=html;
   $('#overlay-vittoria').classList.add('attiva');
   $('#vit-rigioca').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); apriLivello(lv.id); };
   $('#vit-mappa').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); buildMappa(); show('#mappa'); };
   if($('#vit-next')) $('#vit-next').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); apriLivello(next); };
   if($('#vit-social')) $('#vit-social').onclick=apriSocialLuigi;
+  if($('#vit-story')) $('#vit-story').onclick=()=>apriStoria(STORIE.findIndex(s=>s.dopo===lv.id));
 }
 
 // epilogo: il profilo social di Luigi (spunto di cittadinanza digitale)
@@ -1252,13 +1397,12 @@ function apriGuida(){
 function apriInfoDocente(){
   $('#scheda-docente').innerHTML=
    '<h2>Per il docente</h2>'+
-   '<p><strong>Concetto informatico:</strong> logica booleana e pianificazione del flusso. Le valvole in serie agiscono come AND, i rami in parallelo come OR; la condizione <em>if</em> introduce l\'esecuzione condizionale e <em>repeat</em> l\'iterazione.</p>'+
-   '<p><strong>Progressione (Bloom):</strong> dalle prime sequenze (aprire/chiudere/attendere) all\'iterazione, fino alla diagnosi condizionale di perdite e livelli ignoti. La zona finale integra tutto in un compito autentico.</p>'+
-   '<p><strong>Educazione ambientale:</strong> la metrica di valutazione sono i litri sprecati (piu\' l\'energia della pompa). Il punteggio coincide con l\'obiettivo di sostenibilita\': non c\'e\' un messaggio ecologico sovrapposto, e\' la regola del gioco.</p>'+
-   '<p><strong>Valutazione:</strong> ogni livello restituisce litri consegnati, litri sprecati ed energia: dati utili per una rubrica di processo (efficienza, uso dell\'iterazione, uso della condizione).</p>'+
-   '<p><strong>Riferimenti:</strong> Indicazioni Nazionali (matematica/tecnologia, pensiero computazionale); DM 221/2025 (Piano Scuola 4.0 / STEM); L. 233/2021 art. 24-bis (informatica nel primo ciclo).</p>'+
-   '<p><strong>Soluzioni di riferimento</strong> (visibili in modalita\' docente):</p>'+
-   '<div class="codeblock" style="max-height:160px;overflow:auto">'+LEVELS.map(l=>l.id+'. '+l.nome+'\n'+l.sol).join('\n\n')+'</div>'+
+   '<p>La <strong>scheda didattica completa</strong> &mdash; obiettivi, progressione nelle 4 zone, linguaggio, valutazione, scaffolding e idee per la classe &mdash; e\' una pagina a parte, leggibile e stampabile in A4.</p>'+
+   '<div class="riga-bottoni" style="justify-content:flex-start;margin:10px 0 4px">'+
+     '<a class="btn-big" style="margin-top:0;padding:11px 22px;text-decoration:none;display:inline-block" href="fontaniere-docenti.html" target="_blank" rel="noopener">Apri la scheda didattica</a>'+
+   '</div>'+
+   '<p style="margin-top:16px"><strong>Soluzioni di riferimento</strong> (a portata di mano durante la lezione):</p>'+
+   '<div class="codeblock" style="max-height:200px;overflow:auto">'+LEVELS.map(l=>l.id+'. '+l.nome+'\n'+l.sol).join('\n\n')+'</div>'+
    '<div class="riga-bottoni"><button class="btn-big" style="margin-top:0;padding:10px 24px" id="chiudi-docente">Chiudi</button></div>';
   $('#overlay-docente').classList.add('attiva');
   $('#chiudi-docente').onclick=()=>$('#overlay-docente').classList.remove('attiva');
