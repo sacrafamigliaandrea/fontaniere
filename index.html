@@ -219,7 +219,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
     <button class="btn-testa" id="btn-docente">Per il docente</button>
   </div>
   <div class="mappa-corpo">
-    <div class="avviso"><img src="luigi.jpg" alt="Luigi" class="avviso-luigi" onerror="this.style.display='none'"><strong>Luigi:</strong> «Scegli un tombino! Completa una missione per ricevere il codice della successiva.»</div>
     <div class="mappa-svg-box" id="mappa-svg"></div>
     <div class="mappa-piedi">
       <div class="codice-box">
@@ -1088,27 +1087,25 @@ function show(id){ $$('.screen').forEach(e=>e.classList.remove('attiva')); $(id)
 // === MAPPA ===
 function buildMappa(){
   const box=$('#mappa-svg');
-  // proporzioni dello sfondo mappa.jpg (1842x822)
-  const W=1842, H=822;
-  const zone=['La Piazza','La Scuola','Le Case','La Torre'];
+  // proporzioni dello sfondo mappa.jpg (3072x1376); le zone e il fumetto
+  // di Luigi sono GIA' disegnati nell'illustrazione: non si sovrappone nulla.
+  const W=3072, H=1376;
   let svg='<svg viewBox="0 0 '+W+' '+H+'" xmlns="'+SVGNS+'" width="100%" preserveAspectRatio="xMidYMid slice" class="mappa-scena">';
   svg+='<defs>'+
-    '<linearGradient id="g_velo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E2C1A" stop-opacity="0.04"/><stop offset="0.6" stop-color="#0E2C1A" stop-opacity="0.10"/><stop offset="1" stop-color="#0E2C1A" stop-opacity="0.42"/></linearGradient>'+
-    '<filter id="omb" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1A1208" flood-opacity="0.45"/></filter>'+
+    '<linearGradient id="g_velo" x1="0" y1="0" x2="0" y2="1"><stop offset="0.55" stop-color="#0E2C1A" stop-opacity="0"/><stop offset="1" stop-color="#0E2C1A" stop-opacity="0.40"/></linearGradient>'+
+    '<filter id="omb" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1A1208" flood-opacity="0.5"/></filter>'+
   '</defs>';
-  // sfondo illustrato + velo per leggibilita' dei tombini in basso
   svg+='<image href="mappa.jpg" x="0" y="0" width="'+W+'" height="'+H+'" preserveAspectRatio="xMidYMid slice"/>';
+  // velo solo sulla fascia bassa, per far risaltare i tombini senza coprire la scena
   svg+=S('rect',{x:0,y:0,width:W,height:H,fill:'url(#g_velo)'});
 
-  // fila dei 12 tombini sulla pavimentazione (fascia bassa)
-  const cy=694, r=52, x0=150, dx=(W-2*x0)/11;
+  // fila dei 12 tombini sulla pavimentazione
+  const cy=1180, r=78, x0=235, dx=(W-2*x0)/11;
   const cx=i=>x0+i*dx;
-  // tubo che collega i tombini
-  svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#3A4248','stroke-width':30,'stroke-linecap':'round'});
-  svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#586169','stroke-width':22,'stroke-linecap':'round'});
-  // progresso percorso (verde fino all'ultimo completato)
+  svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#2C3338','stroke-width':44,'stroke-linecap':'round','stroke-opacity':0.85});
+  svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#586169','stroke-width':30,'stroke-linecap':'round','stroke-opacity':0.85});
   let ultimo=0; for(let i=0;i<12;i++){ if(gocceLivello[LEVELS[i].id]) ultimo=i; }
-  if(ultimo>0) svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#2E8A52','stroke-width':12,'stroke-linecap':'round'});
+  if(ultimo>0) svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#2E8A52','stroke-width':16,'stroke-linecap':'round'});
 
   for(let i=0;i<12;i++){
     const lv=LEVELS[i];
@@ -1118,52 +1115,38 @@ function buildMappa(){
     const gg = gocceLivello[lv.id]||0;
     const x=cx(i);
     svg+='<g class="lv-dot'+(sbloccato?'':' bloccato')+(corrente?' corrente':'')+'" data-lv="'+lv.id+'" style="cursor:'+(sbloccato?'pointer':'default')+'">';
-    // pulsazione per il tombino corrente (anello che respira)
-    if(corrente) svg+=S('circle',{cx:x,cy:cy,r:r+10,fill:'none',stroke:'#E8A33D','stroke-width':4,class:'pulse-ring'});
-    // corpo tombino in ghisa
-    svg+=S('circle',{cx:x,cy:cy,r:r,fill: completato?'#1B6D3F':(sbloccato?'#46515A':'#3C444B'),stroke:'#23292E','stroke-width':3,filter:'url(#omb)'});
-    svg+=S('circle',{cx:x,cy:cy,r:r-6,fill:'none',stroke:'#2B3338','stroke-width':2,'stroke-opacity':0.6});
-    // texture ghisa: raggi (solo se non completato, per non sporcare il verde)
-    if(!completato){ for(let k=0;k<12;k++){ const a=k*Math.PI/6; svg+=S('line',{x1:x+(r-12)*Math.cos(a),y1:cy+(r-12)*Math.sin(a),x2:x+(r-26)*Math.cos(a),y2:cy+(r-26)*Math.sin(a),stroke:'#2B3338','stroke-width':2,'stroke-opacity':0.5}); } }
-    // anello dorato sui completati
-    if(completato) svg+=S('circle',{cx:x,cy:cy,r:r+5,fill:'none',stroke:'#E8A33D','stroke-width':3.5});
-    // contenuto: numero / lucchetto
+    if(corrente) svg+=S('circle',{cx:x,cy:cy,r:r+14,fill:'none',stroke:'#E8A33D','stroke-width':6,class:'pulse-ring'});
+    svg+=S('circle',{cx:x,cy:cy,r:r,fill: completato?'#1B6D3F':(sbloccato?'#49545D':'#3C444B'),stroke:'#1C2226','stroke-width':4,filter:'url(#omb)'});
+    svg+=S('circle',{cx:x,cy:cy,r:r-9,fill:'none',stroke:'#2B3338','stroke-width':3,'stroke-opacity':0.6});
+    if(!completato){ for(let k=0;k<12;k++){ const a=k*Math.PI/6; svg+=S('line',{x1:x+(r-18)*Math.cos(a),y1:cy+(r-18)*Math.sin(a),x2:x+(r-40)*Math.cos(a),y2:cy+(r-40)*Math.sin(a),stroke:'#2B3338','stroke-width':3,'stroke-opacity':0.5}); } }
+    if(completato) svg+=S('circle',{cx:x,cy:cy,r:r+7,fill:'none',stroke:'#E8A33D','stroke-width':5});
     if(sbloccato){
-      svg+=S('text',{x:x,y:cy+10,'font-family':'Fredoka,sans-serif','font-size':34,fill:'#FFFFFF','text-anchor':'middle','font-weight':700},lv.id);
+      svg+=S('text',{x:x,y:cy+16,'font-family':'Fredoka,sans-serif','font-size':52,fill:'#FFFFFF','text-anchor':'middle','font-weight':700},lv.id);
     } else {
-      svg+=S('path',{d:'M'+(x-10)+' '+(cy-2)+' v-7 a10 10 0 0 1 20 0 v7 M'+(x-15)+' '+(cy-2)+' h30 v22 h-30 Z',fill:'#C9BFAE',stroke:'#23292E','stroke-width':2.4});
-      svg+=S('circle',{cx:x,cy:cy+8,r:3,fill:'#23292E'});
+      svg+=S('path',{d:'M'+(x-15)+' '+(cy-3)+' v-10 a15 15 0 0 1 30 0 v10 M'+(x-22)+' '+(cy-3)+' h44 v32 h-44 Z',fill:'#C9BFAE',stroke:'#1C2226','stroke-width':3.5});
+      svg+=S('circle',{cx:x,cy:cy+12,r:4.5,fill:'#1C2226'});
     }
-    // gocce conquistate sotto il tombino
     if(sbloccato){ for(let s=0;s<3;s++){ const on=gg>s;
-      svg+='<g transform="translate('+(x-22+s*22)+','+(cy+r+22)+')">'+
-        S('path',{d:'M0 -9 C0 -9 -7 2 -7 7 a7 7 0 0 0 14 0 C7 2 0 -9 0 -9 Z',fill:on?'#2D7DD2':'#B9C2C8',stroke:on?'#1B5A9E':'#9AA4AB','stroke-width':1.4})+'</g>';
+      svg+='<g transform="translate('+(x-33+s*33)+','+(cy+r+34)+')">'+
+        S('path',{d:'M0 -13 C0 -13 -10 3 -10 10 a10 10 0 0 0 20 0 C10 3 0 -13 0 -13 Z',fill:on?'#2D7DD2':'#AEB8BF',stroke:on?'#1B5A9E':'#8C969D','stroke-width':2})+'</g>';
     } }
     svg+='</g>';
   }
 
-  // medaglioni story di Luigi (tappe premio) appena sopra la fila
+  // medaglioni story di Luigi (tappe premio), appena sopra la fila
   STORIE.forEach((s,idx)=>{
-    const x=cx(s.dopo-1)+dx/2, y=cy-118;
+    const x=cx(s.dopo-1)+dx/2, y=cy-150;
     const sb = docente || !!gocceLivello[s.dopo];
     const vista = !!storieViste[idx];
     svg+='<g class="story-dot'+(sb?'':' bloccato')+'" data-st="'+idx+'" style="cursor:'+(sb?'pointer':'default')+'">';
-    svg+=S('circle',{cx:x,cy:y,r:34,fill:'none',stroke: sb?(vista?'#1B6D3F':'#E8A33D'):'#7E868C','stroke-width':4.5,'stroke-dasharray':(sb&&!vista)?'9 6':'',filter:'url(#omb)'});
-    svg+='<clipPath id="clipm'+idx+'"><circle cx="'+x+'" cy="'+y+'" r="29"/></clipPath>';
-    svg+=S('circle',{cx:x,cy:y,r:29,fill:'#CFE3F2'});
-    svg+='<image href="luigi.jpg" x="'+(x-29)+'" y="'+(y-29)+'" width="58" height="58" clip-path="url(#clipm'+idx+')" preserveAspectRatio="xMidYMid slice"/>';
-    if(!sb){ svg+=S('circle',{cx:x,cy:y,r:29,fill:'#23292E','fill-opacity':0.55}); svg+=S('path',{d:'M'+(x-6)+' '+(y-2)+' v-4 a6 6 0 0 1 12 0 v4 M'+(x-9)+' '+(y-2)+' h18 v13 h-18 Z',fill:'#C9BFAE'}); }
-    else if(!vista){ svg+=S('circle',{cx:x+24,cy:y-22,r:8,fill:'#E8A33D',stroke:'#FFFFFF','stroke-width':2}); svg+=S('text',{x:x+24,y:y-18,'font-family':'Fredoka,sans-serif','font-size':11,fill:'#fff','text-anchor':'middle','font-weight':700},'!'); }
-    svg+=S('text',{x:x,y:y+50,'font-family':'Fredoka,sans-serif','font-size':15,fill:'#FFFFFF','text-anchor':'middle','font-weight':600,filter:'url(#omb)'},'story di Luigi');
+    svg+=S('circle',{cx:x,cy:y,r:46,fill:'none',stroke: sb?(vista?'#1B6D3F':'#E8A33D'):'#7E868C','stroke-width':6,'stroke-dasharray':(sb&&!vista)?'12 8':'',filter:'url(#omb)'});
+    svg+='<clipPath id="clipm'+idx+'"><circle cx="'+x+'" cy="'+y+'" r="40"/></clipPath>';
+    svg+=S('circle',{cx:x,cy:y,r:40,fill:'#CFE3F2'});
+    svg+='<image href="luigi.jpg" x="'+(x-40)+'" y="'+(y-40)+'" width="80" height="80" clip-path="url(#clipm'+idx+')" preserveAspectRatio="xMidYMid slice"/>';
+    if(!sb){ svg+=S('circle',{cx:x,cy:y,r:40,fill:'#1C2226','fill-opacity':0.55}); svg+=S('path',{d:'M'+(x-8)+' '+(y-3)+' v-5 a8 8 0 0 1 16 0 v5 M'+(x-12)+' '+(y-3)+' h24 v17 h-24 Z',fill:'#C9BFAE'}); }
+    else if(!vista){ svg+=S('circle',{cx:x+32,cy:y-30,r:11,fill:'#E8A33D',stroke:'#FFFFFF','stroke-width':3}); svg+=S('text',{x:x+32,y:y-24,'font-family':'Fredoka,sans-serif','font-size':16,fill:'#fff','text-anchor':'middle','font-weight':700},'!'); }
+    svg+=S('text',{x:x,y:y+66,'font-family':'Fredoka,sans-serif','font-size':21,fill:'#FFFFFF','text-anchor':'middle','font-weight':600,filter:'url(#omb)'},'story di Luigi');
     svg+='</g>';
-  });
-
-  // etichette zone su targhette, allineate al centro di ogni gruppo di 3
-  zone.forEach((z,i)=>{
-    const zx=cx(i*3)+dx; const zy=300;
-    const w=z.length*15+40;
-    svg+=S('rect',{x:zx-w/2,y:zy-26,width:w,height:38,rx:19,fill:'#FFFFFF','fill-opacity':0.92,stroke:'#1B6D3F','stroke-width':2,filter:'url(#omb)'});
-    svg+=S('text',{x:zx,y:zy,'font-family':'Fredoka,sans-serif','font-size':24,fill:'#1B6D3F','text-anchor':'middle','font-weight':600},z);
   });
 
   svg+='</svg>';
