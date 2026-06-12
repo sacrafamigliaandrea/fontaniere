@@ -268,7 +268,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 
 <div class="overlay" id="overlay-vittoria"><div class="scheda" id="scheda-vittoria"></div></div>
 <div class="overlay" id="overlay-guida"><div class="scheda" id="scheda-guida"></div></div>
-<div class="overlay" id="overlay-docente"><div class="scheda" id="scheda-docente"></div></div>
 <div class="overlay" id="overlay-luigi"><div class="scheda" id="scheda-luigi"></div></div>
 
 <script>
@@ -1377,20 +1376,6 @@ function apriGuida(){
   $('#overlay-guida').classList.add('attiva');
   $('#chiudi-guida').onclick=()=>$('#overlay-guida').classList.remove('attiva');
 }
-function apriInfoDocente(){
-  $('#scheda-docente').innerHTML=
-   '<h2>Per il docente</h2>'+
-   '<p>La <strong>scheda didattica completa</strong> &mdash; obiettivi, progressione nelle 4 zone, linguaggio, valutazione, scaffolding e idee per la classe &mdash; e\' una pagina a parte, leggibile e stampabile in A4.</p>'+
-   '<div class="riga-bottoni" style="justify-content:flex-start;margin:10px 0 4px">'+
-     '<a class="btn-big" style="margin-top:0;padding:11px 22px;text-decoration:none;display:inline-block" href="fontaniere-docenti.html" target="_blank" rel="noopener">Apri la scheda didattica</a>'+
-   '</div>'+
-   '<p style="margin-top:16px"><strong>Soluzioni di riferimento</strong> (a portata di mano durante la lezione):</p>'+
-   '<div class="codeblock" style="max-height:200px;overflow:auto">'+LEVELS.map(l=>l.id+'. '+l.nome+'\n'+l.sol).join('\n\n')+'</div>'+
-   '<div class="riga-bottoni"><button class="btn-big" style="margin-top:0;padding:10px 24px" id="chiudi-docente">Chiudi</button></div>';
-  $('#overlay-docente').classList.add('attiva');
-  $('#chiudi-docente').onclick=()=>$('#overlay-docente').classList.remove('attiva');
-}
-
 // === MUSICA (una traccia YouTube per livello, toggle on/off) ===
 let musicaOn=false, tracciaCorrente=-1, wrapMusica=null;
 function iconaMusica(on){
@@ -1445,7 +1430,7 @@ function init(){
   $('#btn-codice').addEventListener('click',provaCodice);
   $('#input-codice').addEventListener('keydown',e=>{ if(e.key==='Enter') provaCodice(); });
   $('#logo-goccia').addEventListener('click',tapGoccia);
-  $('#btn-docente').addEventListener('click',apriInfoDocente);
+  $('#btn-docente').addEventListener('click',()=>window.open('fontaniere-docenti.html','_blank','noopener'));
   setupMusica();
   // deep link ?livello=N
   const m=location.search.match(/livello=(\d+)/);
