@@ -2,6 +2,10 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<meta property="og:title" content="Il Fontaniere — il gioco di coding della rete dell'acqua">
+<meta property="og:description" content="Aiuta Luigi, il fontaniere di Orzinuovi: scrivi i comandi, apri le valvole giuste e porta l'acqua dove serve. Zero sprechi!">
+<meta property="og:image" content="https://fontaniere-coding.vercel.app/fontaniere.jpg">
+<meta property="og:type" content="website">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Il Fontaniere — l'acqua sotto Orzinuovi</title>
 <!--
@@ -36,10 +40,24 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .screen.attiva{display:flex}
 
 #splash{align-items:center;justify-content:center;text-align:center;padding:24px;background:linear-gradient(180deg,#9CCAE6 0%,#C6E0EE 34%,#F2EBDD 34.3%,#F2EBDD 50%,#5A4530 50.2%,#3A2C1D 100%)}
-#splash .pannello{position:relative;background:rgba(20,14,9,.6);border:2px solid rgba(255,255,255,.18);border-radius:20px;padding:30px 34px;max-width:560px}
+#splash .pannello{position:relative;background:rgba(20,14,9,.6);border:2px solid rgba(255,255,255,.18);border-radius:20px;padding:24px 28px;max-width:780px;display:grid;grid-template-columns:minmax(180px,236px) 1fr;gap:24px;align-items:center;text-align:left}
+#splash .pannello.senza-story{grid-template-columns:1fr;text-align:center;max-width:660px}
+.colonna-story{display:flex;flex-direction:column;gap:8px;align-items:center}
+.story-tel{display:block;width:100%;border-radius:22px;border:3px solid rgba(255,255,255,.35);box-shadow:0 10px 26px rgba(0,0,0,.45);background:#0E0B08}
+.story-cap{font-family:'Fredoka',sans-serif;font-size:.78rem;color:#9CCAE6;letter-spacing:.02em}
+@media (max-width:700px){
+  #splash .pannello{grid-template-columns:1fr;gap:14px;text-align:center}
+  .story-tel{max-width:188px;margin:0 auto}
+  .splash-luigi{text-align:left}
+}
+.hero-img{display:block;width:100%;border-radius:14px;border:2px solid rgba(255,255,255,.25);box-shadow:0 6px 18px rgba(0,0,0,.35);margin-bottom:18px}
 #splash h1{font-size:clamp(2.1rem,6vw,3.5rem);color:#fff;font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.35)}
 #splash .occhiello{color:#9CCAE6;font-family:'Fredoka',sans-serif;font-size:1.05rem;margin-bottom:4px}
 #splash p{color:#EFE7D8;margin-top:14px;line-height:1.5}
+.splash-luigi{display:flex;align-items:center;gap:12px;margin:16px auto 2px;max-width:520px;text-align:left}
+.splash-luigi img{width:62px;height:62px;border-radius:50%;flex:none;border:3px solid #fff;background:#CFE3F2;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.splash-luigi .fumetto{position:relative;background:rgba(255,255,255,.96);color:#123A24;border-radius:14px;padding:10px 14px;font-size:.95rem;line-height:1.45}
+.splash-luigi .fumetto::before{content:'';position:absolute;left:-8px;top:24px;border:8px solid transparent;border-right-color:rgba(255,255,255,.96);border-left:0}
 .btn-big{margin-top:22px;background:var(--verde);color:#fff;font-size:1.2rem;font-weight:600;padding:14px 38px;border-radius:999px;box-shadow:0 4px 0 var(--verde-scuro);transition:transform .08s}
 .btn-big:active{transform:translateY(3px);box-shadow:0 1px 0 var(--verde-scuro)}
 
@@ -49,6 +67,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 #logo-goccia{cursor:pointer;flex:none}
 .spazio{flex:1}
 .btn-testa{background:rgba(255,255,255,.92);color:var(--verde-scuro);border-radius:999px;padding:7px 16px;font-size:.9rem;font-weight:600}
+.btn-musica{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border-radius:50%;background:rgba(255,255,255,.18);border:1.6px solid rgba(255,255,255,.55)}
+.btn-musica svg{display:block}
+.btn-musica.on{background:#FFFFFF;border-color:#FFFFFF}
 .badge-docente{background:var(--oro);color:#4a3500;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.85rem;display:none}
 .mappa-corpo{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:14px;gap:14px}
 .mappa-svg-box{width:min(1060px,100%);background:#fff;border:2px solid var(--bordo);border-radius:18px;overflow:hidden}
@@ -110,13 +131,32 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .codice-vittoria .parola{font-family:'Fredoka',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:.18em;margin-top:4px}
 .eco-frase{font-style:italic;color:var(--verde-scuro);background:var(--verde-chiaro);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:.88rem;line-height:1.45}
 
+.obiettivo{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--verde);border-radius:10px;padding:6px 10px;margin-bottom:8px;font-family:'Fredoka',sans-serif;font-size:.9rem;color:var(--verde-scuro);line-height:1.35}
+.obiettivo svg{flex:none}
+.consegna code{background:#1E2A22;color:#CFE8D4;border-radius:5px;padding:1px 6px;font-size:.8rem;font-family:Menlo,Consolas,monospace;white-space:nowrap}
+.hint{margin-top:8px;padding:7px 10px;background:#FFF6E6;border-left:3px solid var(--oro);border-radius:6px;font-size:.84rem;line-height:1.6}
+.parla{display:flex;gap:10px;align-items:flex-start;margin-top:8px}
+.parla img{width:46px;height:46px;border-radius:50%;flex:none;border:2px solid var(--verde);background:#CFE3F2;object-fit:cover}
+.parla .nome-luigi{display:block;font-family:'Fredoka',sans-serif;font-weight:600;font-size:.78rem;color:var(--verde);margin-bottom:2px}
+.avviso-luigi{width:34px;height:34px;border-radius:50%;border:2px solid var(--verde);vertical-align:middle;margin-right:8px;object-fit:cover;background:#CFE3F2}
+.img-vittoria{display:block;width:118px;height:118px;border-radius:50%;object-fit:cover;margin:0 auto 10px;border:3px solid var(--verde);background:#CFE3F2}
+.img-vittoria-story{display:block;width:130px;margin:0 auto 10px;border-radius:16px;border:3px solid var(--verde);box-shadow:0 8px 20px rgba(0,0,0,.3);background:#CFE3F2}
+.img-guida{display:block;width:92px;height:92px;border-radius:50%;object-fit:cover;margin:0 auto 10px;border:3px solid var(--verde);background:#CFE3F2}
+.social-luigi{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.social-luigi img{max-width:240px;width:46%;min-width:170px;border-radius:14px;border:2px solid var(--bordo);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.btn-social{background:none;border:none;color:var(--verde);font-weight:600;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:8px}
+.cont.minuti .num{color:#BFE3F7}
+.corrente{animation:scorri .55s linear infinite}
+@keyframes scorri{to{stroke-dashoffset:-18}}
 .flow{animation:flowpulse 1.1s ease-in-out infinite}
 @keyframes flowpulse{50%{opacity:.72}}
 .spin{animation:spin .9s linear infinite;transform-origin:center;transform-box:fill-box}
 @keyframes spin{to{transform:rotate(360deg)}}
 .drip{animation:dripfall .9s ease-in infinite}
+.gush{animation:gushup 1s ease-out infinite}
 @keyframes dripfall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(13px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.flow,.spin,.drip{animation:none}}
+@keyframes gushup{0%{transform:translateY(5px);opacity:0}30%{opacity:1}100%{transform:translateY(-9px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.flow,.spin,.drip,.gush,.corrente{animation:none}}
 
 @media (max-width:880px){
   .lv-corpo{grid-template-columns:1fr;grid-template-rows:44% 56%}
@@ -130,10 +170,20 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 
 <div class="screen attiva" id="splash">
   <div class="pannello">
-    <div class="occhiello">trilogia del coding · gioco 3</div>
-    <h1>Il Fontaniere</h1>
-    <p>Sotto Orzinuovi scorre l'acqua. Tu sei l'apprendista fontaniere: scrivi i comandi, apri le valvole giuste e porta l'acqua dove serve — senza sprecarne una goccia.</p>
-    <button class="btn-big" id="btn-gioca">Scendi nel sottosuolo</button>
+    <div class="colonna-story">
+      <img src="story.jpg" alt="La story di Luigi: in pianificazione, con zero sprechi d'acqua" class="story-tel" onerror="this.closest('.pannello').classList.add('senza-story');this.parentNode.style.display='none'">
+      <div class="story-cap">la story di Luigi · 10 minuti fa · Orzinuovi</div>
+    </div>
+    <div class="colonna-intro">
+      <div class="occhiello">trilogia del coding · gioco 3</div>
+      <h1>Il Fontaniere</h1>
+      <p>Sotto Orzinuovi scorre l'acqua: la governi scrivendo comandi, una valvola alla volta.</p>
+      <div class="splash-luigi">
+        <img src="luigi.jpg" alt="Luigi, il fontaniere" onerror="this.parentNode.style.display='none'">
+        <div class="fumetto">«L'hai vista la mia story? <strong>Zero sprechi</strong> è una promessa — ma da solo non ce la faccio. Mi serve un apprendista in gamba: scendi con me nel sottosuolo!»</div>
+      </div>
+      <button class="btn-big" id="btn-gioca">Scendi nel sottosuolo</button>
+    </div>
   </div>
 </div>
 
@@ -143,10 +193,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
     <h1>La rete di Orzinuovi</h1>
     <span class="badge-docente" id="badge-docente">modalità docente</span>
     <span class="spazio"></span>
+    <button class="btn-musica" aria-label="musica on/off" title="musica"></button>
     <button class="btn-testa" id="btn-docente">Per il docente</button>
   </div>
   <div class="mappa-corpo">
-    <div class="avviso">Scegli un tombino. Completa una missione per ricevere il codice della successiva.</div>
+    <div class="avviso"><img src="luigi.jpg" alt="Luigi" class="avviso-luigi" onerror="this.style.display='none'"><strong>Luigi:</strong> «Scegli un tombino! Completa una missione per ricevere il codice della successiva.»</div>
     <div class="mappa-svg-box" id="mappa-svg"></div>
     <div class="mappa-piedi">
       <div class="codice-box">
@@ -164,10 +215,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
       <div class="zona-lv" id="lv-zona">—</div>
     </div>
     <div class="contatori">
+      <div class="cont minuti"><div class="num" id="c-minuti">0</div><div class="eti">minuti</div></div>
       <div class="cont"><div class="num" id="c-consegnati">0</div><div class="eti">consegnati</div></div>
       <div class="cont spreco"><div class="num" id="c-sprecati">0</div><div class="eti">sprecati</div></div>
       <div class="cont energia" id="cont-energia"><div class="num" id="c-energia">0</div><div class="eti">energia</div></div>
     </div>
+    <button class="btn-musica" aria-label="musica on/off" title="musica"></button>
   </div>
   <div class="lv-corpo">
     <div class="colonna-stage">
@@ -195,12 +248,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <div class="overlay" id="overlay-vittoria"><div class="scheda" id="scheda-vittoria"></div></div>
 <div class="overlay" id="overlay-guida"><div class="scheda" id="scheda-guida"></div></div>
 <div class="overlay" id="overlay-docente"><div class="scheda" id="scheda-docente"></div></div>
+<div class="overlay" id="overlay-luigi"><div class="scheda" id="scheda-luigi"></div></div>
 
 <script>
 // ============================================================
-// IL FONTANIERE - core di gioco (parser + motore + livelli)
-// Inlinato identico nella web app. Verificato in Node.
-// Linguaggio FLOW (inglese): open, close, wait, repeat, if, pump.
+// IL FONTANIERE - core (parser + motore + livelli)
+// Fisica 1=1: 1 minuto = 1 litro (portata sorgente, rilascio
+// cisterne e pompa). Verificato in Node.
 // ============================================================
 (function(global){
 'use strict';
@@ -248,7 +302,7 @@ function parseStatement(tok, line){
     }
     case 'wait': {
       const n = Number(tok[1]);
-      if(!tok[1] || !Number.isInteger(n) || n<1) throw err(line, 'wait per quanto tempo? Serve un numero di minuti, ad esempio "wait 2"');
+      if(!tok[1] || !Number.isInteger(n) || n<1) throw err(line, 'wait per quanto tempo? Serve un numero di minuti, ad esempio "wait 12"');
       if(n>60) throw err(line, 'massimo "wait 60": l\'acquedotto non aspetta piu\' di un\'ora');
       return {type:'wait', n, line};
     }
@@ -277,7 +331,9 @@ function parseStatement(tok, line){
 
 function err(line, message){ const e = new Error(message); e.line = line; e.didactic = true; return e; }
 
-const TANK_RELEASE = 6;
+// fisica 1=1: ogni minuto la sorgente eroga 1 litro, le cisterne
+// rilasciano 1 litro, la pompa solleva 1 litro (1 energia/min).
+const TANK_RELEASE = 1;
 
 function newState(level, scen){
   const st = { valves:{}, pumps:{}, tanks:{}, delivered:{}, waste:0, energy:0, ticks:0 };
@@ -428,113 +484,113 @@ function stelle(level, st){
 
 const G = 168;
 const LEVELS = [
-{ id:1, nome:'La fontana riparte', zona:'La Piazza', codice:'FONTANA', rate:6,
-  brief:'La fontana della piazza e\' a secco. Apri la mandata dall\'acquedotto, lascia scorrere l\'acqua e <strong>ricordati di chiudere</strong> quando hai finito.',
+{ id:1, nome:'La fontana riparte', zona:'La Piazza', codice:'FONTANA', rate:1,
+  brief:'La fontana della piazza e\' a secco e vuole <strong>12 litri</strong>. Apri la mandata, lascia scorrere e <strong>ricordati di chiudere</strong> quando hai finito.',
   fact:'Una fontana pubblica lasciata aperta per errore puo\' sprecare migliaia di litri in una notte. Chiudere il rubinetto e\' il primo gesto del fontaniere.',
   cmds:['open','close','wait'],
-  nodes:{ A:{type:'source',pos:[44,232]}, j1:{type:'junction',pos:[210,232]}, f1:{type:'fixture',name:'fontana',pos:[210,120]} },
+  nodes:{ A:{type:'source',pos:[44,260]}, j1:{type:'junction',pos:[210,260]}, f1:{type:'fixture',name:'fontana',pos:[210,120]} },
   edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'f1',valve:'v1'} ],
   topo:['A','j1','f1'], scenarios:[{demands:{f1:12}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open main\nopen v1\nwait 2\nclose main\nclose v1' },
+  sol:'open main\nopen v1\nwait 12\nclose main\nclose v1' },
 
-{ id:2, nome:'Il bivio dei portici', zona:'La Piazza', codice:'POZZO', rate:6,
-  brief:'Sotto i portici un tubo e\' in disuso e finisce in uno scarico: se lo apri, butti via acqua. Manda l\'acqua <strong>solo</strong> alla fontanella.',
+{ id:2, nome:'Il bivio dei portici', zona:'La Piazza', codice:'POZZO', rate:1,
+  brief:'Sotto i portici un tubo e\' in disuso e finisce in uno scarico: se lo apri, butti via acqua. Manda <strong>12 litri solo</strong> alla fontanella.',
   fact:'Nelle reti vecchie ci sono rami "morti" che non portano a nessun servizio. Un buon fontaniere conosce la mappa e non apre a caso.',
   cmds:['open','close','wait'],
-  nodes:{ A:{type:'source',pos:[44,232]}, j1:{type:'junction',pos:[200,232]}, dr:{type:'drain',name:'scarico',pos:[110,400]}, f1:{type:'fixture',name:'fontanella',pos:[320,120]} },
+  nodes:{ A:{type:'source',pos:[44,260]}, j1:{type:'junction',pos:[200,260]}, dr:{type:'drain',name:'scarico',pos:[110,408]}, f1:{type:'fixture',name:'fontanella',pos:[320,120]} },
   edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'dr',valve:'v1'}, {id:'p3',from:'j1',to:'f1',valve:'v2'} ],
   topo:['A','j1','dr','f1'], scenarios:[{demands:{f1:12}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open main\nopen v2\nwait 2\nclose main\nclose v2' },
+  sol:'open main\nopen v2\nwait 12\nclose main\nclose v2' },
 
-{ id:3, nome:'Due case, un solo tubo', zona:'La Piazza', codice:'SERIOLA', rate:6,
-  brief:'Due case chiedono acqua: la doccia vuole 12 litri, il lavandino 6. Servile <strong>una per volta</strong> per non sprecare.',
+{ id:3, nome:'Due case, un solo tubo', zona:'La Piazza', codice:'SERIOLA', rate:1,
+  brief:'Due case chiedono acqua: la doccia vuole <strong>12 litri</strong>, il lavandino <strong>6</strong>. Servile <strong>una per volta</strong> per non sprecare.',
   fact:'Servire le utenze a turno evita cali di pressione. E\' lo stesso motivo per cui a casa conviene non aprire tutti i rubinetti insieme.',
   cmds:['open','close','wait'],
-  nodes:{ A:{type:'source',pos:[44,232]}, j1:{type:'junction',pos:[210,232]}, c1:{type:'fixture',name:'doccia',pos:[140,120]}, c2:{type:'fixture',name:'lavandino',pos:[320,120]} },
+  nodes:{ A:{type:'source',pos:[44,260]}, j1:{type:'junction',pos:[210,260]}, c1:{type:'fixture',name:'doccia',pos:[140,120]}, c2:{type:'fixture',name:'lavandino',pos:[320,120]} },
   edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'c1',valve:'v1'}, {id:'p3',from:'j1',to:'c2',valve:'v2'} ],
   topo:['A','j1','c1','c2'], scenarios:[{demands:{c1:12,c2:6}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open main\nopen v1\nwait 2\nclose v1\nopen v2\nwait 1\nclose v2\nclose main' },
+  sol:'open main\nopen v1\nwait 12\nclose v1\nopen v2\nwait 6\nclose v2\nclose main' },
 
-{ id:4, nome:'La cisterna della scuola', zona:'La Scuola', codice:'ROGGIA', rate:6,
-  brief:'La scuola ha una cisterna di accumulo. <strong>Prima</strong> riempi la cisterna dall\'acquedotto, <strong>poi</strong> la svuoti nei lavandini.',
+{ id:4, nome:'La cisterna della scuola', zona:'La Scuola', codice:'ROGGIA', rate:1,
+  brief:'La scuola ha una cisterna di accumulo. <strong>Prima</strong> riempi la cisterna (12 litri), <strong>poi</strong> la svuoti nei lavandini.',
   fact:'Le cisterne di accumulo permettono di usare l\'acqua quando serve, anche se l\'acquedotto eroga lentamente. Sono i "serbatoi" della rete.',
   cmds:['open','close','wait'],
-  nodes:{ A:{type:'source',pos:[44,220]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[210,330]}, s1:{type:'fixture',name:'lavandini',pos:[210,120]} },
+  nodes:{ A:{type:'source',pos:[44,252]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[210,340]}, s1:{type:'fixture',name:'lavandini',pos:[210,120]} },
   edges:[ {id:'p1',from:'A',to:'t1',valve:'main'}, {id:'p2',from:'t1',to:'s1',valve:'v1'} ],
   topo:['A','t1','s1'], scenarios:[{demands:{s1:12}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open main\nwait 2\nclose main\nopen v1\nwait 2\nclose v1' },
+  sol:'open main\nwait 12\nclose main\nopen v1\nwait 12\nclose v1' },
 
-{ id:5, nome:'L\'orto a turni', zona:'La Scuola', codice:'CHIUSA', rate:6,
-  brief:'Il serbatoio dell\'orto tiene solo 6 litri, ma servono 18. Riempi e svuota <strong>piu\' volte</strong>: prova a usare un <strong>repeat</strong>.',
+{ id:5, nome:'L\'orto a turni', zona:'La Scuola', codice:'CHIUSA', rate:1,
+  brief:'Il serbatoio dell\'orto tiene solo <strong>6 litri</strong>, ma all\'orto ne servono <strong>18</strong>. Riempi e svuota <strong>piu\' volte</strong>: prova un <strong>repeat</strong>.',
   fact:'Irrigare a piccoli turni fa assorbire meglio l\'acqua al terreno e ne spreca meno per scorrimento. La ripetizione qui e\' anche buona agronomia.',
   cmds:['open','close','wait','repeat'],
-  nodes:{ A:{type:'source',pos:[44,210]}, t1:{type:'tank',cap:6,name:'serbatoio',pos:[210,320]}, o1:{type:'fixture',name:'orto',pos:[210,124]} },
+  nodes:{ A:{type:'source',pos:[44,252]}, t1:{type:'tank',cap:6,name:'serbatoio',pos:[210,330]}, o1:{type:'fixture',name:'orto',pos:[210,124]} },
   edges:[ {id:'p1',from:'A',to:'t1',valve:'main'}, {id:'p2',from:'t1',to:'o1',valve:'v1'} ],
   topo:['A','t1','o1'], scenarios:[{demands:{o1:18}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'repeat 3\n  open main\n  wait 1\n  close main\n  open v1\n  wait 1\n  close v1' },
+  sol:'repeat 3\n  open main\n  wait 6\n  close main\n  open v1\n  wait 6\n  close v1' },
 
-{ id:6, nome:'La palestra e il tubo vecchio', zona:'La Scuola', codice:'CISTERNA', rate:6,
-  brief:'Le docce della palestra vogliono 24 litri. C\'e\' un tubo vecchio da non aprire e una cisterna da 12 litri: dovrai fare <strong>due cicli</strong>.',
+{ id:6, nome:'La palestra e il tubo vecchio', zona:'La Scuola', codice:'CISTERNA', rate:1,
+  brief:'Le docce della palestra vogliono <strong>24 litri</strong>. C\'e\' un tubo vecchio da non aprire e una cisterna da <strong>12</strong>: serviranno <strong>due cicli</strong>.',
   fact:'Le docce sono tra i consumi piu\' alti di una scuola. Riduttori di flusso e tempi piu\' brevi possono dimezzare i litri usati.',
   cmds:['open','close','wait','repeat'],
-  nodes:{ A:{type:'source',pos:[44,220]}, j1:{type:'junction',pos:[176,220]}, dr:{type:'drain',name:'tubo vecchio',pos:[96,400]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[300,330]}, g1:{type:'fixture',name:'docce',pos:[300,120]} },
+  nodes:{ A:{type:'source',pos:[44,252]}, j1:{type:'junction',pos:[170,252]}, dr:{type:'drain',name:'tubo vecchio',pos:[94,408]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[300,340]}, g1:{type:'fixture',name:'docce',pos:[300,120]} },
   edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'dr',valve:'v1'}, {id:'p3',from:'j1',to:'t1',valve:'v2'}, {id:'p4',from:'t1',to:'g1',valve:'v3'} ],
   topo:['A','j1','dr','t1','g1'], scenarios:[{demands:{g1:24}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'repeat 2\n  open main\n  open v2\n  wait 2\n  close main\n  close v2\n  open v3\n  wait 2\n  close v3' },
+  sol:'repeat 2\n  open main\n  open v2\n  wait 12\n  close main\n  close v2\n  open v3\n  wait 12\n  close v3' },
 
-{ id:7, nome:'Il sensore della cisterna', zona:'Le Case', codice:'SIFONE', rate:3,
-  brief:'La cisterna del condominio parte con un livello che <strong>non conosci</strong>. Riempila finche\' e\' piena, poi svuotala. Usa <strong>if full</strong> per fermare la mandata al momento giusto.',
+{ id:7, nome:'Il sensore della cisterna', zona:'Le Case', codice:'SIFONE', rate:1,
+  brief:'La cisterna del condominio ha una capienza che <strong>non conosci</strong>. Riempila finche\' e\' piena, poi svuotala nella vasca. Usa <strong>if full</strong> per fermare la mandata al momento giusto.',
   fact:'I galleggianti delle cisterne fanno proprio questo: chiudono l\'acqua quando il livello e\' pieno. E\' un "if" meccanico che esiste da secoli.',
   cmds:['open','close','wait','repeat','if'],
-  nodes:{ A:{type:'source',pos:[44,210]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[220,330]}, va:{type:'fixture',name:'vasca',pos:[220,122]} },
+  nodes:{ A:{type:'source',pos:[44,252]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[220,335]}, va:{type:'fixture',name:'vasca',pos:[220,122]} },
   edges:[ {id:'p1',from:'A',to:'t1',valve:'main'}, {id:'p2',from:'t1',to:'va',valve:'v1'} ],
   topo:['A','t1','va'], scenarios:[{caps:{t1:9},demands:{va:9}},{caps:{t1:12},demands:{va:12}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open main\nrepeat 4\n  wait 1\n  if full t1\n    close main\nopen v1\nwait 2\nclose v1' },
+  sol:'open main\nrepeat 12\n  wait 1\n  if full t1\n    close main\nopen v1\nwait 12\nclose v1' },
 
-{ id:8, nome:'La perdita nascosta', zona:'Le Case', codice:'CONDOTTA', rate:6,
-  brief:'Due tubi portano alla stessa casa, ma <strong>uno dei due perde</strong> e non sai quale. Apri un tubo, controlla con <strong>if leak</strong> e se perde passa all\'altro.',
+{ id:8, nome:'La perdita nascosta', zona:'Le Case', codice:'CONDOTTA', rate:1,
+  brief:'Due tubi portano alla stessa casa, ma <strong>uno dei due perde</strong> e non sai quale. Apri un tubo, controlla con <strong>if leak</strong> e se perde passa all\'altro. La casa vuole <strong>12 litri</strong>.',
   fact:'In Italia le reti idriche perdono in media oltre il 40% dell\'acqua immessa. Trovare e isolare le perdite e\' il lavoro che fa risparmiare di piu\'.',
   cmds:['open','close','wait','if'],
-  nodes:{ A:{type:'source',pos:[44,232]}, j1:{type:'junction',pos:[200,232]}, c1:{type:'fixture',name:'casa',pos:[200,120]} },
+  nodes:{ A:{type:'source',pos:[44,260]}, j1:{type:'junction',pos:[200,260]}, c1:{type:'fixture',name:'casa',pos:[200,120]} },
   edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'c1',valve:'v2',par:-1}, {id:'p3',from:'j1',to:'c1',valve:'v3',par:1} ],
   topo:['A','j1','c1'], scenarios:[{leaks:['p2'],demands:{c1:12}},{leaks:['p3'],demands:{c1:12}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open v2\nif leak p2\n  close v2\n  open v3\nopen main\nwait 2\nclose main\nclose v2\nclose v3' },
+  sol:'open v2\nif leak p2\n  close v2\n  open v3\nopen main\nwait 12\nclose main\nclose v2\nclose v3' },
 
-{ id:9, nome:'Doppio guasto', zona:'Le Case', codice:'NAVIGLIO', rate:6,
-  brief:'Come prima, ma il tubo buono riempie una cisterna che poi serve la scuola materna. <strong>Prima</strong> trova il tubo sano, <strong>poi</strong> riempi e svuota.',
+{ id:9, nome:'Doppio guasto', zona:'Le Case', codice:'NAVIGLIO', rate:1,
+  brief:'Come prima, ma il tubo buono riempie una cisterna che poi serve la scuola materna (<strong>12 litri</strong>). <strong>Prima</strong> trova il tubo sano, <strong>poi</strong> riempi e svuota.',
   fact:'Isolare un tratto guasto senza fermare tutta la rete e\' possibile grazie alle valvole di settore. Piu\' valvole = meno utenti restano a secco.',
   cmds:['open','close','wait','if'],
-  nodes:{ A:{type:'source',pos:[44,232]}, j1:{type:'junction',pos:[176,232]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[320,340]}, s1:{type:'fixture',name:'materna',pos:[320,120]} },
-  edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'t1',valve:'v2',par:-1}, {id:'p3',from:'j1',to:'t1',valve:'v3',par:1}, {id:'p4',from:'t1',to:'s1',valve:'v4'} ],
+  nodes:{ A:{type:'source',pos:[44,260]}, j1:{type:'junction',pos:[150,260]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[320,346]}, s1:{type:'fixture',name:'materna',pos:[320,120]} },
+  edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'t1',valve:'v2',par:-1,sep:46}, {id:'p3',from:'j1',to:'t1',valve:'v3',par:1,sep:46}, {id:'p4',from:'t1',to:'s1',valve:'v4'} ],
   topo:['A','j1','t1','s1'], scenarios:[{leaks:['p2'],demands:{s1:12}},{leaks:['p3'],demands:{s1:12}}], par:{three:0,two:6}, minEnergy:0,
-  sol:'open v2\nif leak p2\n  close v2\n  open v3\nopen main\nwait 2\nclose main\nclose v2\nclose v3\nopen v4\nwait 2\nclose v4' },
+  sol:'open v2\nif leak p2\n  close v2\n  open v3\nopen main\nwait 12\nclose main\nclose v2\nclose v3\nopen v4\nwait 12\nclose v4' },
 
-{ id:10, nome:'L\'acqua che sale', zona:'La Torre', codice:'SORGENTE', rate:6,
-  brief:'La fontana monumentale e\' in alto, sotto la torre dell\'acquedotto. L\'acqua da sola non risale: riempi il pozzo, poi usa la <strong>pompa</strong> per portarla al serbatoio in quota. <strong>Spegnila</strong> appena finito.',
-  fact:'Le torri dell\'acquedotto danno pressione: l\'acqua pompata in alto ridiscende con forza in tutta la rete. Pompare costa energia, percio\' si pompa una volta sola.',
+{ id:10, nome:'L\'acqua che sale', zona:'La Torre', codice:'SORGENTE', rate:1,
+  brief:'La fontana monumentale e\' in alto, sotto la torre dell\'acquedotto, e vuole <strong>12 litri</strong>. L\'acqua da sola non risale: riempi il pozzo, poi usa la <strong>pompa</strong> (1 litro al minuto, 1 energia al minuto). <strong>Spegnila</strong> appena finito.',
+  fact:'Le torri dell\'acquedotto danno pressione: l\'acqua pompata in alto ridiscende con forza in tutta la rete. Pompare costa energia, percio\' si pompa solo il necessario.',
   cmds:['open','close','wait','pump'],
-  nodes:{ A:{type:'source',pos:[44,210]}, t1:{type:'tank',cap:12,name:'pozzo',pos:[150,400]}, t2:{type:'tank',cap:12,name:'serbatoio',pos:[150,250]}, f1:{type:'fixture',name:'fontana',pos:[330,120]} },
+  nodes:{ A:{type:'source',pos:[44,252]}, t1:{type:'tank',cap:12,name:'pozzo',pos:[150,405]}, t2:{type:'tank',cap:12,name:'serbatoio',pos:[150,250]}, f1:{type:'fixture',name:'fontana',pos:[330,120]} },
   edges:[ {id:'p1',from:'A',to:'t1',valve:'main'}, {id:'p2',from:'t1',to:'t2',pump:'p1'}, {id:'p3',from:'t2',to:'f1',valve:'v1'} ],
-  topo:['A','t1','t2','f1'], scenarios:[{demands:{f1:12}}], par:{three:0,two:6}, minEnergy:2,
-  sol:'open main\nwait 2\nclose main\npump p1 on\nwait 2\npump p1 off\nopen v1\nwait 2\nclose v1' },
+  topo:['A','t1','t2','f1'], scenarios:[{demands:{f1:12}}], par:{three:0,two:6}, minEnergy:12,
+  sol:'open main\nwait 12\nclose main\npump p1 on\nwait 12\npump p1 off\nopen v1\nwait 12\nclose v1' },
 
-{ id:11, nome:'Salita con sorpresa', zona:'La Torre', codice:'ACQUEDOTTO', rate:6,
-  brief:'Stessa salita con la pompa, ma in cima <strong>uno dei due tubi perde</strong>. Sali con la pompa e poi trova il ramo sano con <strong>if leak</strong>.',
+{ id:11, nome:'Salita con sorpresa', zona:'La Torre', codice:'ACQUEDOTTO', rate:1,
+  brief:'Stessa salita con la pompa, ma in cima <strong>uno dei due tubi perde</strong>. Sali con la pompa, trova il ramo sano con <strong>if leak</strong> e porta <strong>12 litri</strong> alla casa.',
   fact:'Una perdita in quota e\' la peggiore: l\'acqua faticosamente pompata se ne va prima di arrivare. Per questo i serbatoi alti si controllano spesso.',
   cmds:['open','close','wait','pump','if'],
-  nodes:{ A:{type:'source',pos:[44,210]}, t1:{type:'tank',cap:12,name:'pozzo',pos:[140,400]}, t2:{type:'tank',cap:12,name:'serbatoio',pos:[140,250]}, j1:{type:'junction',pos:[260,250]}, c1:{type:'fixture',name:'casa',pos:[370,120]} },
+  nodes:{ A:{type:'source',pos:[44,252]}, t1:{type:'tank',cap:12,name:'pozzo',pos:[140,405]}, t2:{type:'tank',cap:12,name:'serbatoio',pos:[140,245]}, j1:{type:'junction',pos:[250,245]}, c1:{type:'fixture',name:'casa',pos:[360,120]} },
   edges:[ {id:'p1',from:'A',to:'t1',valve:'main'}, {id:'p2',from:'t1',to:'t2',pump:'p1'}, {id:'p3',from:'t2',to:'j1',valve:'v1'}, {id:'p4',from:'j1',to:'c1',valve:'v2',par:-1}, {id:'p5',from:'j1',to:'c1',valve:'v3',par:1} ],
-  topo:['A','t1','t2','j1','c1'], scenarios:[{leaks:['p4'],demands:{c1:12}},{leaks:['p5'],demands:{c1:12}}], par:{three:0,two:6}, minEnergy:2,
-  sol:'open main\nwait 2\nclose main\npump p1 on\nwait 2\npump p1 off\nopen v2\nif leak p4\n  close v2\n  open v3\nopen v1\nwait 2\nclose v1\nclose v2\nclose v3' },
+  topo:['A','t1','t2','j1','c1'], scenarios:[{leaks:['p4'],demands:{c1:12}},{leaks:['p5'],demands:{c1:12}}], par:{three:0,two:6}, minEnergy:12,
+  sol:'open main\nwait 12\nclose main\npump p1 on\nwait 12\npump p1 off\nopen v2\nif leak p4\n  close v2\n  open v3\nopen v1\nwait 12\nclose v1\nclose v2\nclose v3' },
 
-{ id:12, nome:'La rete del fontaniere', zona:'La Torre', codice:'COMPLETO', rate:6,
-  brief:'Esame finale. Servi la scuola (6 l) dalla cisterna bassa <strong>e</strong> la fontana (6 l) dal serbatoio alto, evita il tubo in disuso e isola la perdita in quota. Tutto in un solo programma.',
+{ id:12, nome:'La rete del fontaniere', zona:'La Torre', codice:'COMPLETO', rate:1,
+  brief:'Esame finale. Servi la scuola (<strong>6 litri</strong>) dalla cisterna bassa <strong>e</strong> la fontana (<strong>6 litri</strong>) dal serbatoio alto, evita il tubo in disuso e isola la perdita in quota. Tutto in un solo programma.',
   fact:'Governare una rete intera (accumulo, sollevamento, distribuzione e perdite) e\' il mestiere vero del fontaniere. Da oggi sai come ragiona.',
   cmds:['open','close','wait','pump','if'],
-  nodes:{ A:{type:'source',pos:[44,206]}, j1:{type:'junction',pos:[150,206]}, dr:{type:'drain',name:'in disuso',pos:[84,400]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[250,350]}, t2:{type:'tank',cap:12,name:'serbatoio',pos:[250,236]}, j2:{type:'junction',pos:[350,236]}, f1:{type:'fixture',name:'fontana',pos:[424,120]}, s1:{type:'fixture',name:'scuola',pos:[150,120]} },
-  edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'dr',valve:'v1'}, {id:'p3',from:'j1',to:'t1',valve:'v2'}, {id:'p4',from:'t1',to:'t2',pump:'p1'}, {id:'p5',from:'t2',to:'j2',valve:'v3'}, {id:'p6',from:'j2',to:'f1',valve:'v4',par:-1}, {id:'p7',from:'j2',to:'f1',valve:'v5',par:1}, {id:'p8',from:'t1',to:'s1',valve:'v6'} ],
-  topo:['A','j1','dr','t1','t2','j2','f1','s1'], scenarios:[{leaks:['p6'],demands:{f1:6,s1:6}},{leaks:['p7'],demands:{f1:6,s1:6}}], par:{three:0,two:6}, minEnergy:1,
-  sol:'open main\nopen v2\nwait 2\nclose main\nclose v2\npump p1 on\nwait 1\npump p1 off\nopen v6\nwait 1\nclose v6\nopen v4\nif leak p6\n  close v4\n  open v5\nopen v3\nwait 1\nclose v3\nclose v4\nclose v5' }
+  nodes:{ A:{type:'source',pos:[44,248]}, j1:{type:'junction',pos:[110,248]}, dr:{type:'drain',name:'in disuso',pos:[64,408]}, t1:{type:'tank',cap:12,name:'cisterna',pos:[220,390]}, t2:{type:'tank',cap:12,name:'serbatoio',pos:[220,240]}, j2:{type:'junction',pos:[330,240]}, f1:{type:'fixture',name:'fontana',pos:[368,120]}, s1:{type:'fixture',name:'scuola',pos:[150,120]} },
+  edges:[ {id:'p1',from:'A',to:'j1',valve:'main'}, {id:'p2',from:'j1',to:'dr',valve:'v1'}, {id:'p3',from:'j1',to:'t1',valve:'v2'}, {id:'p4',from:'t1',to:'t2',pump:'p1'}, {id:'p5',from:'t2',to:'j2',valve:'v3'}, {id:'p6',from:'j2',to:'f1',valve:'v4',par:-1}, {id:'p7',from:'j2',to:'f1',valve:'v5',par:1}, {id:'p8',from:'t1',to:'s1',valve:'v6',vdir:-1} ],
+  topo:['A','j1','dr','t1','t2','j2','f1','s1'], scenarios:[{leaks:['p6'],demands:{f1:6,s1:6}},{leaks:['p7'],demands:{f1:6,s1:6}}], par:{three:0,two:6}, minEnergy:6,
+  sol:'open main\nopen v2\nwait 12\nclose main\nclose v2\npump p1 on\nwait 6\npump p1 off\nopen v6\nwait 6\nclose v6\nopen v4\nif leak p6\n  close v4\n  open v5\nopen v3\nwait 6\nclose v3\nclose v4\nclose v5' }
 ];
 
 const API = { parseProgram, runProgram, stelle, LEVELS, GROUND:G };
@@ -553,9 +609,36 @@ const LEVELS = F.LEVELS, GROUND = F.GROUND;
 const SVGNS = 'http://www.w3.org/2000/svg';
 
 // === CONFIG ===
-const MUSICA_VIDEO_ID = ''; // <- inserire l'ID YouTube per attivare la musica (toggle altrimenti nascosto)
+// musica di sottofondo: una traccia per livello (playlist "Dov'e' la mia acqua")
+const MUSICHE = ['uQuilLWTaCQ','U3RZ5rK-VnA','uOhwJ8G_GN4','siH7hPIP1Lw','7PCqz6xLtJI','Z2k4xA9s3-c','dLshsicBQWE','ciKOQCNl2TI','VEZ8M3lInVA','wmzOObPJSjY','hlwokoO44E0','b_CztcdBPqU'];
 const CODICI = {2:'FONTANA',3:'POZZO',4:'SERIOLA',5:'ROGGIA',6:'CHIUSA',7:'CISTERNA',8:'SIFONE',9:'CONDOTTA',10:'NAVIGLIO',11:'SORGENTE',12:'ACQUEDOTTO'};
 function codicePerLivello(id){ return CODICI[id] || ('LIV'+id); }
+
+// suggerimenti operativi (stile tutorial): solo per i primi livelli
+const HINTS = {
+ 1:'Ogni minuto scorre 1 litro: per 12 litri aspetta 12 minuti. Prova: <code>open main</code> &rarr; <code>open v1</code> &rarr; <code>wait 12</code> &rarr; <code>close main</code> &rarr; <code>close v1</code>',
+ 2:'La valvola giusta e\' <code>v2</code>: apri quella e poi la mandata <code>main</code>, <code>wait 12</code>, chiudi tutto. <code>v1</code> porta allo scarico: lasciala chiusa.',
+ 3:'Prima la doccia: <code>open main</code> e <code>open v1</code>, <code>wait 12</code>, poi <code>close v1</code>. Poi il lavandino: <code>open v2</code>, <code>wait 6</code>. Alla fine chiudi tutto.',
+ 4:'Due fasi: riempi la cisterna (<code>open main</code>, <code>wait 12</code>, <code>close main</code>), poi svuotala nei lavandini (<code>open v1</code>, <code>wait 12</code>, <code>close v1</code>).'
+};
+// litri richiesti da ogni utenza ('?' se cambiano da scenario a scenario)
+function targetUtenze(lv){
+  const t={};
+  for(const id in lv.nodes){ if(lv.nodes[id].type==='fixture'){
+    let v=null, varia=false;
+    for(const sc of lv.scenarios){ const d=sc.demands[id]; if(v===null) v=d; else if(d!==v) varia=true; }
+    t[id]=varia?'?':v;
+  }}
+  return t;
+}
+function obiettivoHtml(lv){
+  const t=targetUtenze(lv); const parts=[];
+  for(const id in t){
+    const nome=lv.nodes[id].name||id;
+    parts.push('<strong>'+nome+'</strong>: '+(t[id]==='?'?'? litri (scoprilo con il sensore)':t[id]+' litri'));
+  }
+  return '<div class="obiettivo"><svg width="16" height="20" viewBox="0 0 18 22" aria-hidden="true"><path d="M9 1 C9 1 2 11 2 15 a7 7 0 0 0 14 0 C16 11 9 1 9 1 Z" fill="#2D7DD2"/></svg><span><strong>Obiettivo</strong> &mdash; '+parts.join(' &middot; ')+' &middot; zero sprechi</span></div>';
+}
 
 // progressi in memoria (nessun localStorage: Mac di laboratorio condivisi)
 let maxSbloccato = 1;
@@ -583,6 +666,15 @@ function suonoValvola(){ tono(420,0.08,'square',0.12); tono(300,0.10,'square',0.
 function suonoSplash(){ const a=ac(); if(!a) return; for(let i=0;i<6;i++) tono(500+Math.random()*400,0.12,'sine',0.05,a.currentTime+i*0.02); }
 function suonoDrip(){ tono(900,0.10,'sine',0.10); tono(1300,0.08,'sine',0.06,ac()&&ac().currentTime+0.03); }
 function suonoPompa(dur){ const a=ac(); if(!a) return; const o=a.createOscillator(),g=a.createGain(); o.type='sawtooth'; o.frequency.value=70; g.gain.value=0.05; o.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime+(dur||0.6)); }
+function suonoSgorgo(){
+  const a=ac(); if(!a) return;
+  [740,920,1180].forEach((f,i)=>tono(f+Math.random()*60,0.10,'sine',0.07,a.currentTime+i*0.045));
+}
+function suonoDing(){
+  const a=ac(); if(!a) return;
+  tono(1318.5,0.30,'sine',0.16);
+  tono(1760,0.34,'sine',0.10,a.currentTime+0.07);
+}
 function fanfara(){
   const a=ac(); if(!a) return;
   const G=[392.00,440.00,493.88,587.33,783.99]; // Sol pentatonica
@@ -630,32 +722,41 @@ function tubo(x1,y1,x2,y2,wet){
   }
 }
 
-// valvola a volantino: aperta => volantino ruotato + stelo sollevato
-function valvola(x,y,nome,aperta){
+// valvola a volantino: corpo compatto riusabile in due orientamenti
+function valvolaCorpo(aperta){
+  const stelo = aperta? 14 : 6;
   const rot = aperta? 36 : 0;
-  const stelo = aperta? 22 : 8;
-  let g='<g transform="translate('+x+','+y+')">';
-  g+=S('path',{d:'M-12 8 q-4 -30 12 -30 q16 0 12 30 Z',fill:'url(#g_corpo)',stroke:'#0B3019','stroke-width':1});
-  g+=S('ellipse',{cx:0,cy:-15,rx:9,ry:3.5,fill:'#3C9A5E','fill-opacity':0.7});
-  g+=S('rect',{x:-11,y:-42,width:22,height:5,rx:2,fill:'#0E3E23'});
-  g+=S('rect',{x:-8,y:-38,width:16,height:16,rx:2,fill:'url(#g_corpo)',stroke:'#0B3019','stroke-width':0.8});
-  g+=S('rect',{x:-3,y:(-42-stelo),width:6,height:(stelo+6),rx:2,fill:'url(#g_acc)'});
-  g+='<g transform="translate(0,'+(-44-stelo)+') rotate('+rot+')">';
-  g+=S('circle',{cx:0,cy:0,r:18,fill:'none',stroke:'#5A636A','stroke-width':5});
-  g+=S('circle',{cx:0,cy:0,r:18,fill:'none',stroke:'#AEB7BD','stroke-width':2});
-  g+='<g stroke="url(#g_acc)" stroke-width="3.4" stroke-linecap="round">'+
-     S('line',{x1:0,y1:0,x2:0,y2:-16})+S('line',{x1:0,y1:0,x2:15,y2:6})+S('line',{x1:0,y1:0,x2:-15,y2:6})+'</g>';
-  g+=S('circle',{cx:0,cy:0,r:6,fill:'url(#g_hub)',stroke:'#5A636A','stroke-width':1});
-  g+='</g>';
-  g+=S('rect',{x:11,y:-20,width:30,height:13,rx:2,fill:'#0E3E23'});
-  g+=S('text',{x:26,y:-10,'font-family':'Menlo,monospace','font-size':10,fill:'#BFE6CC','text-anchor':'middle','font-weight':600},nome);
+  let g='';
+  g+=S('path',{d:'M-12 8 q-4 -32 12 -32 q16 0 12 32 Z',fill:'url(#g_corpo)',stroke:'#0B3019','stroke-width':1});
+  g+=S('ellipse',{cx:0,cy:-16,rx:9,ry:3.4,fill:'#3C9A5E','fill-opacity':0.7});
+  g+=S('rect',{x:-10,y:-40,width:20,height:5,rx:2,fill:'#0E3E23'});
+  g+=S('rect',{x:-7,y:-36,width:14,height:13,rx:2,fill:'url(#g_corpo)',stroke:'#0B3019','stroke-width':0.8});
+  g+=S('rect',{x:-3,y:(-40-stelo),width:6,height:(stelo+6),rx:2,fill:'url(#g_acc)'});
+  g+='<g transform="translate(0,'+(-42-stelo)+') rotate('+rot+')">';
+  g+=S('circle',{cx:0,cy:0,r:15,fill:'none',stroke:'#5A636A','stroke-width':4.6});
+  g+=S('circle',{cx:0,cy:0,r:15,fill:'none',stroke:'#AEB7BD','stroke-width':1.8});
+  g+='<g stroke="url(#g_acc)" stroke-width="3" stroke-linecap="round">'+
+     S('line',{x1:0,y1:0,x2:0,y2:-13})+S('line',{x1:0,y1:0,x2:12,y2:5})+S('line',{x1:0,y1:0,x2:-12,y2:5})+'</g>';
+  g+=S('circle',{cx:0,cy:0,r:5,fill:'url(#g_hub)',stroke:'#5A636A','stroke-width':1});
   g+='</g>';
   return g;
+}
+function targaValvola(x,y,nome){
+  return S('rect',{x:x-15,y:y-7,width:30,height:13,rx:2,fill:'#0E3E23'})+
+         S('text',{x:x,y:y+3,'font-family':'Menlo,monospace','font-size':10,fill:'#BFE6CC','text-anchor':'middle','font-weight':600},nome);
+}
+// tubo orizzontale: volantino in alto
+function valvola(x,y,nome,aperta){
+  return '<g transform="translate('+x+','+y+')">'+valvolaCorpo(aperta)+'</g>'+targaValvola(x+26,y-13,nome);
+}
+// tubo verticale: volantino di lato (dir +1 destra, -1 sinistra)
+function valvolaLat(x,y,nome,aperta,dir){
+  return '<g transform="translate('+x+','+y+') rotate('+(90*dir)+')">'+valvolaCorpo(aperta)+'</g>'+targaValvola(x-dir*27,y+1,nome);
 }
 
 // pompa centrifuga: on => indicatore ambra + freccia su
 function pompa(x,y,nome,on){
-  let g='<g transform="translate('+x+','+y+')">';
+  let g='<g transform="translate('+x+','+y+') scale(0.92)">';
   g+=S('circle',{cx:0,cy:0,r:30,fill:'url(#g_ghisa)',stroke:'#3E474C','stroke-width':1.5});
   g+=S('circle',{cx:0,cy:0,r:21,fill:'#566066'});
   let pale='';
@@ -724,38 +825,37 @@ function edificio(node){
 }
 function h0(nm){ return 58; }
 
-// torre dell'acquedotto con orologio (solo zona La Torre) - scenografia, angolo dx superficie
+// torre dell'acquedotto con orologio (scenografia, La Torre)
 function torre(minuti){
-  const x=440, baseY=GROUND;
-  const ang=((minuti%12)/12)*2*Math.PI - Math.PI/2;
-  const hx=x+12*Math.cos(ang), hy=(baseY-150)+12*Math.sin(ang);
+  const x=440, b=GROUND;
+  const ang=((minuti%60)/60)*2*Math.PI - Math.PI/2;
+  const hx=x+9*Math.cos(ang), hy=(b-92)+9*Math.sin(ang);
   let g='';
-  g+=S('rect',{x:x-26,y:baseY-128,width:52,height:128,fill:'url(#g_fusto)'});
-  g+='<g fill="#B6A47F" fill-opacity="0.6">'+S('rect',{x:x-26,y:baseY-44,width:52,height:2})+S('rect',{x:x-26,y:baseY-72,width:52,height:2})+'</g>';
-  g+=S('rect',{x:x-14,y:baseY-40,width:14,height:40,rx:6,fill:'#7E6A48'});
-  g+=S('rect',{x:x-11,y:baseY-37,width:8,height:34,rx:4,fill:'#A9CBDD',stroke:'#6E5B3C','stroke-width':1});
-  // serbatoio piezometrico aggettante
-  g+=S('rect',{x:x-38,y:baseY-176,width:76,height:14,rx:3,fill:'url(#g_serb)',stroke:'#A88C5F','stroke-width':1});
-  g+='<g fill="#B79A6E">'+S('rect',{x:x-32,y:baseY-184,width:7,height:8})+S('rect',{x:x-16,y:baseY-184,width:7,height:8})+S('rect',{x:x,y:baseY-184,width:7,height:8})+S('rect',{x:x+16,y:baseY-184,width:7,height:8})+S('rect',{x:x+26,y:baseY-184,width:7,height:8})+'</g>';
-  g+=S('rect',{x:x-40,y:baseY-208,width:80,height:32,rx:7,fill:'url(#g_serb)',stroke:'#A88C5F','stroke-width':1});
-  g+=S('ellipse',{cx:x,cy:baseY-208,rx:40,ry:7,fill:'#E6D8BC',stroke:'#B89E72','stroke-width':1});
-  // orologio
-  g+=S('circle',{cx:x,cy:baseY-150,r:17,fill:'#7E6A48'});
-  g+=S('circle',{cx:x,cy:baseY-150,r:14,fill:'url(#g_vetroOr)',stroke:'#5E4E33','stroke-width':1.5});
-  g+='<g stroke="#3A2F1E" stroke-width="1.2">'+S('line',{x1:x,y1:baseY-162,x2:x,y2:baseY-159})+S('line',{x1:x,y1:baseY-141,x2:x,y2:baseY-138})+S('line',{x1:x-12,y1:baseY-150,x2:x-9,y2:baseY-150})+S('line',{x1:x+12,y1:baseY-150,x2:x+9,y2:baseY-150})+'</g>';
-  g+=S('line',{x1:x,y1:baseY-150,x2:x,y2:baseY-160,stroke:'#2A2118','stroke-width':2,'stroke-linecap':'round'});
-  g+=S('line',{x1:x,y1:baseY-150,x2:hx,y2:hy,stroke:'#2A2118','stroke-width':2,'stroke-linecap':'round'});
-  g+=S('circle',{cx:x,cy:baseY-150,r:2,fill:'#2A2118'});
+  g+=S('rect',{x:x-22,y:b-118,width:44,height:118,fill:'url(#g_fusto)'});
+  g+='<g fill="#B6A47F" fill-opacity="0.6">'+S('rect',{x:x-22,y:b-40,width:44,height:2})+S('rect',{x:x-22,y:b-66,width:44,height:2})+'</g>';
+  g+=S('rect',{x:x-11,y:b-32,width:12,height:32,rx:5,fill:'#7E6A48'});
+  g+=S('rect',{x:x-8,y:b-29,width:6,height:26,rx:3,fill:'#A9CBDD',stroke:'#6E5B3C','stroke-width':1});
+  // serbatoio piezometrico aggettante su mensole
+  g+='<g fill="#B79A6E">'+S('rect',{x:x-26,y:b-126,width:6,height:8})+S('rect',{x:x-12,y:b-126,width:6,height:8})+S('rect',{x:x+6,y:b-126,width:6,height:8})+S('rect',{x:x+20,y:b-126,width:6,height:8})+'</g>';
+  g+=S('rect',{x:x-32,y:b-138,width:64,height:12,rx:3,fill:'url(#g_serb)',stroke:'#A88C5F','stroke-width':1});
+  g+=S('rect',{x:x-34,y:b-162,width:68,height:24,rx:6,fill:'url(#g_serb)',stroke:'#A88C5F','stroke-width':1});
+  g+=S('ellipse',{cx:x,cy:b-162,rx:34,ry:6,fill:'#E6D8BC',stroke:'#B89E72','stroke-width':1});
+  // orologio: la lancetta avanza con i minuti della simulazione
+  g+=S('circle',{cx:x,cy:b-92,r:14,fill:'#7E6A48'});
+  g+=S('circle',{cx:x,cy:b-92,r:11.5,fill:'url(#g_vetroOr)',stroke:'#5E4E33','stroke-width':1.4});
+  g+='<g stroke="#3A2F1E" stroke-width="1">'+S('line',{x1:x,y1:b-102,x2:x,y2:b-99.6})+S('line',{x1:x,y1:b-84.4,x2:x,y2:b-82})+S('line',{x1:x-10,y1:b-92,x2:x-7.6,y2:b-92})+S('line',{x1:x+10,y1:b-92,x2:x+7.6,y2:b-92})+'</g>';
+  g+=S('line',{x1:x,y1:b-92,x2:hx,y2:hy,stroke:'#2A2118','stroke-width':1.8,'stroke-linecap':'round'});
+  g+=S('circle',{cx:x,cy:b-92,r:1.7,fill:'#2A2118'});
   // cupoletta
-  g+=S('rect',{x:x-12,y:baseY-220,width:24,height:12,fill:'#9C8559'});
-  g+=S('polygon',{points:(x-14)+' '+(baseY-220)+' '+(x+14)+' '+(baseY-220)+' '+x+' '+(baseY-238),fill:'#9C5B3F',stroke:'#7E4631','stroke-width':1});
+  g+=S('rect',{x:x-10,y:b-172,width:20,height:10,fill:'#9C8559'});
+  g+=S('polygon',{points:(x-12)+' '+(b-172)+' '+(x+12)+' '+(b-172)+' '+x+' '+(b-187),fill:'#9C5B3F',stroke:'#7E4631','stroke-width':1});
   return g;
 }
 
 // === LAYOUT TUBI (manhattan) ===
 function segmentiEdge(level, e){
   const pf=level.nodes[e.from].pos, pt=level.nodes[e.to].pos;
-  const par=e.par||0, SEP=24;
+  const par=e.par||0, SEP=e.sep||26;
   if(par!==0){
     const mx=pt[0]+par*SEP;
     return [ [pf[0],pf[1], mx,pf[1]], [mx,pf[1], mx,pt[1]], [mx,pt[1], pt[0],pt[1]] ];
@@ -765,13 +865,28 @@ function segmentiEdge(level, e){
   // orizzontale poi verticale
   return [ [pf[0],pf[1], pt[0],pf[1]], [pt[0],pf[1], pt[0],pt[1]] ];
 }
-function puntoValvola(level, e){
+function infoValvola(level, e){
   const segs=segmentiEdge(level,e);
-  // preferisci il segmento verticale piu' lungo, altrimenti il primo
-  let best=segs[0], bl=0;
-  for(const s of segs){ const vert=Math.abs(s[0]-s[2])<1; const len=Math.abs(s[0]-s[2])+Math.abs(s[1]-s[3]); if(vert && len>bl){ best=s; bl=len; } }
-  if(bl===0) best=segs[Math.floor(segs.length/2)];
-  return [ (best[0]+best[2])/2, (best[1]+best[3])/2 ];
+  if(e.par){
+    // ramo parallelo: valvola sul tratto verticale, sfalsata in quota,
+    // volantino verso l'esterno della coppia
+    let v=null, vl=0;
+    for(const s of segs){ if(Math.abs(s[0]-s[2])<1){ const len=Math.abs(s[1]-s[3]); if(len>vl){v=s;vl=len;} } }
+    const yTop=Math.min(v[1],v[3]), yBot=Math.max(v[1],v[3]);
+    const f=(e.par<0)?0.30:0.55;
+    return {x:v[0], y:yTop+(yBot-yTop)*f, vert:true, dir:(e.par<0?-1:1)};
+  }
+  let horiz=null,hl=0,vert=null,vl=0;
+  for(const s of segs){
+    const len=Math.abs(s[0]-s[2])+Math.abs(s[1]-s[3]);
+    if(Math.abs(s[1]-s[3])<1){ if(len>hl){horiz=s;hl=len;} }
+    else { if(len>vl){vert=s;vl=len;} }
+  }
+  // orizzontale solo se c'e' spazio per il volantino sotto il prato
+  const okH = horiz && horiz[1]>=238 && hl>=64 && !(vert && vl>hl*1.6);
+  if(okH) return {x:(horiz[0]+horiz[2])/2, y:horiz[1], vert:false, dir:1};
+  if(vert) return {x:vert[0], y:(vert[1]+vert[3])/2, vert:true, dir:(e.vdir||1)};
+  return {x:(horiz[0]+horiz[2])/2, y:horiz[1], vert:false, dir:1};
 }
 function puntoPompa(level,e){ const pf=level.nodes[e.from].pos, pt=level.nodes[e.to].pos; return [pf[0],(pf[1]+pt[1])/2]; }
 
@@ -784,13 +899,22 @@ function renderStage(level, stato, minutiOrol){
   }
   let svg='<svg viewBox="0 0 480 520" preserveAspectRatio="xMidYMid meet" xmlns="'+SVGNS+'">';
   svg+='<defs>'+defsStage()+'</defs>';
-  // cielo + terreno
+  // cielo, sole, nuvole
   svg+=S('rect',{x:0,y:0,width:480,height:GROUND,fill:'url(#g_cielo)'});
-  svg+=S('ellipse',{cx:120,cy:50,rx:46,ry:15,fill:'#FFFFFF','fill-opacity':0.65});
-  svg+=S('ellipse',{cx:300,cy:38,rx:54,ry:16,fill:'#FFFFFF','fill-opacity':0.5});
+  svg+='<g>'+S('circle',{cx:372,cy:36,r:15,fill:'#F7D154'});
+  for(let r=0;r<8;r++){ const a=r*Math.PI/4; svg+=S('line',{x1:372+19*Math.cos(a),y1:36+19*Math.sin(a),x2:372+26*Math.cos(a),y2:36+26*Math.sin(a),stroke:'#F7D154','stroke-width':2.5,'stroke-linecap':'round'}); }
+  svg+='</g>';
+  svg+=S('ellipse',{cx:120,cy:48,rx:44,ry:14,fill:'#FFFFFF','fill-opacity':0.65});
+  svg+=S('ellipse',{cx:286,cy:36,rx:50,ry:15,fill:'#FFFFFF','fill-opacity':0.5});
+  // prato e sezione di sottosuolo a strati
   svg+=S('rect',{x:0,y:GROUND-6,width:480,height:8,fill:'#5E8C3A'});
   svg+=S('rect',{x:0,y:GROUND+2,width:480,height:520-GROUND,fill:'#4A3824'});
   svg+=S('rect',{x:0,y:GROUND+2,width:480,height:30,fill:'#6B5236'});
+  svg+=S('rect',{x:0,y:462,width:480,height:58,fill:'#3A2C1D'});
+  for(let k=0;k<9;k++){ svg+=S('ellipse',{cx:30+k*54,cy:GROUND+14+(k%3)*7,rx:5,ry:3,fill:'#7E6647','fill-opacity':0.8}); }
+  for(let k=0;k<6;k++){ svg+=S('ellipse',{cx:55+k*80,cy:300+(k%2)*120,rx:7,ry:4,fill:'#5A452C','fill-opacity':0.7}); }
+  // l'apprendista fontaniere
+  svg+=mascotte(62,GROUND);
   // edifici + torre
   let haTorre=false;
   for(const id in level.nodes){ const n=level.nodes[id]; if(n.type==='fixture') svg+=edificio(n); }
@@ -799,6 +923,15 @@ function renderStage(level, stato, minutiOrol){
   for(const e of level.edges){
     const wet = stato.wet && stato.wet.indexOf(e.id)>=0;
     for(const s of segmentiEdge(level,e)) svg+=tubo(s[0],s[1],s[2],s[3],wet);
+  }
+  // corrente direzionale: trattini che scorrono nel verso del flusso
+  for(const e of level.edges){
+    if(stato.wet && stato.wet.indexOf(e.id)>=0){
+      const segs=segmentiEdge(level,e);
+      let d='M'+segs[0][0]+' '+segs[0][1];
+      for(const s of segs) d+=' L'+s[2]+' '+s[3];
+      svg+=S('path',{d:d,fill:'none',stroke:'#D6EEFC','stroke-width':3.4,'stroke-linecap':'round','stroke-dasharray':'7 11',class:'corrente'});
+    }
   }
   // sorgente / scarico / giunzioni
   for(const id in level.nodes){ const n=level.nodes[id], p=n.pos;
@@ -809,20 +942,78 @@ function renderStage(level, stato, minutiOrol){
   // perdite (solo se il tubo e' bagnato e perde, durante il playback)
   for(const e of level.edges){
     const leaking = stato.leaks && stato.leaks.indexOf(e.id)>=0 && stato.wet && stato.wet.indexOf(e.id)>=0;
-    if(leaking){ const pv=puntoValvola(level,e); svg+=goccePerdita(pv[0]+14,pv[1]+6); }
+    if(leaking){ const iv=infoValvola(level,e); svg+=goccePerdita(iv.x+(iv.vert?14:0),iv.y+(iv.vert?22:10)); }
   }
   // tank
   for(const id in level.nodes){ const n=level.nodes[id]; if(n.type==='tank'){ const liv=(stato.tanks&&stato.tanks[id])||0; const cap=(level.scenarios[0].caps&&level.scenarios[0].caps[id])||n.cap; const inc=incTanks[id] && (!stato.tanks); svg+=cisterna(n.pos[0],n.pos[1],id,liv,cap,inc); } }
-  // valvole
-  for(const e of level.edges){ if(e.valve){ const pv=puntoValvola(level,e); const ap=stato.valves&&stato.valves[e.valve]; svg+=valvola(pv[0],pv[1],e.valve,ap); } }
+  // valvole (volantino in alto sui tubi orizzontali, di lato sui verticali)
+  for(const e of level.edges){ if(e.valve){ const iv=infoValvola(level,e); const ap=stato.valves&&stato.valves[e.valve];
+    svg+= iv.vert? valvolaLat(iv.x,iv.y,e.valve,ap,iv.dir) : valvola(iv.x,iv.y,e.valve,ap); } }
   // pompe
   for(const e of level.edges){ if(e.pump){ const pp=puntoPompa(level,e); const on=stato.pumps&&stato.pumps[e.pump]; svg+=pompa(pp[0],pp[1],e.pump,on); } }
+  // badge obiettivo sopra ogni utenza + zampillo quando l'acqua arriva
+  for(const id in level.nodes){ const n=level.nodes[id]; if(n.type!=='fixture') continue;
+    const dem = stato.demands ? stato.demands[id] : null;
+    const del = (stato.delivered && stato.delivered[id]!=null) ? stato.delivered[id] : 0;
+    const ricevendo = stato.wet && level.edges.some(e=>e.to===id && stato.wet.indexOf(e.id)>=0);
+    if(ricevendo) svg+=zampillo(n.pos[0], GROUND-76);
+    if(dem!=null) svg+=badgeUtenza(n.pos[0], 76, dem, del);
+  }
   svg+='</svg>';
   return svg;
+}
+// Luigi, il fontaniere (piedi a terra in x,y): berretto rosso, occhiali, barba
+function mascotte(x,y){
+  let g='<g>';
+  g+=S('rect',{x:x-9,y:y-24,width:7,height:24,rx:3,fill:'#3D5A78'});
+  g+=S('rect',{x:x+2,y:y-24,width:7,height:24,rx:3,fill:'#33506C'});
+  g+=S('rect',{x:x-11,y:y-3,width:10,height:4,rx:2,fill:'#2A2118'});
+  g+=S('rect',{x:x+1,y:y-3,width:10,height:4,rx:2,fill:'#2A2118'});
+  g+=S('rect',{x:x-11,y:y-48,width:22,height:26,rx:6,fill:'#3D6E96'});
+  g+=S('rect',{x:x-3,y:y-48,width:6,height:10,fill:'#F4F7F9'});
+  g+=S('rect',{x:x-16,y:y-47,width:6,height:20,rx:3,fill:'#3D6E96'});
+  g+=S('rect',{x:x+10,y:y-47,width:6,height:20,rx:3,fill:'#3D6E96'});
+  g+=S('circle',{cx:x-13,cy:y-26,r:3.4,fill:'#F2C9A0'});
+  // chiave inglese nella mano destra
+  g+='<g transform="translate('+(x+13)+','+(y-26)+') rotate(34)">'+
+     S('rect',{x:-2,y:-2,width:4,height:16,rx:2,fill:'#9AA4AA'})+
+     S('circle',{cx:0,cy:-4,r:4.6,fill:'#9AA4AA'})+
+     S('rect',{x:-4.5,y:-7.5,width:9,height:5,fill:'#E9F3F7'})+'</g>';
+  g+=S('circle',{cx:x+13,cy:y-26,r:3.4,fill:'#F2C9A0'});
+  // testa: barba, occhiali, berretto rosso
+  g+=S('circle',{cx:x,cy:y-56,r:9,fill:'#F2C9A0'});
+  g+=S('path',{d:'M'+(x-8.5)+' '+(y-55)+' a8.7 8.7 0 0 0 17 0 l-2 -1.6 a7 7 0 0 1 -13 0 Z',fill:'#6B4A2E'});
+  g+=S('path',{d:'M'+(x-5.5)+' '+(y-50)+' a5.5 4.6 0 0 0 11 0 Z',fill:'#6B4A2E'});
+  g+='<g fill="none" stroke="#22303B" stroke-width="1.3">'+
+     S('rect',{x:x-6.4,y:y-59.6,width:5.2,height:4.4,rx:1.2})+
+     S('rect',{x:x+1.2,y:y-59.6,width:5.2,height:4.4,rx:1.2})+
+     S('line',{x1:x-1.2,y1:y-57.6,x2:x+1.2,y2:y-57.6})+'</g>';
+  g+=S('circle',{cx:x-3.8,cy:y-57.4,r:1.1,fill:'#2A2118'});
+  g+=S('circle',{cx:x+3.8,cy:y-57.4,r:1.1,fill:'#2A2118'});
+  g+=S('path',{d:'M'+(x-11)+' '+(y-60)+' a11 11 0 0 1 22 0 Z',fill:'#C4452C'});
+  g+=S('path',{d:'M'+(x-13)+' '+(y-60.5)+' h17 a3 3 0 0 1 3 3 l-4 .8 a2.6 2.6 0 0 0 -2.4 -2 l-13.6 .4 Z',fill:'#A93A24'});
+  g+='</g>';
+  return g;
 }
 function goccePerdita(x,y){
   return '<g class="drip">'+S('path',{d:'M'+x+' '+y+' q-4 5 0 9 q4 -4 0 -9',fill:'#E8A33D'})+
          S('path',{d:'M'+(x+5)+' '+(y+7)+' q-3 4 0 7 q3 -3 0 -7',fill:'#C77B27','fill-opacity':0.85})+'</g>';
+}
+function badgeUtenza(x,y,dem,del){
+  const fatto = dem!=='?' && del>=dem-1e-9 && dem>0;
+  const testo = Math.round(del)+' / '+(dem==='?'?'?':dem)+' l';
+  let g='<g>';
+  g+=S('rect',{x:x-36,y:y-13,width:72,height:23,rx:11.5,fill:(fatto?'#1B6D3F':'#FFFFFF'),stroke:(fatto?'#114B2B':'#8B959B'),'stroke-width':1.4});
+  g+=S('path',{d:'M'+(x-25)+' '+(y-8)+' C '+(x-25)+' '+(y-8)+' '+(x-29.5)+' '+(y-1)+' '+(x-29.5)+' '+(y+1)+' a4.5 4.5 0 0 0 9 0 C '+(x-20.5)+' '+(y-1)+' '+(x-25)+' '+(y-8)+' '+(x-25)+' '+(y-8)+' Z',fill:(fatto?'#9CD0F0':'#2D7DD2')});
+  g+=S('text',{x:x+2,y:y+3.5,'font-family':'Fredoka,sans-serif','font-size':11,'font-weight':600,fill:(fatto?'#FFFFFF':'#24435C'),'text-anchor':'middle'},testo);
+  if(fatto) g+=S('path',{d:'M'+(x+24)+' '+(y-1)+' l3.5 4 l6 -8',fill:'none',stroke:'#BFE6CC','stroke-width':2.4,'stroke-linecap':'round','stroke-linejoin':'round'});
+  g+='</g>'; return g;
+}
+function zampillo(x,y){
+  return '<g class="gush">'+
+   S('path',{d:'M'+x+' '+y+' q-5 6 0 11 q5 -5 0 -11',fill:'#5AB1E8'})+
+   S('path',{d:'M'+(x-9)+' '+(y+4)+' q-4 5 0 9 q4 -4 0 -9',fill:'#2D7DD2','fill-opacity':0.85})+
+   S('path',{d:'M'+(x+9)+' '+(y+4)+' q-4 5 0 9 q4 -4 0 -9',fill:'#2D7DD2','fill-opacity':0.85})+'</g>';
 }
 
 // === DOM refs ===
@@ -868,9 +1059,10 @@ function apriLivello(id){
   livelloCorrente=id;
   const lv=LEVELS[id-1];
   show('#livello');
+  if(musicaOn && tracciaCorrente!==id-1) avviaTraccia(id-1);
   $('#lv-titolo').textContent=id+'. '+lv.nome;
   $('#lv-zona').textContent=lv.zona;
-  $('#lv-brief').innerHTML=lv.brief;
+  $('#lv-brief').innerHTML=obiettivoHtml(lv)+'<div class="parla"><img src="luigi.jpg" alt="Luigi" onerror="this.style.display=\'none\'"><div><span class="nome-luigi">Luigi, il fontaniere</span>'+lv.brief+'</div></div>'+(HINTS[lv.id]?('<div class="hint">'+HINTS[lv.id]+'</div>'):'');
   // palette comandi
   const pal=$('#palette'); pal.innerHTML='<span class="eti-pal">comandi</span>';
   const desc={open:'apri',close:'chiudi',wait:'aspetta',repeat:'ripeti','if':'se',pump:'pompa'};
@@ -881,8 +1073,10 @@ function apriLivello(id){
   telemetria('apri_livello',{id:id});
 }
 function disegnaStatico(lv){
-  const stato={ valves:{}, pumps:{}, tanks:null, wet:[], leaks:[] };
+  const t=targetUtenze(lv); const del={}; for(const k in t) del[k]=0;
+  const stato={ valves:{}, pumps:{}, tanks:null, wet:[], leaks:[], demands:t, delivered:del };
   $('#stage').innerHTML=renderStage(lv, stato, 0);
+  $('#c-minuti').textContent='0';
   $('#c-consegnati').textContent='0';
   $('#c-sprecati').textContent='0';
   const hasPump=lv.edges.some(e=>e.pump);
@@ -922,27 +1116,38 @@ function esegui(){
     const s=dem?F.stelle(lv,st):0;
     if(s<minStelle){ minStelle=s; peggiore={st:st,dem:dem,si:si}; frameSet=ev; }
   }
-  playback(lv, frameSet, ()=>finale(lv, peggiore, minStelle));
+  playback(lv, frameSet, lv.scenarios[peggiore.si].demands, ()=>finale(lv, peggiore, minStelle));
 }
 
-function playback(lv, frames, done){
+function playback(lv, frames, demands, done){
   playing=true; $('#btn-esegui').disabled=true;
-  let i=0; const tot=frames.length;
+  let i=0, minuti=0, consPrec=0;
+  const fatti={};
+  const tot=frames.length;
+  const dur = tot<=18? 620 : (tot<=32? 420 : 300);
   function step(){
     if(i>=tot){ playing=false; $('#btn-esegui').disabled=false; done(); return; }
     const fr=frames[i];
-    const minuti = i; // l'orologio della torre conta i frame/minuti
-    $('#stage').innerHTML=renderStage(lv, fr, minuti);
+    if(!fr.mark) minuti++;
+    $('#stage').innerHTML=renderStage(lv, Object.assign({}, fr, {demands:demands}), minuti);
     // contatori
     let cons=0; for(const k in fr.delivered) cons+=fr.delivered[k];
+    $('#c-minuti').textContent=minuti;
     $('#c-consegnati').textContent=Math.round(cons);
     $('#c-sprecati').textContent=Math.round(fr.waste);
     $('#c-energia').textContent=fr.energy;
-    // suoni
+    // suoni: valvola, sgorgo quando l'acqua arriva, ding a utenza servita
     if(fr.mark==='valve') suonoValvola();
-    else if(fr.wet && fr.wet.length){ if(i%2===0) suonoSplash(); }
-    if(fr.leaks && fr.leaks.some(l=>fr.wet&&fr.wet.indexOf(l)>=0)) { if(i%3===0) suonoDrip(); }
-    i++; setTimeout(step, 680);
+    else {
+      if(cons>consPrec+1e-9 && minuti%2===1) suonoSgorgo();
+      else if(fr.wet && fr.wet.length && minuti%3===1) suonoSplash();
+    }
+    for(const k in demands){
+      if(!fatti[k] && fr.delivered && fr.delivered[k]>=demands[k]-1e-9){ fatti[k]=true; suonoDing(); }
+    }
+    if(fr.leaks && fr.leaks.some(l=>fr.wet&&fr.wet.indexOf(l)>=0)) { if(minuti%3===2) suonoDrip(); }
+    consPrec=cons;
+    i++; setTimeout(step, dur);
   }
   step();
 }
@@ -956,7 +1161,12 @@ function finale(lv, esito, stelle){
     mostraVittoria(lv, stelle, esito.st);
     telemetria('completato',{id:lv.id, stelle:stelle, spreco:Math.round(esito.st.waste)});
   } else {
-    const motivo = !esito.dem ? 'Non tutte le utenze hanno ricevuto l\'acqua richiesta.' : 'C\'e\' ancora spreco da eliminare.';
+    let motivo;
+    if(!esito.dem){
+      const dm=lv.scenarios[esito.si].demands; const mancano=[];
+      for(const k in dm){ const d=esito.st.delivered[k]||0; if(d<dm[k]-1e-9) mancano.push('<strong>'+(lv.nodes[k].name||k)+'</strong>: '+Math.round(d)+' litri su '+dm[k]); }
+      motivo='Manca acqua a '+mancano.join(' e ')+'.';
+    } else motivo='C\'e\' ancora spreco da eliminare.';
     setFeedback('<strong>Quasi!</strong> '+motivo+' Controlla la rete e riprova.', 'ambra');
   }
 }
@@ -969,7 +1179,15 @@ function mostraVittoria(lv, stelle, st){
   const next=lv.id+1;
   const cod = (next<=12)? codicePerLivello(next) : null;
   let consTot=0; for(const k in st.delivered) consTot+=st.delivered[k];
-  let html='<h2>'+lv.nome+'</h2>';
+  let html;
+  if(lv.id>=4 && lv.id<=6){
+    // la story di Luigi dai bagni della Sacra Famiglia: la scuola dei giocatori
+    html='<img src="scuola.jpg" alt="La story di Luigi dalla scuola" class="img-vittoria-story" onerror="this.style.display=\'none\'">';
+  } else {
+    const IMG_ZONA = lv.id===12? '2.jpg' : (lv.id<=3? '6.jpg' : lv.id<=9? '5.jpg' : '4.jpg');
+    html='<img src="'+IMG_ZONA+'" alt="Luigi al lavoro" class="img-vittoria" onerror="this.style.display=\'none\'">';
+  }
+  html+='<h2>'+lv.nome+'</h2>';
   html+='<div class="stelle-box">'+gocce+'</div>';
   html+='<div class="dato-vittoria"><span>Acqua consegnata</span><strong>'+Math.round(consTot)+' litri</strong></div>';
   html+='<div class="dato-vittoria"><span>Acqua sprecata</span><strong>'+Math.round(st.waste)+' litri</strong></div>';
@@ -982,11 +1200,26 @@ function mostraVittoria(lv, stelle, st){
   html+='<button class="btn-sec" id="vit-mappa">Mappa</button>';
   if(next<=12) html+='<button class="btn-big" style="margin-top:0;padding:12px 26px" id="vit-next">Prossima missione</button>';
   html+='</div>';
+  if(lv.id===12) html+='<button class="btn-social" id="vit-social">Il profilo social di Luigi</button>';
   sc.innerHTML=html;
   $('#overlay-vittoria').classList.add('attiva');
   $('#vit-rigioca').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); apriLivello(lv.id); };
   $('#vit-mappa').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); buildMappa(); show('#mappa'); };
   if($('#vit-next')) $('#vit-next').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); apriLivello(next); };
+  if($('#vit-social')) $('#vit-social').onclick=apriSocialLuigi;
+}
+
+// epilogo: il profilo social di Luigi (spunto di cittadinanza digitale)
+function apriSocialLuigi(){
+  $('#scheda-luigi').innerHTML='<h2>Luigi racconta il suo lavoro</h2>'+
+    '<p style="font-size:.9rem">Missione compiuta: la rete di Orzinuovi e\' nelle tue mani. Luigi intanto racconta online il mestiere del fontaniere — guarda <strong>come</strong> lo fa: cosa condivide, cosa promette, come parla ai suoi follower. Ne riparliamo in classe!</p>'+
+    '<div class="social-luigi">'+
+    '<img src="profilo.jpg" alt="Il profilo del fontaniere del parco" onerror="this.style.display=\'none\'">'+
+    '<img src="story.jpg" alt="La storia di Luigi sul risparmio idrico" onerror="this.style.display=\'none\'">'+
+    '</div>'+
+    '<div class="riga-bottoni"><button class="btn-big" style="margin-top:0;padding:10px 24px" id="chiudi-luigi">Chiudi</button></div>';
+  $('#overlay-luigi').classList.add('attiva');
+  $('#chiudi-luigi').onclick=()=>$('#overlay-luigi').classList.remove('attiva');
 }
 
 // === CODICI / DOCENTE ===
@@ -1003,13 +1236,15 @@ function tapGoccia(){
 
 // === GUIDA / INFO DOCENTE ===
 function apriGuida(){
-  $('#scheda-guida').innerHTML=
+  $('#scheda-guida').innerHTML='<img src="3.jpg" alt="Luigi spiega la valvola" class="img-guida" onerror="this.style.display=\'none\'">'+
    '<h2>Come si lavora sotto Orzinuovi</h2>'+
    '<p>Sei un apprendista fontaniere: scrivi un piccolo programma in inglese per far scorrere l\'acqua dall\'acquedotto fino a dove serve, <strong>senza sprecarla</strong>.</p>'+
+   '<h3>La regola d\'oro</h3>'+
+   '<p><strong>1 minuto = 1 litro.</strong> Ogni minuto dall\'acquedotto esce 1 litro d\'acqua: se la fontana vuole 12 litri, l\'acqua deve scorrere per 12 minuti (<code>wait 12</code>).</p>'+
    '<h3>I comandi</h3>'+
-   '<div class="codeblock">open v1      apri la valvola v1\nclose v1     chiudi la valvola v1\nwait 2       lascia scorrere per 2 minuti\nrepeat 3     ripeti 3 volte (rientra di 2 spazi)\n  open v1\nif full t1   se la cisterna t1 e\' piena...\n  close main\npump p1 on   accendi la pompa\npump p1 off  spegnila</div>'+
+   '<div class="codeblock">open v1      apri la valvola v1\nclose v1     chiudi la valvola v1\nwait 12      lascia scorrere 12 minuti (= 12 litri)\nrepeat 3     ripeti 3 volte (rientra di 2 spazi)\n  open v1\nif full t1   se la cisterna t1 e\' piena...\n  close main\npump p1 on   accendi la pompa (1 energia al minuto)\npump p1 off  spegnila</div>'+
    '<h3>Le tre gocce</h3>'+
-   '<p>Ogni minuto con una valvola aperta a vuoto spreca 10 litri. <strong>Tre gocce</strong> = zero litri sprecati. L\'orologio della torre conta i minuti: tienili d\'occhio.</p>'+
+   '<p>Ogni litro che finisce dove non serve e\' sprecato. <strong>Tre gocce</strong> = zero litri sprecati. E ricordati di <strong>chiudere le valvole</strong> alla fine: l\'acqua continua a scorrere per 3 minuti dopo l\'ultimo comando.</p>'+
    '<div class="riga-bottoni"><button class="btn-big" style="margin-top:0;padding:10px 24px" id="chiudi-guida">Ho capito</button></div>';
   $('#overlay-guida').classList.add('attiva');
   $('#chiudi-guida').onclick=()=>$('#overlay-guida').classList.remove('attiva');
@@ -1029,12 +1264,44 @@ function apriInfoDocente(){
   $('#chiudi-docente').onclick=()=>$('#overlay-docente').classList.remove('attiva');
 }
 
-// === MUSICA (YouTube opzionale) ===
+// === MUSICA (una traccia YouTube per livello, toggle on/off) ===
+let musicaOn=false, tracciaCorrente=-1, wrapMusica=null;
+function iconaMusica(on){
+  const c = on? '#1B6D3F' : '#FFFFFF';
+  let s='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">'+
+    '<path d="M6.2 14.2 V4.6 L14 3 v9.4" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<ellipse cx="4.4" cy="14.2" rx="2.1" ry="1.7" fill="'+c+'"/>'+
+    '<ellipse cx="12.2" cy="12.4" rx="2.1" ry="1.7" fill="'+c+'"/>';
+  if(!on) s+='<line x1="2" y1="16" x2="16" y2="2" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';
+  return s+'</svg>';
+}
+function avviaTraccia(n){
+  if(!wrapMusica){
+    wrapMusica=document.createElement('div');
+    wrapMusica.style.cssText='position:fixed;left:-9999px;top:0;width:220px;height:124px;overflow:hidden';
+    document.body.appendChild(wrapMusica);
+  }
+  const id=MUSICHE[((n%MUSICHE.length)+MUSICHE.length)%MUSICHE.length];
+  wrapMusica.innerHTML='<iframe width="220" height="124" src="https://www.youtube.com/embed/'+id+
+    '?rel=0&playsinline=1&enablejsapi=1&autoplay=1&loop=1&playlist='+id+
+    '" frameborder="0" allow="autoplay; encrypted-media"></iframe>';
+  tracciaCorrente=n;
+}
+function fermaMusica(){ if(wrapMusica) wrapMusica.innerHTML=''; tracciaCorrente=-1; }
+function aggiornaBtnMusica(){
+  $$('.btn-musica').forEach(b=>{ b.classList.toggle('on',musicaOn); b.innerHTML=iconaMusica(musicaOn); b.title=musicaOn?'musica: accesa':'musica: spenta'; });
+}
+function toggleMusica(){
+  musicaOn=!musicaOn;
+  if(musicaOn){
+    const schermoLivello=$('#livello').classList.contains('attiva');
+    avviaTraccia(schermoLivello? livelloCorrente-1 : 0);
+  } else fermaMusica();
+  aggiornaBtnMusica();
+}
 function setupMusica(){
-  if(!MUSICA_VIDEO_ID){ $$('.btn-musica').forEach(b=>b.style.display='none'); return; }
-  const wrap=document.createElement('div'); wrap.style.cssText='position:absolute;left:-9999px;width:1px;height:1px';
-  wrap.innerHTML='<iframe id="yt-musica" width="1" height="1" src="https://www.youtube.com/embed/'+MUSICA_VIDEO_ID+'?rel=0&playsinline=1&enablejsapi=1&loop=1&playlist='+MUSICA_VIDEO_ID+'" frameborder="0" allow="autoplay"></iframe>';
-  document.body.appendChild(wrap);
+  $$('.btn-musica').forEach(b=>b.addEventListener('click',toggleMusica));
+  aggiornaBtnMusica();
 }
 
 // === INIT ===
@@ -1046,8 +1313,8 @@ function init(){
   $('#btn-esegui').addEventListener('click',()=>{ ac(); esegui(); });
   $('#btn-reset').addEventListener('click',()=>{ editorEl.value=''; aggiornaNumeri(); setFeedback(''); disegnaStatico(LEVELS[livelloCorrente-1]); });
   $('#btn-guida').addEventListener('click',apriGuida);
-  $('#btn-mappa-da-lv').addEventListener('click',()=>{ buildMappa(); show('#mappa'); });
-  $('#btn-gioca').addEventListener('click',()=>{ ac(); buildMappa(); show('#mappa'); });
+  $('#btn-mappa-da-lv').addEventListener('click',()=>{ buildMappa(); show('#mappa'); if(musicaOn && tracciaCorrente!==0) avviaTraccia(0); });
+  $('#btn-gioca').addEventListener('click',()=>{ ac(); buildMappa(); show('#mappa'); if(musicaOn && tracciaCorrente!==0) avviaTraccia(0); });
   $('#btn-codice').addEventListener('click',provaCodice);
   $('#input-codice').addEventListener('keydown',e=>{ if(e.key==='Enter') provaCodice(); });
   $('#logo-goccia').addEventListener('click',tapGoccia);
