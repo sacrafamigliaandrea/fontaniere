@@ -1430,7 +1430,7 @@ function init(){
   $('#btn-codice').addEventListener('click',provaCodice);
   $('#input-codice').addEventListener('keydown',e=>{ if(e.key==='Enter') provaCodice(); });
   $('#logo-goccia').addEventListener('click',tapGoccia);
-  $('#btn-docente').addEventListener('click',()=>window.open('fontaniere-docenti.html','_blank','noopener'));
+  $('#btn-docente').addEventListener('click',()=>{ location.href='fontaniere-docenti.html'; });
   setupMusica();
   // deep link ?livello=N
   const m=location.search.match(/livello=(\d+)/);
