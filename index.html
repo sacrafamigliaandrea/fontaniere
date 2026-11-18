@@ -2235,7 +2235,9 @@ function setupMusica(){
 // sincronizzati). Generati UNA volta con Microsoft Edge TTS, gratuito e senza chiave:
 //   python3 -m venv ttsenv && ttsenv/bin/pip install edge-tts
 //   voce it-IT-GiuseppeMultilingualNeural, rate -4%. Accenti e parole inglesi vanno
-//   scritti "a orecchio" nel testo da sintetizzare: pèrderne, Òupen, Clóus, Uéit.
+//   accentati nel testo da sintetizzare (pèrderne). Frase 5: i comandi open/close/wait
+//   sono pronunciati dalla voce inglese en-GB-RyanNeural; i pezzi sono uniti con ffmpeg
+//   (taglio dei silenzi, loudnorm I=-17, pause 0,14-0,35 s) in un solo MP3.
 // Per cambiare una frase: rigenerare il relativo MP3 con lo stesso testo di "v".
 // Riserva se gli MP3 non si caricano: Web Speech API con la voce italiana del sistema.
 // t = testo mostrato nel fumetto, v = testo pronunciato (i comandi inglesi sono
