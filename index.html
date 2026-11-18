@@ -208,7 +208,8 @@ body{background:var(--notte)}
 /* --- SPLASH --- */
 #splash{background:linear-gradient(180deg,#7FB9DE 0%,#B9DCEF 36%,#5E8C3A 40%,#4F7C31 41.2%,#6B5236 41.3%,#4A3824 52%,#2B2014 78%,#120D08 100%)}
 .splash-scena{position:absolute;inset:0;width:100%;height:100%}
-.flusso-splash{stroke-dasharray:16 28;animation:scorriS 1.1s linear infinite}
+.flusso-splash{animation:luccica 2.6s ease-in-out infinite}
+@keyframes luccica{50%{opacity:.6}}
 @keyframes scorriS{to{stroke-dashoffset:-44}}
 .ruota-lenta{animation:spin 9s linear infinite;transform-origin:center;transform-box:fill-box}
 .caustiche{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.35;
@@ -270,7 +271,7 @@ body{background:var(--notte)}
 /* --- MAPPA --- */
 #mappa{background:radial-gradient(ellipse at 50% 0%,#17323B 0%,var(--notte) 70%)}
 .mappa-svg-box{border:1px solid rgba(79,179,240,.45);box-shadow:0 0 0 4px rgba(27,109,63,.35),0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(79,179,240,.15)}
-.flusso-mappa{stroke-dasharray:26 44;animation:scorriM 1.4s linear infinite}
+
 @keyframes scorriM{to{stroke-dashoffset:-70}}
 .lv-dot:not(.bloccato):hover circle:nth-of-type(1),.lv-dot.corrente:hover circle{filter:drop-shadow(0 0 22px rgba(79,179,240,.9))}
 .codice-box{background:var(--notte-2);border:1px solid var(--linea)}
@@ -433,7 +434,7 @@ body{background:var(--notte)}
       <g stroke="#4FB3F0" stroke-width="10" opacity=".85" filter="url(#sp-glow)" class="flusso-splash">
         <path d="M-30 520 H520 V700 H1100 V560 H1630"/><path d="M300 520 V820 H900"/><path d="M780 700 V372"/><path d="M1400 560 V372"/>
       </g>
-      <g stroke="#CFF0FF" stroke-width="5" class="flusso-splash">
+      <g stroke="#CFF0FF" stroke-width="5" stroke-opacity=".55" id="splash-condotte">
         <path d="M-30 520 H520 V700 H1100 V560 H1630"/><path d="M300 520 V820 H900"/><path d="M780 700 V372"/><path d="M1400 560 V372"/><path d="M1100 700 V940"/>
       </g>
     </g>
@@ -1098,6 +1099,28 @@ function defsStage(){
 }
 
 // capsule tubo orizzontale/verticale, con acqua opzionale
+// Acqua che scorre: bollicine e riflessi trascinati dalla corrente lungo il path
+// (i trattini sembravano la mezzeria di una strada). SMIL animateMotion.
+// Lo stage viene ridisegnato a ogni frame del playback: la fase (begin negativo)
+// e' calcolata sul tempo globale, cosi' le bolle proseguono senza saltare.
+function bolleFlusso(d,len,o){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return '';
+  o=o||{}; const v=o.v||60, r0=o.r||2, passo=o.passo||24, jit=o.jit||1.5;
+  const dur=Math.max(0.8,len/v), n=Math.max(2,Math.round(len/passo));
+  const t=(performance.now()/1000)%dur; let g='';
+  for(let i=0;i<n;i++){
+    const h=((i*2654435761)>>>0)%1000/1000, h2=((i*40503+17)>>>0)%1000/1000;
+    // fase, quota e grandezza pseudo-casuali: niente file regolare di puntini
+    const h3=((i*7919+101)>>>0)%1000/1000;
+    const r=r0*(0.4+h*h*1.1), off=h3*dur, dj=((h2*2-1)*jit).toFixed(1);
+    const lungo = h>0.6; // qualche riflesso allungato, come luce sull'acqua
+    const forma = lungo
+      ? '<ellipse cx="0" cy="'+dj+'" rx="'+(r*2.6).toFixed(1)+'" ry="'+(r*0.55).toFixed(1)+'" fill="#FFFFFF" fill-opacity=".55"'
+      : '<circle cx="0" cy="'+dj+'" r="'+r.toFixed(1)+'" fill="#EAF7FF" fill-opacity="'+(0.25+h3*0.55).toFixed(2)+'" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="'+(r*0.3).toFixed(2)+'"';
+    g+=forma+'><animateMotion dur="'+dur.toFixed(2)+'s" repeatCount="indefinite" rotate="auto" begin="'+(-(t+off)).toFixed(2)+'s" path="'+d+'"/></'+(lungo?'ellipse':'circle')+'>';
+  }
+  return '<g pointer-events="none">'+g+'</g>';
+}
 function tubo(x1,y1,x2,y2,wet){
   const W=18;
   if(Math.abs(y1-y2)<1){ // orizzontale
@@ -1351,13 +1374,13 @@ function renderStage(level, stato, minutiOrol){
     const wet = stato.wet && stato.wet.indexOf(e.id)>=0;
     for(const s of segmentiEdge(level,e)) svg+=tubo(s[0],s[1],s[2],s[3],wet);
   }
-  // corrente direzionale: trattini che scorrono nel verso del flusso
+  // corrente direzionale: bollicine e riflessi che scorrono nel verso del flusso
   for(const e of level.edges){
     if(stato.wet && stato.wet.indexOf(e.id)>=0){
       const segs=segmentiEdge(level,e);
-      let d='M'+segs[0][0]+' '+segs[0][1];
-      for(const s of segs) d+=' L'+s[2]+' '+s[3];
-      svg+=S('path',{d:d,fill:'none',stroke:'#D6EEFC','stroke-width':3.4,'stroke-linecap':'round','stroke-dasharray':'7 11',class:'corrente'});
+      let d='M'+segs[0][0]+' '+segs[0][1], len=0;
+      for(const s of segs){ d+=' L'+s[2]+' '+s[3]; len+=Math.hypot(s[2]-s[0],s[3]-s[1]); }
+      svg+=bolleFlusso(d,len,{v:58,r:2.1,passo:14,jit:2.4});
     }
   }
   // sorgente / scarico / giunzioni
@@ -1616,7 +1639,8 @@ function buildMappa(){
   svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#586169','stroke-width':30,'stroke-linecap':'round','stroke-opacity':0.85});
   let ultimo=0; for(let i=0;i<12;i++){ if(gocceLivello[LEVELS[i].id]) ultimo=i; }
   if(ultimo>0){ svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#2D7DD2','stroke-width':18,'stroke-linecap':'round'});
-    svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#CFF0FF','stroke-width':7,'stroke-linecap':'round',class:'flusso-mappa'}); }
+    svg+=S('line',{x1:cx(0),y1:cy-3,x2:cx(ultimo),y2:cy-3,stroke:'#8FD0F7','stroke-width':5,'stroke-linecap':'round','stroke-opacity':0.7});
+    svg+=bolleFlusso('M'+cx(0)+' '+cy+' L'+cx(ultimo)+' '+cy,cx(ultimo)-cx(0),{v:150,r:4.5,passo:34,jit:4.5}); }
 
   for(let i=0;i<12;i++){
     const lv=LEVELS[i];
@@ -2210,7 +2234,8 @@ function setupMusica(){
 // Voce principale: MP3 in audio/luigi-intro-N.mp3, una frase per file (sottotitoli
 // sincronizzati). Generati UNA volta con Microsoft Edge TTS, gratuito e senza chiave:
 //   python3 -m venv ttsenv && ttsenv/bin/pip install edge-tts
-//   voce it-IT-GiuseppeMultilingualNeural, rate -4% (legge bene open/close/wait).
+//   voce it-IT-GiuseppeMultilingualNeural, rate -4%. Accenti e parole inglesi vanno
+//   scritti "a orecchio" nel testo da sintetizzare: pèrderne, Òupen, Clóus, Uéit.
 // Per cambiare una frase: rigenerare il relativo MP3 con lo stesso testo di "v".
 // Riserva se gli MP3 non si caricano: Web Speech API con la voce italiana del sistema.
 // t = testo mostrato nel fumetto, v = testo pronunciato (i comandi inglesi sono
@@ -2219,7 +2244,7 @@ function setupMusica(){
 const INTRO_VOCE=[
   {t:'Ciao! Sono <strong>Luigi</strong>, il fontaniere di Orzinuovi.', v:'Ciao! Sono Luigi, il fontaniere di Orzinuovi.'},
   {t:'Sotto le nostre strade corre una rete di tubi, valvole e cisterne: è lì che lavoro ogni giorno.', v:'Sotto le nostre strade corre una rete di tubi, valvole e cisterne: è lì che lavoro ogni giorno.'},
-  {t:'Ho fatto una promessa: <strong>zero sprechi</strong>. L\'acqua deve arrivare dove serve, senza perderne nemmeno una goccia.', v:'Ho fatto una promessa: zero sprechi. L\'acqua deve arrivare dove serve, senza perderne nemmeno una goccia.'},
+  {t:'Ho fatto una promessa: <strong>zero sprechi</strong>. L\'acqua deve arrivare dove serve, senza perderne nemmeno una goccia.', v:'Ho fatto una promessa: zero sprechi. L\'acqua deve arrivare dove serve, senza pèrderne nemmeno una goccia.'},
   {t:'Da solo però non ce la faccio: mi serve un apprendista. Tu!', v:'Da solo però non ce la faccio: mi serve un apprendista. Tu!'},
   {t:'Le valvole non le giri con le mani: le comandi scrivendo, una riga alla volta. <code>open</code> apre, <code>close</code> chiude, <code>wait</code> aspetta che l\'acqua arrivi.', v:'Le valvole non le giri con le mani: le comandi scrivendo, una riga alla volta. Òupen apre, clòus chiude, uèit aspetta che l\'acqua arrivi.'},
   {t:'Quando il programma è pronto premi <strong>Apri l\'acqua</strong> e guarda se funziona. Se qualcosa va storto, nessun problema: correggi e riprova.', v:'Quando il programma è pronto, premi Apri l\'acqua, e guarda se funziona. Se qualcosa va storto, nessun problema: correggi e riprova.'},
@@ -2325,6 +2350,9 @@ function init(){
   $('#btn-docente').addEventListener('click',()=>{ location.href='fontaniere-docenti.html'; });
   setupMusica();
   decoraTestate();
+  // splash: bollicine lungo le condotte (stesse forme dei path disegnati)
+  const sc=$('#splash-condotte');
+  if(sc){ let g=''; sc.querySelectorAll('path').forEach(pth=>{ g+=bolleFlusso(pth.getAttribute('d'),pth.getTotalLength(),{v:170,r:4.4,passo:30,jit:5}); }); sc.insertAdjacentHTML('afterend',g); }
   $('#gb-toggle').addEventListener('click',toggleGuida);
   // deep link ?livello=N
   const m=location.search.match(/livello=(\d+)/);
