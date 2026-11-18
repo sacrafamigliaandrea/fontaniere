@@ -21,7 +21,7 @@
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --verde:#1B6D3F; --verde-scuro:#114B2B; --verde-chiaro:#E4F0E6;
@@ -182,11 +182,270 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   .consegna{font-size:.82rem;padding:8px 12px}
   .cont{min-width:62px;padding:3px 8px}
 }
+
+/* ============================================================
+   RESTYLING 2026-11 — "sala di controllo sotto Orzinuovi"
+   Solo grafica + effetti: il motore di gioco non cambia.
+   Colori sintassi = colori dei chip comando (stesso codice visivo).
+   ============================================================ */
+:root{
+  --notte:#0B1A20; --notte-2:#10242B; --notte-3:#17323B; --linea:#24434D;
+  --luce:#BFE8FF; --acqua-viva:#4FB3F0;
+  --k-valv:#7FD8A6; --k-tempo:#8EC9FF; --k-ctrl:#F2C46D; --k-pompa:#C7B3FF; --k-cond:#F2A65A; --k-num:#FFD58A; --k-id:#E6EEF2;
+  --mono:'JetBrains Mono',Menlo,Consolas,monospace;
+}
+body{background:var(--notte)}
+
+/* --- canvas effetti e transizione "tombino" --- */
+#fx-globale{position:fixed;inset:0;pointer-events:none;z-index:70}
+#iris{position:fixed;inset:0;z-index:80;pointer-events:none;display:none;
+  background:radial-gradient(circle at var(--x,50%) var(--y,50%),#4FB3F0 0,#1B5A9E 22%,#0B1A20 62%)}
+#iris.apri{display:block;animation:irisIn .38s cubic-bezier(.6,0,.9,.5) forwards}
+#iris.chiudi{display:block;animation:irisOut .46s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes irisIn{from{clip-path:circle(0 at var(--x) var(--y))}to{clip-path:circle(150% at var(--x) var(--y))}}
+@keyframes irisOut{from{clip-path:circle(150% at 50% 50%)}to{clip-path:circle(0 at 50% 50%)}}
+
+/* --- SPLASH --- */
+#splash{background:linear-gradient(180deg,#7FB9DE 0%,#B9DCEF 36%,#5E8C3A 40%,#4F7C31 41.2%,#6B5236 41.3%,#4A3824 52%,#2B2014 78%,#120D08 100%)}
+.splash-scena{position:absolute;inset:0;width:100%;height:100%}
+.flusso-splash{stroke-dasharray:16 28;animation:scorriS 1.1s linear infinite}
+@keyframes scorriS{to{stroke-dashoffset:-44}}
+.ruota-lenta{animation:spin 9s linear infinite;transform-origin:center;transform-box:fill-box}
+.caustiche{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.35;
+  background:radial-gradient(ellipse 30% 18% at 20% 70%,rgba(79,179,240,.35),transparent 70%),radial-gradient(ellipse 26% 14% at 80% 82%,rgba(127,216,166,.28),transparent 70%),radial-gradient(ellipse 22% 12% at 55% 60%,rgba(79,179,240,.25),transparent 70%);
+  animation:caustica 9s ease-in-out infinite alternate}
+@keyframes caustica{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,2%) scale(1.08)}100%{transform:translate(3%,-1%) scale(1.02)}}
+#splash .pannello{background:rgba(9,22,28,.76);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(156,202,230,.35);box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.12);animation:emergi .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes emergi{from{opacity:0;transform:translateY(40px) scale(.97)}to{opacity:1;transform:none}}
+#splash h1{background:linear-gradient(100deg,#FFFFFF 0%,#FFFFFF 38%,#9FDBFF 48%,#FFFFFF 58%,#FFFFFF 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35)) drop-shadow(0 0 18px rgba(79,179,240,.35));animation:luccica 4.5s ease-in-out infinite}
+@keyframes luccica{0%,30%{background-position:100% 0}70%,100%{background-position:0 0}}
+#splash .occhiello{letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;color:var(--acqua-viva)}
+.story-tel{animation:galleggia 5s ease-in-out infinite}
+@keyframes galleggia{50%{transform:translateY(-6px) rotate(-.6deg)}}
+.btn-big{position:relative;overflow:hidden;background:linear-gradient(180deg,#24894F,#1B6D3F);box-shadow:0 4px 0 var(--verde-scuro),0 10px 24px rgba(27,109,63,.45)}
+.btn-big::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:riflesso 3.2s ease-in-out infinite}
+@keyframes riflesso{0%,55%{left:-60%}100%{left:130%}}
+#btn-gioca{animation:respira 2.4s ease-in-out infinite}
+.musica-splash{position:absolute;top:16px;right:16px;z-index:5}
+/* --- intro a voce di Luigi (Web Speech API, sottotitoli nel fumetto) --- */
+.riga-avvio{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.riga-avvio .btn-big{margin-top:0}
+.btn-voce{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);color:#EFE7D8;border:1.5px solid rgba(242,140,40,.75);border-radius:999px;padding:10px 18px;font-family:'Fredoka',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s,transform .08s}
+.btn-voce:hover{background:rgba(242,140,40,.18)}
+.btn-voce:active{transform:translateY(2px)}
+.btn-voce .onde{display:inline-flex;align-items:flex-end;gap:2px;height:16px}
+.btn-voce .onde i{display:block;width:3px;height:5px;border-radius:2px;background:#F28C28}
+.btn-voce.attivo{background:rgba(242,140,40,.22)}
+.btn-voce.attivo .onde i{animation:onda .9s ease-in-out infinite}
+.btn-voce.attivo .onde i:nth-child(2){animation-delay:.15s}.btn-voce.attivo .onde i:nth-child(3){animation-delay:.3s}.btn-voce.attivo .onde i:nth-child(4){animation-delay:.45s}
+@keyframes onda{0%,100%{height:4px}50%{height:16px}}
+.splash-luigi.parlando img{animation:luigi-parla .34s ease-in-out infinite alternate;box-shadow:0 0 0 4px rgba(242,140,40,.85),0 0 22px rgba(242,140,40,.6)}
+.splash-luigi.parlando img.botta{transform:translateY(-3px) scale(1.06)}
+@keyframes luigi-parla{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-2px) rotate(2deg)}}
+.splash-luigi .fumetto .sub{display:block;animation:sub-in .35s ease both}
+.splash-luigi .fumetto .sub code{font-family:var(--mono);font-weight:700;color:#1B6D3F;background:#E3F1E8;padding:0 5px;border-radius:5px}
+.splash-luigi .fumetto .avanz{display:flex;gap:4px;margin-top:8px}
+.splash-luigi .fumetto .avanz b{flex:1;height:4px;border-radius:2px;background:#D9E4DD;transition:background .3s}
+.splash-luigi .fumetto .avanz b.ok{background:#1B6D3F}.splash-luigi .fumetto .avanz b.ora{background:#F28C28}
+@keyframes sub-in{from{opacity:0;transform:translateY(4px)}}
+@keyframes respira{50%{box-shadow:0 4px 0 var(--verde-scuro),0 0 0 10px rgba(79,179,240,.12),0 10px 30px rgba(79,179,240,.45)}}
+
+/* --- intestazioni --- */
+.testa,.lv-testa{background:linear-gradient(100deg,#0A3A1F 0%,#14532F 38%,#1B6D3F 72%,#17603A 100%);position:relative;z-index:2;overflow:hidden;box-shadow:0 2px 0 #0A3A1F}
+.testa>*:not(.deco-tech),.lv-testa>*:not(.deco-tech){position:relative;z-index:1}
+/* inserti tecnologici arancioni: binario dati sul bordo, scansione, piste di circuito */
+.testa::after,.lv-testa::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;z-index:1;
+  background:repeating-linear-gradient(90deg,#F28C28 0 26px,transparent 26px 38px,#F28C28 38px 44px,transparent 44px 80px);background-size:80px 100%;animation:dati 1.6s linear infinite}
+@keyframes dati{to{background-position:80px 0}}
+.testa::before,.lv-testa::before{content:'';position:absolute;top:0;bottom:0;width:140px;left:-160px;z-index:0;background:linear-gradient(90deg,transparent,rgba(242,140,40,.26),transparent);transform:skewX(-18deg);animation:scansione 6s ease-in-out infinite}
+@keyframes scansione{0%{left:-160px}55%,100%{left:105%}}
+.deco-tech{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.cont{position:relative}
+.cont::before,.cont::after{content:'';position:absolute;width:8px;height:8px;border:2px solid #F28C28}
+.cont::before{left:-1px;top:-1px;border-right:0;border-bottom:0;border-radius:4px 0 0 0}
+.cont::after{right:-1px;bottom:-1px;border-left:0;border-top:0;border-radius:0 0 4px 0}
+.btn-musica.btn-suoni.on{background:#F28C28;border-color:#F28C28}
+#logo-goccia{filter:drop-shadow(0 0 6px rgba(191,232,255,.7))}
+
+/* --- MAPPA --- */
+#mappa{background:radial-gradient(ellipse at 50% 0%,#17323B 0%,var(--notte) 70%)}
+.mappa-svg-box{border:1px solid rgba(79,179,240,.45);box-shadow:0 0 0 4px rgba(27,109,63,.35),0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(79,179,240,.15)}
+.flusso-mappa{stroke-dasharray:26 44;animation:scorriM 1.4s linear infinite}
+@keyframes scorriM{to{stroke-dashoffset:-70}}
+.lv-dot:not(.bloccato):hover circle:nth-of-type(1),.lv-dot.corrente:hover circle{filter:drop-shadow(0 0 22px rgba(79,179,240,.9))}
+.codice-box{background:var(--notte-2);border:1px solid var(--linea)}
+.codice-box input{color:#E6EEF2;letter-spacing:.12em}
+.codice-box input::placeholder{color:#5F7F89;letter-spacing:.04em}
+
+/* --- LIVELLO: colonna scena --- */
+#livello{background:var(--notte)}
+.colonna-stage{border-right:1px solid var(--linea)}
+.consegna{background:linear-gradient(180deg,#EEF6F0,#E4F0E6)}
+.stage-box{background:#E9F3F7}
+#fx-stage{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.stage-box.trema{animation:trema .35s linear}
+@keyframes trema{20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+
+/* --- contatori --- */
+.cont{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.12);border-radius:12px;transition:background .3s}
+.cont .num{font-variant-numeric:tabular-nums;display:inline-block}
+.cont .num.pop{animation:pop .32s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{40%{transform:scale(1.35)}}
+.cont.spreco.allarme{background:rgba(199,123,39,.45);border-color:#F2A65A;animation:allarme .5s ease-out}
+@keyframes allarme{0%{box-shadow:0 0 0 0 rgba(242,166,90,.8)}100%{box-shadow:0 0 0 12px rgba(242,166,90,0)}}
+
+/* --- LIVELLO: console del codice --- */
+.colonna-codice{background:var(--notte)}
+.palette{background:var(--notte-2);border-bottom:1px solid var(--linea);padding:10px 12px}
+.eti-pal{color:#6F939D}
+.chip-cmd{background:var(--notte-3);border:1px solid var(--linea);border-bottom-width:3px;color:var(--k-id);font-family:var(--mono);font-weight:700;padding:5px 12px;border-radius:9px;transition:transform .08s,box-shadow .2s}
+.chip-cmd:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.35)}
+.chip-cmd:active{transform:translateY(1px);border-bottom-width:1px;background:var(--notte-3)}
+.chip-cmd.k-open,.chip-cmd.k-close{color:var(--k-valv);border-color:rgba(127,216,166,.45)}
+.chip-cmd.k-wait{color:var(--k-tempo);border-color:rgba(142,201,255,.45)}
+.chip-cmd.k-repeat,.chip-cmd.k-if{color:var(--k-ctrl);border-color:rgba(242,196,109,.5)}
+.chip-cmd.k-pump{color:var(--k-pompa);border-color:rgba(199,179,255,.5)}
+.chip-cmd.nuovo{background:var(--notte-3);position:relative}
+.chip-cmd.nuovo::after{content:'nuovo';position:absolute;top:-8px;right:-6px;font-family:'Fredoka',sans-serif;font-size:.58rem;font-weight:600;background:var(--ambra);color:#fff;padding:1px 5px;border-radius:6px;letter-spacing:.04em}
+.editor-area{background:var(--notte)}
+.numeri{background:#081317;color:#3E5A63;font-family:var(--mono);font-size:1rem;line-height:1.55;padding:12px 8px 12px 0;min-width:42px;border-right:1px solid var(--linea);white-space:normal}
+.numeri div{height:1.55em}
+.numeri div.esegue{color:var(--luce);font-weight:700}
+.numeri div.errore{color:var(--k-cond);font-weight:700}
+.editor-wrap{position:relative;flex:1;min-width:0}
+#evid,#codice{position:absolute;inset:0;margin:0;font-family:var(--mono);font-size:1rem;line-height:1.55;padding:12px 14px;white-space:pre;tab-size:2;border:none;letter-spacing:0}
+#evid{color:var(--k-id);overflow:hidden;pointer-events:none}
+#evid .r{height:1.55em;margin:0 -14px;padding:0 14px;border-left:3px solid transparent;transition:background .15s}
+#evid .r.esegue{background:linear-gradient(90deg,rgba(79,179,240,.28),rgba(79,179,240,.06));border-left-color:var(--acqua-viva);box-shadow:inset 0 0 18px rgba(79,179,240,.15)}
+#evid .r.errore{background:rgba(242,166,90,.18);border-left-color:var(--k-cond);animation:errLinea .5s ease-out}
+@keyframes errLinea{0%{background:rgba(242,166,90,.55)}}
+#codice{background:transparent;color:transparent;caret-color:var(--k-valv);z-index:1;overflow:auto}
+#codice::placeholder{color:#4F6A73}
+#codice::selection{background:rgba(127,216,166,.25);color:transparent}
+.t-valv{color:var(--k-valv);font-weight:700}.t-tempo{color:var(--k-tempo);font-weight:700}.t-ctrl{color:var(--k-ctrl);font-weight:700}
+.t-pompa{color:var(--k-pompa);font-weight:700}.t-cond{color:var(--k-cond)}.t-num{color:var(--k-num)}
+.t-ignoto{text-decoration:underline wavy var(--k-cond);text-underline-offset:4px}
+.barra-azioni{background:var(--notte-2);border-top:1px solid var(--linea)}
+.btn-sec{background:transparent;border:1px solid var(--linea);color:#CFE1E7}
+.btn-sec:hover{background:var(--notte-3);border-color:#3A6470}
+.scheda .btn-sec{background:#fff;border:2px solid var(--bordo);color:var(--inchiostro)}
+.scheda .btn-sec:hover{background:var(--verde-chiaro);border-color:var(--verde)}
+.mappa-corpo{justify-content:center}
+.btn-esegui{position:relative;overflow:hidden;--prog:0;background:linear-gradient(90deg,#4FB3F0 calc(var(--prog)*100%),#2D7DD2 calc(var(--prog)*100%));box-shadow:0 3px 0 var(--acqua-scura),0 0 22px rgba(79,179,240,.35)}
+.btn-esegui[disabled]{opacity:1;box-shadow:0 0 22px rgba(79,179,240,.5)}
+.feedback{border-top:1px solid var(--linea)}
+.feedback.ambra{background:#2A2112;color:#F5D7A1;border-top-color:var(--ambra)}
+.feedback.ambra strong{color:#FFE2A8}
+.feedback.verde{background:#0F2A1C;color:#BFE6CC;border-top-color:var(--verde)}
+.editor-area.scossa{animation:trema .35s linear}
+
+/* --- schede (overlay) --- */
+.overlay{background:rgba(6,16,20,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.overlay.attiva .scheda{animation:schedaIn .45s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes schedaIn{from{opacity:0;transform:translateY(30px) scale(.94)}}
+.scheda{border:none;box-shadow:0 0 0 3px var(--verde),0 30px 80px rgba(0,0,0,.55)}
+.stelle-box svg{animation:goccia-in .55s cubic-bezier(.3,1.7,.5,1) both}
+.stelle-box svg:nth-child(1){animation-delay:.25s}.stelle-box svg:nth-child(2){animation-delay:.45s}.stelle-box svg:nth-child(3){animation-delay:.65s}
+@keyframes goccia-in{from{opacity:0;transform:translateY(-40px) scale(.3)}}
+.codice-vittoria{background:linear-gradient(135deg,#0E3E23,#1B6D3F 60%,#1F5E6E);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.codice-vittoria .parola span{display:inline-block;animation:lettera .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes lettera{from{opacity:0;transform:rotateX(90deg) translateY(-10px)}}
+.img-vittoria,.img-vittoria-story{animation:galleggia 4s ease-in-out infinite}
+
+/* --- Luigi vivo (livello persistente sopra lo schema) --- */
+#stage-vivo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.l-corpo{animation:respiro 2.8s ease-in-out infinite}
+@keyframes respiro{50%{transform:translateY(-1.2px)}}
+.l-occhi{transform-box:fill-box;transform-origin:center;animation:ammicca 4.2s infinite}
+@keyframes ammicca{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.l-braccio{transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.luigi.lavora .l-braccio{animation:avvita .45s ease-in-out infinite alternate}
+@keyframes avvita{from{transform:rotate(-10deg)}to{transform:rotate(-65deg)}}
+.luigi.festa .l-corpo{animation:salto .32s ease-in-out infinite alternate}
+@keyframes salto{to{transform:translateY(-8px)}}
+.luigi.festa .l-braccio{transform:rotate(-155deg)}
+.luigi.indica .l-braccio{transform:rotate(-100deg)}
+.l-sudore{opacity:0}
+.luigi.allarme .l-sudore{animation:sudore .7s ease-in infinite}
+@keyframes sudore{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(9px)}}
+.lfum{animation:fumIn .35s cubic-bezier(.3,1.6,.5,1) both;transform-box:fill-box;transform-origin:30% 100%}
+@keyframes fumIn{from{opacity:0;transform:scale(.4)}}
+
+/* --- guida passo-passo (scaffolding) --- */
+.guida-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:linear-gradient(90deg,rgba(242,140,40,.14),rgba(242,140,40,.03));border-bottom:1px solid var(--linea);border-left:4px solid #F28C28;min-height:46px}
+.guida-bar.spenta{border-left-color:var(--linea);background:var(--notte-2)}
+.gb-ico{flex:none;width:28px;height:28px;border-radius:50%;background:#F28C28;display:grid;place-items:center;box-shadow:0 0 0 0 rgba(242,140,40,.6);animation:gbPulse 1.6s infinite}
+.guida-bar.spenta .gb-ico{background:var(--notte-3);animation:none}
+@keyframes gbPulse{70%{box-shadow:0 0 0 10px rgba(242,140,40,0)}}
+.gb-main{flex:1;min-width:0}
+.gb-testo{color:#F7E3CC;font-size:.88rem;line-height:1.35}
+.gb-testo strong{color:#FFB15C;font-family:'Fredoka',sans-serif}
+.gb-testo code{font-family:var(--mono);background:#0B1A20;border:1px solid #F28C28;color:#FFD3A3;border-radius:5px;padding:0 6px;font-weight:700}
+.guida-bar.spenta .gb-testo{color:#8FB0BA}
+.gb-passi{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.gb-passi i{width:14px;height:6px;border-radius:3px;background:#24434D;display:block}
+.gb-passi i.ok{background:#7FD8A6}
+.gb-passi i.ora{background:#F28C28;animation:lampo 1s ease-in-out infinite}
+@keyframes lampo{50%{opacity:.35}}
+.gb-toggle{flex:none;background:transparent;border:1px solid #F28C28;color:#FFB15C;border-radius:999px;padding:5px 12px;font-size:.8rem;font-weight:600}
+.gb-toggle:hover{background:rgba(242,140,40,.15)}
+.chip-cmd.guida{border-color:#F28C28!important;animation:chipGuida 1s ease-in-out infinite}
+@keyframes chipGuida{50%{box-shadow:0 0 0 4px rgba(242,140,40,.35),0 0 18px rgba(242,140,40,.65);transform:translateY(-2px)}}
+.btn-esegui.guida-pulse{animation:esegPulse 1s ease-in-out infinite}
+@keyframes esegPulse{50%{box-shadow:0 3px 0 var(--acqua-scura),0 0 0 6px rgba(242,140,40,.45),0 0 26px rgba(242,140,40,.7)}}
+.numeri div.prossima{color:#F28C28;font-weight:700;animation:lampo 1s ease-in-out infinite}
+.numeri div.prossima::after{content:'';display:inline-block;margin-left:3px;border-left:6px solid #F28C28;border-top:5px solid transparent;border-bottom:5px solid transparent;vertical-align:middle}
+.numeri div.devia{color:#F28C28}
+#evid .r.slot{background:rgba(242,140,40,.07);border-left:3px dashed rgba(242,140,40,.7)}
+#evid .ghost{color:#F28C28;opacity:.6}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important}
+}
 </style>
 </head>
 <body>
 
 <div class="screen attiva" id="splash">
+  <button class="btn-musica musica-splash" aria-label="musica on/off" title="musica"></button>
+  <!-- scenografia: skyline della Bassa + rete sotterranea con acqua che scorre -->
+  <svg class="splash-scena" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <filter id="sp-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+      <linearGradient id="sp-tubo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9AA4AA"/><stop offset=".35" stop-color="#DCE3E7"/><stop offset="1" stop-color="#5F696F"/></linearGradient>
+    </defs>
+    <g fill="#2F5A47" opacity=".38">
+      <rect x="80" y="300" width="90" height="64"/><polygon points="72,300 178,300 125,268"/>
+      <rect x="190" y="282" width="70" height="82"/><polygon points="184,282 266,282 225,256"/>
+      <rect x="300" y="210" width="34" height="154"/><polygon points="294,210 340,210 317,176"/>
+      <rect x="1180" y="232" width="120" height="132"/><rect x="1180" y="214" width="16" height="20"/><rect x="1212" y="214" width="16" height="20"/><rect x="1244" y="214" width="16" height="20"/><rect x="1276" y="214" width="16" height="20"/>
+      <rect x="1330" y="292" width="96" height="72"/><polygon points="1322,292 1434,292 1378,262"/>
+      <rect x="1450" y="190" width="40" height="174"/><rect x="1436" y="168" width="68" height="26" rx="6"/><polygon points="1460,168 1480,168 1470,146"/>
+    </g>
+    <g fill="#7E6647" opacity=".55"><ellipse cx="140" cy="430" rx="10" ry="5"/><ellipse cx="640" cy="470" rx="12" ry="6"/><ellipse cx="1320" cy="445" rx="9" ry="5"/><ellipse cx="980" cy="800" rx="14" ry="7"/><ellipse cx="220" cy="760" rx="12" ry="6"/></g>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <g stroke="url(#sp-tubo)" stroke-width="30">
+        <path d="M-30 520 H520 V700 H1100 V560 H1630"/><path d="M300 520 V820 H900"/><path d="M1100 700 V940"/><path d="M780 372 V700"/><path d="M1400 560 V372"/>
+      </g>
+      <g stroke="#3F4A50" stroke-width="30" opacity=".25" transform="translate(0,6)">
+        <path d="M-30 520 H520 V700 H1100 V560 H1630"/>
+      </g>
+      <g stroke="#4FB3F0" stroke-width="10" opacity=".85" filter="url(#sp-glow)" class="flusso-splash">
+        <path d="M-30 520 H520 V700 H1100 V560 H1630"/><path d="M300 520 V820 H900"/><path d="M780 700 V372"/><path d="M1400 560 V372"/>
+      </g>
+      <g stroke="#CFF0FF" stroke-width="5" class="flusso-splash">
+        <path d="M-30 520 H520 V700 H1100 V560 H1630"/><path d="M300 520 V820 H900"/><path d="M780 700 V372"/><path d="M1400 560 V372"/><path d="M1100 700 V940"/>
+      </g>
+    </g>
+    <g>
+      <circle cx="520" cy="520" r="15" fill="#6E777D" stroke="#3E474C" stroke-width="2"/>
+      <circle cx="1100" cy="700" r="15" fill="#6E777D" stroke="#3E474C" stroke-width="2"/>
+      <circle cx="300" cy="700" r="15" fill="#6E777D" stroke="#3E474C" stroke-width="2"/>
+      <g class="ruota-lenta"><circle cx="780" cy="610" r="34" fill="none" stroke="#1B6D3F" stroke-width="9"/><path d="M780 576 V644 M746 610 H814" stroke="#1B6D3F" stroke-width="7"/><circle cx="780" cy="610" r="8" fill="#DCE3E7"/></g>
+      <g class="ruota-lenta" style="animation-direction:reverse"><circle cx="1400" cy="470" r="26" fill="none" stroke="#1B6D3F" stroke-width="8"/><path d="M1400 444 V496 M1374 470 H1426" stroke="#1B6D3F" stroke-width="6"/><circle cx="1400" cy="470" r="6" fill="#DCE3E7"/></g>
+    </g>
+  </svg>
+  <div class="caustiche"></div>
   <div class="pannello">
     <div class="colonna-story">
       <img src="story.jpg" alt="La story di Luigi: in pianificazione, con zero sprechi d'acqua" class="story-tel" onerror="this.closest('.pannello').classList.add('senza-story');this.parentNode.style.display='none'">
@@ -196,11 +455,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
       <div class="occhiello">trilogia del coding · gioco 3</div>
       <h1>Il Fontaniere</h1>
       <p>Sotto Orzinuovi scorre l'acqua: la governi scrivendo comandi, una valvola alla volta.</p>
-      <div class="splash-luigi">
+      <div class="splash-luigi" id="splash-luigi">
         <img src="luigi.jpg" alt="Luigi, il fontaniere" onerror="this.parentNode.style.display='none'">
-        <div class="fumetto">«L'hai vista la mia story? <strong>Zero sprechi</strong> è una promessa — ma da solo non ce la faccio. Mi serve un apprendista in gamba: scendi con me nel sottosuolo!»</div>
+        <div class="fumetto" id="fumetto-splash">«L'hai vista la mia story? <strong>Zero sprechi</strong> è una promessa — ma da solo non ce la faccio. Mi serve un apprendista in gamba: scendi con me nel sottosuolo!»</div>
       </div>
-      <button class="btn-big" id="btn-gioca">Scendi nel sottosuolo</button>
+      <div class="riga-avvio">
+        <button class="btn-big" id="btn-gioca">Scendi nel sottosuolo</button>
+        <button class="btn-voce" id="btn-voce" type="button" title="Luigi ti spiega il gioco a voce"><span class="onde"><i></i><i></i><i></i><i></i></span><span id="btn-voce-txt">Ascolta Luigi</span></button>
+      </div>
     </div>
     <div class="splash-foot">
       <img src="logo_petrolio.jpg" alt="Scuola Sacra Famiglia" onerror="this.style.display='none'">
@@ -215,6 +477,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
     <h1>La rete di Orzinuovi</h1>
     <span class="badge-docente" id="badge-docente">modalità docente</span>
     <span class="spazio"></span>
+    <button class="btn-musica btn-suoni on" aria-label="effetti sonori on/off" title="effetti sonori"></button>
     <button class="btn-musica" aria-label="musica on/off" title="musica"></button>
     <button class="btn-testa" id="btn-docente">Per il docente</button>
   </div>
@@ -241,18 +504,23 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
       <div class="cont spreco"><div class="num" id="c-sprecati">0</div><div class="eti">sprecati</div></div>
       <div class="cont energia" id="cont-energia"><div class="num" id="c-energia">0</div><div class="eti">energia</div></div>
     </div>
+    <button class="btn-musica btn-suoni on" aria-label="effetti sonori on/off" title="effetti sonori"></button>
     <button class="btn-musica" aria-label="musica on/off" title="musica"></button>
   </div>
   <div class="lv-corpo">
     <div class="colonna-stage">
       <div class="consegna" id="lv-brief">—</div>
-      <div class="stage-box" id="stage"></div>
+      <div class="stage-box"><div id="stage" style="position:absolute;inset:0;display:flex"></div><svg id="stage-vivo" viewBox="0 0 480 465" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg><canvas id="fx-stage"></canvas></div>
     </div>
     <div class="colonna-codice">
       <div class="palette" id="palette"></div>
+      <div class="guida-bar spenta" id="guida-bar"><div class="gb-ico"><svg width="14" height="17" viewBox="0 0 18 22" aria-hidden="true"><path d="M9 1 C9 1 2 11 2 15 a7 7 0 0 0 14 0 C16 11 9 1 9 1 Z" fill="#fff"/></svg></div><div class="gb-main"><div class="gb-testo" id="gb-testo"></div><div class="gb-passi" id="gb-passi"></div></div><button class="gb-toggle" id="gb-toggle">Guida</button></div>
       <div class="editor-area">
         <div class="numeri" id="numeri">1</div>
+        <div class="editor-wrap">
+        <pre id="evid" aria-hidden="true"></pre>
         <textarea id="codice" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="scrivi qui i comandi..."></textarea>
+        </div>
       </div>
       <div id="feedback" class="feedback"></div>
       <div class="barra-azioni">
@@ -269,6 +537,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <div class="overlay" id="overlay-vittoria"><div class="scheda" id="scheda-vittoria"></div></div>
 <div class="overlay" id="overlay-guida"><div class="scheda" id="scheda-guida"></div></div>
 <div class="overlay" id="overlay-luigi"><div class="scheda" id="scheda-luigi"></div></div>
+<canvas id="fx-globale" aria-hidden="true"></canvas>
+<div id="iris" aria-hidden="true"></div>
 
 <script>
 // ============================================================
@@ -464,7 +734,7 @@ function runProgram(level, prog, scen, events){
         case 'open': case 'close':
           checkId(level, s.id, ['valve'], s.line);
           st.valves[s.id] = (s.type==='open');
-          if(events) events.push({mark:'valve', id:s.id, open:s.type==='open',
+          if(events) events.push({mark:'valve', id:s.id, open:s.type==='open', line:s.line,
             valves:Object.assign({},st.valves), pumps:Object.assign({},st.pumps),
             tanks:Object.assign({},st.tanks), delivered:Object.assign({},st.delivered),
             wet:[], waste:st.waste, energy:st.energy, leaks:Array.from(st.leaks)});
@@ -474,7 +744,8 @@ function runProgram(level, prog, scen, events){
           st.pumps[s.id] = s.on;
           break;
         case 'wait':
-          for(let i=0;i<s.n;i++){ tick(level, st, events); if(++totalTicks>500) throw err(s.line,'troppo tempo: il programma supera i 500 minuti'); }
+          // .line sul frame: serve solo alla UI per illuminare la riga in esecuzione
+          for(let i=0;i<s.n;i++){ tick(level, st, events); if(events&&events.length) events[events.length-1].line=s.line; if(++totalTicks>500) throw err(s.line,'troppo tempo: il programma supera i 500 minuti'); }
           break;
         case 'repeat': for(let i=0;i<s.n;i++) exec(s.body); break;
         case 'if': {
@@ -630,7 +901,6 @@ const SVGNS = 'http://www.w3.org/2000/svg';
 
 // === CONFIG ===
 // musica di sottofondo: una traccia per livello (playlist "Dov'e' la mia acqua")
-const MUSICHE = ['uQuilLWTaCQ','U3RZ5rK-VnA','uOhwJ8G_GN4','siH7hPIP1Lw','7PCqz6xLtJI','Z2k4xA9s3-c','dLshsicBQWE','ciKOQCNl2TI','VEZ8M3lInVA','wmzOObPJSjY','hlwokoO44E0','b_CztcdBPqU'];
 const CODICI = {2:'FONTANA',3:'POZZO',4:'SERIOLA',5:'ROGGIA',6:'CHIUSA',7:'CISTERNA',8:'SIFONE',9:'CONDOTTA',10:'NAVIGLIO',11:'SORGENTE',12:'ACQUEDOTTO'};
 function codicePerLivello(id){ return CODICI[id] || ('LIV'+id); }
 
@@ -695,7 +965,14 @@ function telemetria(evento, dati){ /* es: new Image().src = ENDPOINT+'?e='+event
 
 // === AUDIO (Web Audio sintetizzato) ===
 let AC=null;
-function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(AC && AC.state==='suspended') AC.resume(); return AC; }
+// bus master: compressore + volume generale (toggle "effetti sonori")
+let suoniOn=true, MASTER=null;
+function master(){
+  const a=ac(); if(!a) return null;
+  if(!MASTER){ const comp=a.createDynamicsCompressor(); MASTER=a.createGain(); MASTER.gain.value=suoniOn?0.9:0; MASTER.connect(comp); comp.connect(a.destination); }
+  return MASTER;
+}
 function tono(freq, dur, tipo, vol, t0){
   const a=ac(); if(!a) return;
   const o=a.createOscillator(), g=a.createGain();
@@ -704,12 +981,12 @@ function tono(freq, dur, tipo, vol, t0){
   g.gain.setValueAtTime(0.0001,t);
   g.gain.exponentialRampToValueAtTime(vol||0.2,t+0.01);
   g.gain.exponentialRampToValueAtTime(0.0001,t+(dur||0.2));
-  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+(dur||0.2)+0.02);
+  o.connect(g); g.connect(master()); o.start(t); o.stop(t+(dur||0.2)+0.02);
 }
 function suonoValvola(){ tono(420,0.08,'square',0.12); tono(300,0.10,'square',0.08,ac()&&ac().currentTime+0.04); }
 function suonoSplash(){ const a=ac(); if(!a) return; for(let i=0;i<6;i++) tono(500+Math.random()*400,0.12,'sine',0.05,a.currentTime+i*0.02); }
 function suonoDrip(){ tono(900,0.10,'sine',0.10); tono(1300,0.08,'sine',0.06,ac()&&ac().currentTime+0.03); }
-function suonoPompa(dur){ const a=ac(); if(!a) return; const o=a.createOscillator(),g=a.createGain(); o.type='sawtooth'; o.frequency.value=70; g.gain.value=0.05; o.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime+(dur||0.6)); }
+function suonoPompa(dur){ const a=ac(); if(!a) return; const o=a.createOscillator(),g=a.createGain(); o.type='sawtooth'; o.frequency.value=70; g.gain.value=0.05; o.connect(g); g.connect(master()); o.start(); o.stop(a.currentTime+(dur||0.6)); }
 function suonoSgorgo(){
   const a=ac(); if(!a) return;
   [740,920,1180].forEach((f,i)=>tono(f+Math.random()*60,0.10,'sine',0.07,a.currentTime+i*0.045));
@@ -719,6 +996,78 @@ function suonoDing(){
   tono(1318.5,0.30,'sine',0.16);
   tono(1760,0.34,'sine',0.10,a.currentTime+0.07);
 }
+// === MUSICHETTE E SUONI (tutto sintetizzato, nessun file) ===
+const NOTA=n=>440*Math.pow(2,(n-69)/12);        // MIDI -> Hz
+function melodia(seq, bpm, tipo, vol, t0){       // seq: [[midi|null, durata in sedicesimi], ...]
+  const a=ac(); if(!a) return 0; let t=t0||a.currentTime+0.02; const q=60/bpm/4;
+  for(const [n,d] of seq){ if(n!=null) tono(NOTA(n), q*d*0.95, tipo||'triangle', vol||0.14, t); t+=q*d; }
+  return t;
+}
+function jingleLivello(){ const a=ac(); if(!a) return; melodia([[67,1],[72,1],[76,1],[79,3]],150,'triangle',0.13); melodia([[48,6]],150,'sine',0.12); }
+function suonoPasso(){ const a=ac(); if(!a) return; tono(NOTA(84),0.12,'sine',0.09); tono(NOTA(91),0.18,'sine',0.07,a.currentTime+0.06); }
+function suonoChip(){ tono(1600,0.03,'square',0.04); }
+function suonoErrore(){ const a=ac(); if(!a) return; tono(330,0.14,'triangle',0.12); tono(262,0.22,'triangle',0.11,a.currentTime+0.12); }
+function suonoStory(){ const a=ac(); if(!a) return; melodia([[76,2],[83,2],[88,4]],160,'sine',0.1); }
+function suonoWhoosh(){
+  const a=ac(); if(!a||!suoniOn) return; const src=a.createBufferSource(); src.buffer=bufferRumore(a);
+  const f=a.createBiquadFilter(); f.type='bandpass'; f.Q.value=1.4; const g=a.createGain(); const t=a.currentTime;
+  f.frequency.setValueAtTime(300,t); f.frequency.exponentialRampToValueAtTime(2400,t+0.35); f.frequency.exponentialRampToValueAtTime(500,t+0.8);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.22,t+0.3); g.gain.exponentialRampToValueAtTime(0.0001,t+0.85);
+  src.connect(f); f.connect(g); g.connect(master()); src.start(t); src.stop(t+0.9);
+}
+let RUMORE=null;
+function bufferRumore(a){ if(!RUMORE){ RUMORE=a.createBuffer(1,a.sampleRate*2,a.sampleRate); const d=RUMORE.getChannelData(0); let b=0; for(let i=0;i<d.length;i++){ b=0.97*b+0.03*(Math.random()*2-1); d[i]=b*3; } } return RUMORE; }
+// scroscio d'acqua continuo: intensita' = quanti tubi sono bagnati
+let acquaNodo=null;
+function acquaIntensita(v){
+  const a=ac(); if(!a) return;
+  if(!acquaNodo){ const src=a.createBufferSource(); src.buffer=bufferRumore(a); src.loop=true;
+    const f=a.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900; const g=a.createGain(); g.gain.value=0;
+    src.connect(f); f.connect(g); g.connect(master()); src.start(); acquaNodo={src,f,g}; }
+  const t=a.currentTime; acquaNodo.g.gain.setTargetAtTime(Math.min(0.16,v*0.05),t,0.12); acquaNodo.f.frequency.setTargetAtTime(700+v*250,t,0.2);
+}
+// ronzio della pompa finche' resta accesa
+let pompaNodo=null;
+function pompaRonzio(on){
+  const a=ac(); if(!a) return;
+  if(on && !pompaNodo){ const o=a.createOscillator(), o2=a.createOscillator(), f=a.createBiquadFilter(), g=a.createGain();
+    o.type='sawtooth'; o.frequency.value=58; o2.type='square'; o2.frequency.value=116.5; f.type='lowpass'; f.frequency.value=380;
+    g.gain.setValueAtTime(0.0001,a.currentTime); g.gain.exponentialRampToValueAtTime(0.06,a.currentTime+0.25);
+    o.connect(f); o2.connect(f); f.connect(g); g.connect(master()); o.start(); o2.start(); pompaNodo={o,o2,g}; }
+  if(!on && pompaNodo){ const n=pompaNodo, t=a.currentTime; n.g.gain.setTargetAtTime(0.0001,t,0.08); n.o.stop(t+0.4); n.o2.stop(t+0.4); pompaNodo=null; }
+}
+// musichetta del flusso: loop chiptune leggero durante l'esecuzione
+// (solo se la musica YouTube e' spenta, per non sovrapporsi)
+let groove=null;
+function grooveStart(){
+  const a=ac(); if(!a || groove || musicaOn) return;
+  const bpm=116, q=60/bpm/4; let passo=0, prossimo=a.currentTime+0.05;
+  const BASSO=[48,null,48,55,null,55,57,null,53,null,53,55,null,55,52,null];
+  const ARP=[72,76,79,76,72,76,81,76,77,81,84,81,74,79,83,79];
+  groove=setInterval(()=>{
+    while(prossimo < a.currentTime+0.15){
+      const i=passo%16, bar=Math.floor(passo/16)%2;
+      if(BASSO[i]!=null) tono(NOTA(BASSO[i]-(bar?0:0)),q*1.6,'triangle',0.09,prossimo);
+      if(i%2===0) tono(NOTA(ARP[i]+(bar?2:0)),q*0.8,'square',0.022,prossimo);
+      if(i%4===0) tono(2600,0.025,'square',0.012,prossimo);
+      prossimo+=q; passo++;
+    }
+  },50);
+}
+function grooveStop(){ if(groove){ clearInterval(groove); groove=null; } }
+function fanfaraVittoria(stelle){
+  const a=ac(); if(!a) return;
+  const t=melodia([[67,2],[72,2],[76,2],[79,2],[84,4],[null,2],[79,2],[84,8]],140,'triangle',0.15);
+  melodia([[48,8],[53,8],[55,4],[60,8]],140,'sine',0.11);
+  melodia([[64,4],[null,4],[65,4],[null,4],[67,4],[72,8]],140,'square',0.025);
+  if(stelle===3) for(let i=0;i<6;i++) tono(NOTA(96+[0,4,7,12,7,12][i]),0.12,'sine',0.05,t+i*0.07);
+}
+function aggiornaBtnSuoni(){
+  $$('.btn-suoni').forEach(b=>{ b.classList.toggle('on',suoniOn); b.title=suoniOn?'effetti sonori: accesi':'effetti sonori: spenti';
+    b.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 7 h3 l4 -3.5 v11 l-4 -3.5 h-3 Z" fill="#fff"/>'+
+      (suoniOn?'<path d="M12 6.2 q2 2.8 0 5.6 M14.2 4.2 q3.6 4.8 0 9.6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>':'<path d="M12 6.5 l4.5 5 M16.5 6.5 l-4.5 5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>')+'</svg>'; });
+}
+function toggleSuoni(){ suoniOn=!suoniOn; const m=master(); if(m) m.gain.setTargetAtTime(suoniOn?0.9:0,ac().currentTime,0.05); aggiornaBtnSuoni(); }
 function fanfara(){
   const a=ac(); if(!a) return;
   const G=[392.00,440.00,493.88,587.33,783.99]; // Sol pentatonica
@@ -770,24 +1119,36 @@ function tubo(x1,y1,x2,y2,wet){
 function valvolaCorpo(aperta){
   const stelo = aperta? 14 : 6;
   const rot = aperta? 36 : 0;
+  const ruota = aperta? '#2D7DD2' : '#5A636A', ruotaL = aperta? '#9FDBFF' : '#AEB7BD';
   let g='';
+  // flange imbullonate sul tubo
+  for(const fx of [-21,15]){
+    g+=S('rect',{x:fx,y:-12,width:6,height:24,rx:1.6,fill:'url(#g_acc)',stroke:'#4A5358','stroke-width':0.8});
+    g+=S('circle',{cx:fx+3,cy:-8,r:1.3,fill:'#4A5358'})+S('circle',{cx:fx+3,cy:8,r:1.3,fill:'#4A5358'});
+  }
   g+=S('path',{d:'M-12 8 q-4 -32 12 -32 q16 0 12 32 Z',fill:'url(#g_corpo)',stroke:'#0B3019','stroke-width':1});
+  g+=S('path',{d:'M-8 4 q-2 -22 6 -26',fill:'none',stroke:'#8FD3A8','stroke-width':2,'stroke-linecap':'round','stroke-opacity':0.55});
   g+=S('ellipse',{cx:0,cy:-16,rx:9,ry:3.4,fill:'#3C9A5E','fill-opacity':0.7});
   g+=S('rect',{x:-10,y:-40,width:20,height:5,rx:2,fill:'#0E3E23'});
   g+=S('rect',{x:-7,y:-36,width:14,height:13,rx:2,fill:'url(#g_corpo)',stroke:'#0B3019','stroke-width':0.8});
+  // spia di stato: azzurra = aperta
+  if(aperta) g+=S('circle',{cx:9,cy:-29,r:6,fill:'#4FB3F0','fill-opacity':0.35});
+  g+=S('circle',{cx:9,cy:-29,r:3,fill:(aperta?'#9FDBFF':'#2A3236'),stroke:'#0B3019','stroke-width':0.8});
   g+=S('rect',{x:-3,y:(-40-stelo),width:6,height:(stelo+6),rx:2,fill:'url(#g_acc)'});
   g+='<g transform="translate(0,'+(-42-stelo)+') rotate('+rot+')">';
-  g+=S('circle',{cx:0,cy:0,r:15,fill:'none',stroke:'#5A636A','stroke-width':4.6});
-  g+=S('circle',{cx:0,cy:0,r:15,fill:'none',stroke:'#AEB7BD','stroke-width':1.8});
-  g+='<g stroke="url(#g_acc)" stroke-width="3" stroke-linecap="round">'+
+  g+=S('circle',{cx:0,cy:0,r:15,fill:'none',stroke:ruota,'stroke-width':4.8});
+  g+=S('circle',{cx:0,cy:0,r:15,fill:'none',stroke:ruotaL,'stroke-width':1.6,'stroke-dasharray':'10 6'});
+  g+='<g stroke="'+ruota+'" stroke-width="3" stroke-linecap="round">'+
      S('line',{x1:0,y1:0,x2:0,y2:-13})+S('line',{x1:0,y1:0,x2:12,y2:5})+S('line',{x1:0,y1:0,x2:-12,y2:5})+'</g>';
+  for(const a of [-90,30,150]){ const r=a*Math.PI/180; g+=S('circle',{cx:15*Math.cos(r),cy:15*Math.sin(r),r:2.6,fill:ruotaL,stroke:ruota,'stroke-width':1}); }
   g+=S('circle',{cx:0,cy:0,r:5,fill:'url(#g_hub)',stroke:'#5A636A','stroke-width':1});
   g+='</g>';
   return g;
 }
 function targaValvola(x,y,nome){
-  return S('rect',{x:x-15,y:y-7,width:30,height:13,rx:2,fill:'#0E3E23'})+
-         S('text',{x:x,y:y+3,'font-family':'Menlo,monospace','font-size':10,fill:'#BFE6CC','text-anchor':'middle','font-weight':600},nome);
+  return S('rect',{x:x-16,y:y-7,width:32,height:14,rx:3,fill:'#0E3E23',stroke:'#2E8A52','stroke-width':0.8})+
+         S('rect',{x:x-16,y:y-7,width:4,height:14,rx:1.5,fill:'#F28C28'})+
+         S('text',{x:x+2,y:y+3.5,'font-family':'Menlo,monospace','font-size':10,fill:'#FFFFFF','text-anchor':'middle','font-weight':700},nome);
 }
 // tubo orizzontale: volantino in alto
 function valvola(x,y,nome,aperta){
@@ -832,6 +1193,10 @@ function cisterna(x,y,nome,liv,cap,incognito){
     if(wh>0){ g+=S('rect',{x:x0+3,y:y0+H-5-wh,width:W-6,height:wh,rx:2,fill:'url(#g_aq)'}); 
       g+=S('path',{d:'M'+(x0+3)+' '+(y0+H-5-wh)+' q'+(W/4)+' -5 '+(W/2)+' 0 t'+(W/2)+' 0',fill:'none',stroke:'#9CD0F0','stroke-width':1.5,opacity:0.8}); }
     g+=S('rect',{x:x-22,y:y0-9,width:44,height:11,rx:3,fill:'#9AA4AA',stroke:'#5C656B','stroke-width':1});
+    // fasce e rivetti + riflesso del vetro
+    g+=S('rect',{x:x0,y:y0+9,width:W,height:3,fill:'#8B959B','fill-opacity':0.6})+S('rect',{x:x0,y:y0+H-12,width:W,height:3,fill:'#8B959B','fill-opacity':0.6});
+    for(let k=0;k<6;k++){ const rx=x0+8+k*(W-16)/5; g+=S('circle',{cx:rx,cy:y0+10.5,r:1.3,fill:'#5C656B'})+S('circle',{cx:rx,cy:y0+H-10.5,r:1.3,fill:'#5C656B'}); }
+    g+=S('rect',{x:x0+8,y:y0+16,width:5,height:H-32,rx:2.5,fill:'#FFFFFF','fill-opacity':0.3});
     // sight glass
     g+=S('rect',{x:x0+W+2,y:y0+4,width:9,height:H-8,rx:4,fill:'#EAF2F5',stroke:'#9AA4AA','stroke-width':1});
     const gh=(H-12)*fr; if(gh>0) g+=S('rect',{x:x0+W+3.5,y:y0+H-6-gh,width:6,height:gh,rx:3,fill:'url(#g_aq)'});
@@ -976,7 +1341,7 @@ function renderStage(level, stato, minutiOrol){
   for(let k=0;k<9;k++){ svg+=S('ellipse',{cx:30+k*54,cy:GROUND+14+(k%3)*7,rx:5,ry:3,fill:'#7E6647','fill-opacity':0.8}); }
   for(let k=0;k<6;k++){ svg+=S('ellipse',{cx:55+k*80,cy:285+(k%2)*100,rx:7,ry:4,fill:'#5A452C','fill-opacity':0.7}); }
   // l'apprendista fontaniere
-  svg+=mascotte(62,GROUND);
+  // Luigi ora vive in #stage-vivo (livello persistente, animazioni fluide)
   // edifici + torre
   let haTorre=false;
   for(const id in level.nodes){ const n=level.nodes[id]; if(n.type==='fixture') svg+=edificio(n); }
@@ -1078,10 +1443,156 @@ function zampillo(x,y){
    S('path',{d:'M'+(x+9)+' '+(y+4)+' q-4 5 0 9 q4 -4 0 -9',fill:'#2D7DD2','fill-opacity':0.85})+'</g>';
 }
 
+// === FX: effetti speciali su canvas (nessuna dipendenza) ===
+// FX globale: gocce/scintille/bolle a tutto schermo (vittoria, click, ambiente)
+// StageFX: particelle sopra lo schema, coordinate nel viewBox 480x465 dello
+// stage -> sopravvivono ai re-render SVG di ogni frame del playback.
+const RIDOTTO = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+function pathGoccia(c,r){
+  c.beginPath(); c.moveTo(0,-r*1.8);
+  c.bezierCurveTo(r*.6,-r*.9,r,-r*.2,r,r*.3); c.arc(0,r*.3,r,0,Math.PI);
+  c.bezierCurveTo(-r,-r*.2,-r*.6,-r*.9,0,-r*1.8); c.closePath();
+}
+function disegnaParticella(c,p,k){
+  const a=Math.max(0,Math.min(1,p.life/p.max))*(p.alpha||1);
+  c.globalAlpha=a;
+  if(p.tipo==='goccia'){
+    c.save(); c.translate(p.x,p.y); c.rotate(Math.atan2(p.vy,p.vx)-Math.PI/2); c.scale(k,k);
+    pathGoccia(c,p.r); c.fillStyle=p.col; c.fill();
+    c.globalAlpha=a*.6; c.beginPath(); c.ellipse(-p.r*.35,p.r*.1,p.r*.22,p.r*.4,0,0,7); c.fillStyle='#fff'; c.fill(); c.restore();
+  } else if(p.tipo==='bolla'){
+    c.beginPath(); c.arc(p.x,p.y,p.r*k,0,7); c.strokeStyle=p.col; c.lineWidth=1.2*k; c.stroke();
+    c.beginPath(); c.arc(p.x-p.r*k*.35,p.y-p.r*k*.35,p.r*k*.25,0,7); c.fillStyle='#fff'; c.fill();
+  } else if(p.tipo==='anello'){
+    const t=1-p.life/p.max; c.beginPath(); c.arc(p.x,p.y,(p.r+t*p.r2)*k,0,7); c.strokeStyle=p.col; c.lineWidth=3*k*(1-t)+.5; c.stroke();
+  } else { // scintilla
+    c.beginPath(); c.arc(p.x,p.y,p.r*k,0,7); c.fillStyle=p.col; c.shadowColor=p.col; c.shadowBlur=10*k; c.fill(); c.shadowBlur=0;
+  }
+}
+function avanza(arr,dt){
+  for(let i=arr.length-1;i>=0;i--){ const p=arr[i];
+    p.life-=dt; if(p.life<=0){ arr.splice(i,1); continue; }
+    if(p.tipo==='bolla'){ p.t=(p.t||0)+dt; p.x+=Math.sin(p.t*4+p.ph)*p.wob*dt; p.y+=p.vy*dt; if(p.tetto!=null && p.y<=p.tetto){ p.life=0; arr.splice(i,1); continue; } }
+    else if(p.tipo!=='anello'){ p.vy+=(p.g||0)*dt; p.vx*=(1-(p.attr||0)*dt); p.x+=p.vx*dt; p.y+=p.vy*dt; }
+  }
+}
+const COL_ACQUA=['#4FB3F0','#2D7DD2','#9FDBFF','#CFF0FF'];
+const COL_FESTA=['#4FB3F0','#2D7DD2','#7FD8A6','#1B6D3F','#D9A621','#9FDBFF'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+const FX=(function(){
+  const cv=document.getElementById('fx-globale'), c=cv.getContext('2d');
+  const P=[]; let ambiente=true, vivo=false, last=0, accBolle=0;
+  function resize(){ const d=Math.min(2,window.devicePixelRatio||1); cv.width=innerWidth*d; cv.height=innerHeight*d; c.setTransform(d,0,0,d,0,0); }
+  addEventListener('resize',resize); resize();
+  function avvia(){ if(!vivo && !RIDOTTO){ vivo=true; last=performance.now(); requestAnimationFrame(loop); } }
+  function loop(t){
+    const dt=Math.min(.05,(t-last)/1000); last=t;
+    if(ambiente){ accBolle+=dt; while(accBolle>.22){ accBolle-=.22;
+      P.push({tipo:'bolla',x:Math.random()*innerWidth,y:innerHeight+10,vy:-(30+Math.random()*50),wob:20,ph:Math.random()*6,r:2+Math.random()*5,col:'rgba(191,232,255,.55)',life:14,max:14,alpha:.7}); } }
+    avanza(P,dt);
+    c.clearRect(0,0,innerWidth,innerHeight);
+    for(const p of P) disegnaParticella(c,p,1);
+    c.globalAlpha=1;
+    if(P.length||ambiente) requestAnimationFrame(loop); else { vivo=false; c.clearRect(0,0,innerWidth,innerHeight); }
+  }
+  function schizzo(x,y,n,colori,forza){
+    for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, v=(forza||260)*(.3+Math.random()*.7);
+      P.push({tipo:i%3?'goccia':'scintilla',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-120,g:520,attr:1.2,r:2.5+Math.random()*3.5,col:pick(colori||COL_ACQUA),life:1.1+Math.random()*.6,max:1.6}); }
+    P.push({tipo:'anello',x,y,r:6,r2:70,col:'rgba(191,232,255,.9)',life:.55,max:.55});
+    avvia();
+  }
+  function pioggiaFesta(n){
+    for(let i=0;i<n;i++) P.push({tipo:i%4?'goccia':'scintilla',x:Math.random()*innerWidth,y:-20-Math.random()*innerHeight*.6,vx:(Math.random()-.5)*60,vy:120+Math.random()*160,g:260,r:4+Math.random()*5,col:pick(COL_FESTA),life:3.5,max:3.5});
+    avvia();
+  }
+  function setAmbiente(on){ ambiente=on; if(on) avvia(); }
+  avvia();
+  return {schizzo,pioggiaFesta,setAmbiente};
+})();
+
+const StageFX=(function(){
+  let cv=null,c=null,lv=null,st=null,P=[],vivo=false,last=0,poly=new Map(),acc={};
+  function polilinea(e){
+    if(poly.has(e)) return poly.get(e);
+    const segs=segmentiEdge(lv,e); const pts=[[segs[0][0],segs[0][1]]]; segs.forEach(s=>pts.push([s[2],s[3]]));
+    const lens=[]; let tot=0; for(let i=1;i<pts.length;i++){ const l=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); lens.push(l); tot+=l; }
+    const r={pts,lens,tot}; poly.set(e,r); return r;
+  }
+  function puntoA(pl,d){
+    for(let i=0;i<pl.lens.length;i++){ if(d<=pl.lens[i]||i===pl.lens.length-1){ const f=pl.lens[i]?Math.min(1,d/pl.lens[i]):0, a=pl.pts[i], b=pl.pts[i+1]; return [a[0]+(b[0]-a[0])*f, a[1]+(b[1]-a[1])*f]; } d-=pl.lens[i]; }
+    return pl.pts[pl.pts.length-1];
+  }
+  function geom(){
+    const box=cv.parentNode, br=box.getBoundingClientRect(), svg=box.querySelector('svg');
+    if(!svg||!br.width) return null; const sr=svg.getBoundingClientRect();
+    const s=Math.min(sr.width/480,sr.height/465);
+    return {w:br.width,h:br.height,s,ox:sr.left-br.left+(sr.width-480*s)/2,oy:sr.top-br.top+(sr.height-465*s)/2};
+  }
+  function emetti(key,rate,dt,fn){ acc[key]=(acc[key]||0)+rate*dt; while(acc[key]>=1){ acc[key]--; fn(); } }
+  function loop(t){
+    if(!$('#livello').classList.contains('attiva') && !inTransizione){ vivo=false; P=[]; if(c) c.clearRect(0,0,cv.width,cv.height); return; }
+    const dt=Math.min(.05,(t-last)/1000); last=t;
+    const g=geom();
+    if(g && lv && st){
+      const wet=st.wet||[];
+      for(const e of lv.edges){ if(wet.indexOf(e.id)<0) continue;
+        const pl=polilinea(e);
+        emetti('f'+e.id,pl.tot/9,dt,()=>P.push({tipo:'flusso',pl,d:Math.random()*8,sp:95+Math.random()*25,r:1.6+Math.random()*1.4,life:9,max:9}));
+        if(st.leaks && st.leaks.indexOf(e.id)>=0){ const iv=infoValvola(lv,e), lx=iv.x+(iv.vert?14:0), ly=iv.y+(iv.vert?22:10);
+          emetti('l'+e.id,26,dt,()=>P.push({tipo:'goccia',x:lx,y:ly,vx:(Math.random()-.5)*60,vy:-20-Math.random()*40,g:420,r:1.6+Math.random()*1.4,col:pick(['#F2A65A','#E8A33D','#C77B27']),life:.9,max:.9})); }
+      }
+      for(const id in lv.nodes){ const n=lv.nodes[id];
+        if(n.type==='fixture' && lv.edges.some(e=>e.to===id && wet.indexOf(e.id)>=0)){
+          emetti('u'+id,30,dt,()=>P.push({tipo:'goccia',x:n.pos[0]+(Math.random()-.5)*8,y:GROUND-70,vx:(Math.random()-.5)*90,vy:-90-Math.random()*70,g:380,r:1.5+Math.random()*1.5,col:pick(COL_ACQUA),life:1,max:1})); }
+        if(n.type==='tank' && st.tanks && st.tanks[id]>0.01){
+          const cap=(lv.scenarios[0].caps&&lv.scenarios[0].caps[id])||n.cap, fr=Math.min(1,st.tanks[id]/cap);
+          const H=92, y0=n.pos[1]-H/2, fondo=y0+H-6, tetto=y0+H-5-(H-10)*fr;
+          if(fondo-tetto>6) emetti('b'+id,4+fr*6,dt,()=>P.push({tipo:'bolla',x:n.pos[0]+(Math.random()-.5)*64,y:fondo,vy:-22-Math.random()*20,wob:8,ph:Math.random()*6,r:1.2+Math.random()*1.8,col:'rgba(255,255,255,.75)',tetto:tetto+2,life:8,max:8})); }
+      }
+    }
+    for(let i=P.length-1;i>=0;i--){ const p=P[i]; if(p.tipo!=='flusso') continue; p.d+=p.sp*dt; if(p.d>p.pl.tot){ P.splice(i,1); continue; } const q=puntoA(p.pl,p.d); p.x=q[0]; p.y=q[1]; }
+    avanza(P.filter(p=>p.tipo!=='flusso'),dt); P=P.filter(p=>p.tipo==='flusso'||p.life>0);
+    if(g){
+      const d=Math.min(2,window.devicePixelRatio||1);
+      if(cv.width!==Math.round(g.w*d)||cv.height!==Math.round(g.h*d)){ cv.width=Math.round(g.w*d); cv.height=Math.round(g.h*d); }
+      c.setTransform(d,0,0,d,0,0); c.clearRect(0,0,g.w,g.h);
+      c.setTransform(d*g.s,0,0,d*g.s,d*g.ox,d*g.oy);
+      c.globalCompositeOperation='lighter';
+      for(const p of P){ if(p.tipo==='flusso'){ c.globalAlpha=.95; c.beginPath(); c.arc(p.x,p.y,p.r,0,7); c.fillStyle='#CFF0FF'; c.shadowColor='#4FB3F0'; c.shadowBlur=8*g.s; c.fill(); } }
+      c.shadowBlur=0; c.globalCompositeOperation='source-over';
+      for(const p of P){ if(p.tipo!=='flusso') disegnaParticella(c,p,1); }
+      c.globalAlpha=1;
+    }
+    requestAnimationFrame(loop);
+  }
+  function set(level,stato){
+    if(!cv){ cv=document.getElementById('fx-stage'); c=cv.getContext('2d'); }
+    if(level!==lv){ lv=level; poly=new Map(); P=[]; acc={}; }
+    st=stato;
+    if(!vivo && !RIDOTTO){ vivo=true; last=performance.now(); requestAnimationFrame(loop); }
+  }
+  function scintille(x,y){ for(let i=0;i<22;i++){ const a=Math.random()*Math.PI*2, v=60+Math.random()*110; P.push({tipo:i%2?'scintilla':'goccia',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-40,g:160,attr:2,r:1.4+Math.random()*2,col:pick(['#D9A621','#7FD8A6','#FFFFFF','#4FB3F0']),life:.9+Math.random()*.4,max:1.2}); } P.push({tipo:'anello',x,y,r:4,r2:40,col:'rgba(127,216,166,.95)',life:.6,max:.6}); }
+  function anello(x,y,col){ P.push({tipo:'anello',x,y,r:6,r2:34,col:col,life:.5,max:.5}); }
+  return {set,scintille,anello};
+})();
+
 // === DOM refs ===
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
-function show(id){ $$('.screen').forEach(e=>e.classList.remove('attiva')); $(id).classList.add('attiva'); }
+// cambio schermata con transizione "tombino" (iris d'acqua dal punto cliccato)
+let ultimoTocco=[innerWidth/2,innerHeight/2], inTransizione=false;
+document.addEventListener('pointerdown',e=>{ ultimoTocco=[e.clientX,e.clientY]; },true);
+function show(id){
+  const target=$(id), cur=document.querySelector('.screen.attiva');
+  const swap=()=>{ $$('.screen').forEach(e=>e.classList.remove('attiva')); target.classList.add('attiva'); FX.setAmbiente(id!=='#livello'); };
+  if(cur===target) return;
+  if(RIDOTTO || inTransizione || !cur){ swap(); return; }
+  inTransizione=true; suonoWhoosh();
+  const iris=$('#iris'); iris.style.setProperty('--x',ultimoTocco[0]+'px'); iris.style.setProperty('--y',ultimoTocco[1]+'px');
+  iris.className='apri';
+  setTimeout(()=>{ swap(); iris.className='chiudi'; setTimeout(()=>{ iris.className=''; inTransizione=false; },470); },380);
+}
 
 // === MAPPA ===
 function buildMappa(){
@@ -1104,7 +1615,8 @@ function buildMappa(){
   svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#2C3338','stroke-width':44,'stroke-linecap':'round','stroke-opacity':0.85});
   svg+=S('line',{x1:cx(0),y1:cy,x2:cx(11),y2:cy,stroke:'#586169','stroke-width':30,'stroke-linecap':'round','stroke-opacity':0.85});
   let ultimo=0; for(let i=0;i<12;i++){ if(gocceLivello[LEVELS[i].id]) ultimo=i; }
-  if(ultimo>0) svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#2E8A52','stroke-width':16,'stroke-linecap':'round'});
+  if(ultimo>0){ svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#2D7DD2','stroke-width':18,'stroke-linecap':'round'});
+    svg+=S('line',{x1:cx(0),y1:cy,x2:cx(ultimo),y2:cy,stroke:'#CFF0FF','stroke-width':7,'stroke-linecap':'round',class:'flusso-mappa'}); }
 
   for(let i=0;i<12;i++){
     const lv=LEVELS[i];
@@ -1161,7 +1673,7 @@ function buildMappa(){
 // tappa premio: la story di Luigi con i suoi buoni consigli
 function apriStoria(i){
   const s=STORIE[i];
-  storieViste[i]=true;
+  storieViste[i]=true; suonoStory();
   $('#scheda-luigi').innerHTML='<h2>La story di Luigi: '+s.nome+'</h2>'+
     '<div class="storia-box">'+
     '<img src="'+s.img+'" alt="La story di Luigi: '+s.nome+'" onerror="this.style.display=\'none\'">'+
@@ -1174,8 +1686,193 @@ function apriStoria(i){
   telemetria('storia',{n:i+1});
 }
 
+// === TOP BAR: piste di circuito arancioni con "pacchetti" in movimento ===
+const DECO_TECH='<svg class="deco-tech" viewBox="0 0 1600 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+
+ '<g fill="none" stroke="#F28C28" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".5">'+
+ '<path d="M380 44 H520 L536 28 H700 L712 40 H900 L920 18 H1120"/><path d="M460 12 H610 L622 22 H800 L812 10 H960"/><path d="M840 50 H1010 L1022 36 H1200"/></g>'+
+ '<g fill="#0E3E23" stroke="#F28C28" stroke-width="1.6">'+[[380,44],[1120,18],[460,12],[960,10],[840,50],[1200,36]].map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3"/>').join('')+'</g>'+
+ [['M380 44 H520 L536 28 H700 L712 40 H900 L920 18 H1120','3.4s','0s'],['M460 12 H610 L622 22 H800 L812 10 H960','2.6s','.8s'],['M840 50 H1010 L1022 36 H1200','2.2s','.3s'],['M380 44 H520 L536 28 H700 L712 40 H900 L920 18 H1120','3.4s','1.7s']]
+   .map(t=>'<g><circle r="6" fill="#F28C28" opacity=".3"/><circle r="2.6" fill="#FFC27A"/><animateMotion dur="'+t[1]+'" begin="'+t[2]+'" repeatCount="indefinite" path="'+t[0]+'"/></g>').join('')+
+ '<g fill="#F28C28">'+[0,1,2].map(i=>'<path d="M'+(340+i*11)+' 22 l7 6 l-7 6" fill="none" stroke="#F28C28" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="opacity" values=".15;1;.15" dur="1.2s" begin="'+(i*0.2)+'s" repeatCount="indefinite"/></path>').join('')+'</g>'+
+ '<g>'+[0,1,2].map(i=>'<rect x="'+(1135+i*9)+'" y="40" width="5" height="5" rx="1" fill="#F28C28"><animate attributeName="opacity" values="1;.2;1" dur="'+(0.7+i*0.3)+'s" repeatCount="indefinite"/></rect>').join('')+'</g>'+
+ '</svg>';
+function decoraTestate(){ $$('.testa,.lv-testa').forEach(h=>{ if(!h.querySelector('.deco-tech')) h.insertAdjacentHTML('afterbegin',DECO_TECH); }); }
+
+// === LUIGI VIVO: sprite persistente (non ridisegnato a ogni frame) ===
+function luigiSvg(x,y){
+  const sk='#F2C9A0', cam='#8FB3CC', sal='#2D5F8A';
+  return '<g transform="translate('+x+','+y+') scale(1.15)"><g id="luigi" class="luigi">'+
+   '<ellipse cx="0" cy="2" rx="18" ry="3.5" fill="#1E160D" fill-opacity=".2"/>'+
+   '<g class="l-corpo">'+
+    '<rect x="-9" y="-26" width="8" height="24" rx="3" fill="'+sal+'"/><rect x="1" y="-26" width="8" height="24" rx="3" fill="#285580"/>'+
+    '<rect x="-11.5" y="-4" width="11" height="5.5" rx="2.6" fill="#5A3A22"/><rect x="0.5" y="-4" width="12" height="5.5" rx="2.6" fill="#5A3A22"/>'+
+    '<rect x="-12" y="-50" width="24" height="28" rx="7" fill="'+cam+'"/>'+
+    '<path d="M-9 -42 H9 V-24 H-9 Z" fill="'+sal+'"/><rect x="-11" y="-30" width="22" height="8" rx="2" fill="'+sal+'"/>'+
+    '<path d="M-8 -42 L-6.5 -50 M8 -42 L6.5 -50" stroke="'+sal+'" stroke-width="3" stroke-linecap="round"/>'+
+    '<circle cx="-6" cy="-40" r="1.5" fill="#D9A621"/><circle cx="6" cy="-40" r="1.5" fill="#D9A621"/>'+
+    '<rect x="-4" y="-37" width="8" height="6" rx="1.2" fill="#25507A"/><path d="M-2 -35 q2 -2.6 4 0 q-2 2.4 -4 0" fill="#9FDBFF"/>'+
+    '<rect x="-17.5" y="-48" width="6" height="19" rx="3" fill="'+cam+'"/><circle cx="-14.5" cy="-28" r="3.6" fill="'+sk+'"/>'+
+    '<g transform="translate(14.5,-46)"><g class="l-braccio">'+
+      '<rect x="-3" y="-2" width="6" height="19" rx="3" fill="'+cam+'"/><circle cx="0" cy="18" r="3.6" fill="'+sk+'"/>'+
+      '<g transform="translate(0,18) rotate(25)"><rect x="-1.8" y="0" width="3.6" height="15" rx="1.6" fill="#AEB7BD"/><circle cx="0" cy="16" r="4.6" fill="#AEB7BD"/><rect x="-1.6" y="14" width="3.2" height="6" fill="#E9F3F7"/></g>'+
+    '</g></g>'+
+    '<g transform="translate(0,-60)">'+
+      '<rect x="-3" y="7" width="6" height="5" fill="'+sk+'"/>'+
+      '<circle cx="-9.3" cy="1" r="2.6" fill="'+sk+'"/><circle cx="9.3" cy="1" r="2.6" fill="'+sk+'"/>'+
+      '<circle cx="0" cy="0" r="9.5" fill="'+sk+'"/>'+
+      '<circle cx="-5.5" cy="3.4" r="2" fill="#F0A98A" fill-opacity=".6"/><circle cx="5.5" cy="3.4" r="2" fill="#F0A98A" fill-opacity=".6"/>'+
+      '<path d="M-9.2 1 a9.4 9.4 0 0 0 18.4 0 l-2 -0.8 a7.6 7 0 0 1 -14.4 0 Z" fill="#6B4A2E"/><path d="M-6 5.5 q6 9 12 0 Z" fill="#6B4A2E"/>'+
+      '<path d="M-5 3.6 q2.5 -2.6 5 -0.6 q2.5 -2 5 0.6 q-2.5 1.6 -5 0.4 q-2.5 1.2 -5 -0.4 Z" fill="#5A3C24"/>'+
+      '<ellipse cx="0" cy="1.4" rx="1.8" ry="1.5" fill="#E3AE85"/>'+
+      '<g class="l-occhi"><circle cx="-4.2" cy="-1" r="1.15" fill="#2A2118"/><circle cx="4.2" cy="-1" r="1.15" fill="#2A2118"/></g>'+
+      '<g fill="rgba(191,232,255,.3)" stroke="#22303B" stroke-width="1.2"><rect x="-7" y="-3.4" width="5.4" height="4.4" rx="1.2"/><rect x="1.6" y="-3.4" width="5.4" height="4.4" rx="1.2"/></g>'+
+      '<path d="M-1.6 -1.4 H1.6" stroke="#22303B" stroke-width="1.1"/>'+
+      '<path d="M-6.5 -5.4 h4 M2.5 -5.4 h4" stroke="#5A3C24" stroke-width="1.1" stroke-linecap="round"/>'+
+      '<path d="M-11 -4 a11 11 0 0 1 22 0 Z" fill="#C4452C"/><rect x="-11.2" y="-5.6" width="22.4" height="2.6" rx="1" fill="#A93A24"/>'+
+      '<path d="M0 -4 h13 a3 3 0 0 1 0 3.6 h-13 Z" fill="#A93A24"/><circle cx="0" cy="-14.6" r="1.6" fill="#A93A24"/>'+
+      '<path d="M-3.5 -12 q-2.4 3.2 0 5 q2.4 -1.8 0 -5" fill="#FFFFFF" fill-opacity=".9"/>'+
+    '</g>'+
+   '</g>'+
+   '<path class="l-sudore" d="M12 -72 q-2.4 3.4 0 5.4 q2.4 -2 0 -5.4" fill="#4FB3F0"/>'+
+  '</g></g>';
+}
+function preparaStageVivo(){
+  $('#stage-vivo').innerHTML=luigiSvg(62,GROUND)+'<g id="guida-mk"></g><g id="guida-fum"></g>';
+  guidaChiave='';
+}
+let luigiBase='idle', luigiTimer=null;
+function luigiStato(stato, ms){
+  const l=document.getElementById('luigi'); if(!l) return;
+  clearTimeout(luigiTimer);
+  if(ms){ l.setAttribute('class','luigi '+stato); luigiTimer=setTimeout(()=>{ const m=document.getElementById('luigi'); if(m) m.setAttribute('class','luigi '+luigiBase); },ms); }
+  else { luigiBase=stato; l.setAttribute('class','luigi '+stato); }
+}
+function fumettoLuigi(righe){
+  const g=$('#guida-fum'); if(!g) return;
+  if(!righe || !righe.length){ g.innerHTML=''; return; }
+  const h=12+righe.length*13, y0=72-h, w=124;
+  let t='<g class="lfum"><path d="M48 '+(y0+h-1)+' L66 86 L60 '+(y0+h-1)+' Z" fill="#FFFFFF" stroke="#F28C28" stroke-width="1.5" stroke-linejoin="round"/>'+
+    '<rect x="6" y="'+y0+'" width="'+w+'" height="'+h+'" rx="10" fill="#FFFFFF" stroke="#F28C28" stroke-width="1.5"/>'+
+    '<rect x="47" y="'+(y0+h-3)+'" width="14" height="4" fill="#FFFFFF"/>';
+  righe.forEach((r,i)=>{ const code=r.code; t+='<text x="'+(6+w/2)+'" y="'+(y0+16+i*13)+'" text-anchor="middle" font-family="'+(code?'JetBrains Mono,Menlo,monospace':'Fredoka,sans-serif')+'" font-size="'+(code?10.5:10.5)+'" font-weight="'+(code?700:600)+'" fill="'+(code?'#C25E0A':'#123A24')+'">'+escHtml(r.t)+'</text>'; });
+  g.innerHTML=t+'</g>';
+}
+function markerGuida(cx,cy,rx,ry){
+  return '<g>'+
+   '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="#F28C28" fill-opacity=".1"><animate attributeName="fill-opacity" values=".04;.22;.04" dur="1.1s" repeatCount="indefinite"/></ellipse>'+
+   '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="none" stroke="#F28C28" stroke-width="3" stroke-dasharray="7 5"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".5;1;.5" dur="1.1s" repeatCount="indefinite"/></ellipse>'+
+   '<g transform="translate('+cx+','+(cy-ry-5)+')"><g><animateTransform attributeName="transform" type="translate" values="0 -8;0 0;0 -8" dur=".9s" repeatCount="indefinite"/>'+
+   '<path d="M-8 -13 H8 L0 0 Z" fill="#F28C28" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"/></g></g></g>';
+}
+function centroValvola(lv,e){ const iv=infoValvola(lv,e); return iv.vert? [iv.x+24*iv.dir, iv.y] : [iv.x, iv.y-24]; }
+
+// === GUIDA PASSO-PASSO (scaffolding a dissolvenza) ===
+// confronta riga per riga il programma dello studente con il percorso modello (lv.sol):
+// L1-2 guida piena (comando esatto + fantasma nell'editor), L3-6 parziale (lampeggia
+// COSA usare e DOVE, il numero/nome lo decide lo studente), L7-12 spenta ma attivabile.
+// Strade alternative non sono errori: la guida si mette da parte e invita a provarle.
+function guidaDefault(id){ return id<=2?'piena':(id<=6?'parziale':'spenta'); }
+let guidaModo='spenta', guidaChiave='', guidaPassoPrec=-1;
+function normRiga(l){ l=l.replace(/\t/g,'  ').replace(/\s+$/,''); const ind=l.length-l.trimStart().length; return ' '.repeat(ind)+l.trim().toLowerCase().split(/\s+/).join(' '); }
+function calcolaGuida(righe){
+  const lv=LEVELS[livelloCorrente-1];
+  if(playing) return {modo:'play'};
+  if(guidaModo==='spenta') return {modo:'spenta'};
+  const sol=lv.sol.split('\n').filter(l=>l.trim()).map(normRiga);
+  const stu=[]; righe.forEach((r,i)=>{ if(r.trim()) stu.push({n:normRiga(r), i}); });
+  let k=0; while(k<stu.length && k<sol.length && stu[k].n===sol[k]) k++;
+  const G={modo:guidaModo, sol, tot:sol.length, passo:k};
+  if(k===stu.length) G.stato = (k===sol.length)?'finito':'avanti';
+  else if(k===stu.length-1 && k<sol.length && sol[k].indexOf(stu[k].n)===0 && stu[k].i===righe.length-1) G.stato='incorso';
+  else { G.stato='fuori'; G.rigaDevia=stu[k].i+1; }
+  if(G.stato==='avanti'||G.stato==='incorso') G.atteso=sol[k];
+  return G;
+}
+function bersagliPasso(lv, sol, k){
+  const t=sol[k].trim().split(' '), c=t[0], out=[];
+  const edgeV=id=>lv.edges.find(e=>e.valve===id), edgeP=id=>lv.edges.find(e=>e.pump===id), edgeI=id=>lv.edges.find(e=>e.id===id);
+  const nodoM=id=>{ const n=lv.nodes[id]; if(!n) return; if(n.type==='tank') out.push([n.pos[0],n.pos[1],56,60]); else if(n.type==='fixture') out.push([n.pos[0],76,46,19]); };
+  if(c==='open'||c==='close'){ const e=edgeV(t[1]); if(e){ const p=centroValvola(lv,e); out.push([p[0],p[1],30,30]); } }
+  else if(c==='pump'){ const e=edgeP(t[1]); if(e){ const p=puntoPompa(lv,e); out.push([p[0]+12,p[1],48,38]); } }
+  else if(c==='if'){ if(t[1]==='leak'){ const e=edgeI(t[2]); if(e&&e.valve){ const p=centroValvola(lv,e); out.push([p[0],p[1],30,30]); } } else nodoM(t[2]); }
+  else if(c==='wait'){
+    // stato di valvole/pompe dopo le righe precedenti -> dove va l'acqua adesso?
+    const v={}, pm={};
+    for(let i=0;i<k;i++){ const u=sol[i].trim().split(' '); if(u[0]==='open') v[u[1]]=true; else if(u[0]==='close') v[u[1]]=false; else if(u[0]==='pump') pm[u[1]]=(u[2]==='on'); }
+    const aperto=e=>e.valve? !!v[e.valve] : (e.pump? !!pm[e.pump] : true);
+    const visti=new Set(), arrivi=new Set();
+    const partenze=Object.keys(lv.nodes).filter(id=>lv.nodes[id].type==='source'||lv.nodes[id].type==='tank');
+    for(const p of partenze){ const coda=[p]; const vis=new Set([p]);
+      while(coda.length){ const n=coda.shift(); for(const e of lv.edges){ if(e.from!==n||!aperto(e)||vis.has(e.to)) continue; vis.add(e.to); arrivi.add(e.to); coda.push(e.to); } } }
+    arrivi.forEach(id=>{ if(!visti.has(id)){ visti.add(id); nodoM(id); } });
+  }
+  return out;
+}
+const DESC_PIENA={
+  open:t=>t[1]==='main'?'Apri la <strong>mandata</strong> dell\'acquedotto':'Apri la valvola <strong>'+t[1]+'</strong>',
+  close:t=>t[1]==='main'?'Chiudi la <strong>mandata</strong>':'Chiudi la valvola <strong>'+t[1]+'</strong>',
+  wait:t=>'Lascia scorrere <strong>'+t[1]+' minuti</strong> (= '+t[1]+' litri)',
+  repeat:t=>'Ripeti <strong>'+t[1]+' volte</strong> le righe che seguono',
+  'if':t=>t[1]==='full'?'Controlla se la cisterna <strong>'+t[2]+'</strong> è piena':t[1]==='leak'?'Controlla se il tubo <strong>'+t[2]+'</strong> perde':'Controlla <strong>'+t[2]+'</strong>',
+  pump:t=>(t[2]==='on'?'Accendi':'Spegni')+' la pompa <strong>'+t[1]+'</strong>'
+};
+const DESC_PARZ={
+  open:'Qualcosa va <strong>aperto</strong>: guarda cosa lampeggia nello schema.',
+  close:'È il momento di <strong>chiudere</strong>: quale valvola lampeggia?',
+  wait:'Ora l\'acqua deve scorrere: <strong>quanti minuti</strong> servono? Guarda cosa lampeggia.',
+  repeat:'Qui conviene <strong>ripetere</strong>: quante volte?',
+  'if':'Serve un <strong>controllo</strong> con il sensore: su cosa?',
+  pump:'Tocca alla <strong>pompa</strong>: accenderla o spegnerla?'
+};
+function aggiornaGuidaUI(G){
+  const bar=$('#guida-bar'), tx=$('#gb-testo'), dots=$('#gb-passi'), tg=$('#gb-toggle');
+  const lv=LEVELS[livelloCorrente-1];
+  $$('.chip-cmd.guida').forEach(c=>c.classList.remove('guida'));
+  $('#btn-esegui').classList.toggle('guida-pulse', G.stato==='finito');
+  editorEl.placeholder = (G.modo==='piena'||G.modo==='parziale')? '' : 'scrivi qui i comandi...';
+  let chiave=G.modo+'|'+(G.stato||'')+'|'+(G.passo!=null?G.passo:'');
+  if(G.modo==='play'){ bar.className='guida-bar'; tx.innerHTML='<strong>L\'acqua scorre</strong> &mdash; segui la riga illuminata: è quella che il fontaniere sta eseguendo.'; dots.innerHTML=''; tg.style.display='none'; }
+  else if(G.modo==='spenta'){ bar.className='guida-bar spenta'; tx.innerHTML='Bloccato? <strong>Luigi</strong> può indicarti il prossimo passo, senza darti la soluzione.'; dots.innerHTML=''; tg.style.display=''; tg.textContent='Chiedi a Luigi'; }
+  else {
+    bar.className='guida-bar'; tg.style.display=''; tg.textContent='Nascondi guida';
+    let d=''; for(let i=0;i<G.tot;i++) d+='<i class="'+(i<G.passo?'ok':(i===G.passo&&G.stato!=='fuori'?'ora':''))+'"></i>'; dots.innerHTML=d;
+    const testa='<strong>Passo '+Math.min(G.passo+1,G.tot)+' di '+G.tot+'</strong> &middot; ';
+    if(G.stato==='finito') tx.innerHTML='<strong>Programma completo!</strong> Premi <strong>Apri l\'acqua</strong> e guarda cosa succede.';
+    else if(G.stato==='fuori') tx.innerHTML='Alla <strong>riga '+G.rigaDevia+'</strong> hai preso una strada diversa dalla mia: può funzionare lo stesso! Premi <strong>Apri l\'acqua</strong> per provarla, oppure correggi quella riga per tornare alla guida.';
+    else {
+      const t=G.atteso.trim().split(' '), c=t[0], ind=G.atteso.length-G.atteso.trimStart().length;
+      const rientro = ind? ' <em>(rientra di '+ind+' spazi)</em>' : '';
+      tx.innerHTML = testa + (G.modo==='piena'? (DESC_PIENA[c]?DESC_PIENA[c](t):c)+': scrivi <code>'+escHtml(G.atteso.trim())+'</code>'+rientro : (DESC_PARZ[c]||'')+rientro);
+      const chip=$('.chip-cmd.k-'+c); if(chip && G.stato!=='incorso') chip.classList.add('guida');
+    }
+  }
+  // passo avanzato: piccolo suono di conferma
+  if((G.modo==='piena'||G.modo==='parziale') && G.passo>guidaPassoPrec && guidaPassoPrec>=0 && G.stato!=='fuori') suonoPasso();
+  if(G.modo==='piena'||G.modo==='parziale') guidaPassoPrec=G.passo;
+  if(chiave===guidaChiave) return; guidaChiave=chiave;
+  // marcatori lampeggianti sullo schema + fumetto di Luigi
+  const mk=$('#guida-mk'); if(!mk) return;
+  let m='', fum=null;
+  if((G.modo==='piena'||G.modo==='parziale') && (G.stato==='avanti'||G.stato==='incorso')){
+    bersagliPasso(lv, G.sol, G.passo).forEach(b=>m+=markerGuida(b[0],b[1],b[2],b[3]));
+    const c=G.atteso.trim().split(' ')[0];
+    fum = G.modo==='piena'? [{t:'Ora scrivi:'},{t:G.atteso.trim(),code:true}] :
+      [{t:c==='wait'?'Quanti minuti?':(c==='repeat'?'Quante volte?':'Guarda cosa')},{t:c==='wait'||c==='repeat'?'Pensaci tu!':'lampeggia!'}];
+    luigiStato(m?'indica':'idle');
+  } else if(G.stato==='finito'){ fum=[{t:'Pronto?'},{t:'Apri l\'acqua!'}]; luigiStato('idle'); }
+  else if(G.stato==='fuori'){ fum=[{t:'Strada nuova?'},{t:'Provala!'}]; luigiStato('idle'); }
+  else if(G.modo!=='play') luigiStato('idle');
+  mk.innerHTML=m; fumettoLuigi(fum);
+}
+function toggleGuida(){
+  const def=guidaDefault(livelloCorrente);
+  guidaModo = (guidaModo==='spenta')? (def==='spenta'?'parziale':def) : 'spenta';
+  guidaPassoPrec=-1; suonoChip(); aggiornaNumeri(); editorEl.focus();
+  telemetria('guida',{id:livelloCorrente,modo:guidaModo});
+}
+
 // === LIVELLO ===
-let editorEl, numeriEl;
+let editorEl, numeriEl, evidEl;
 function apriLivello(id){
   livelloCorrente=id;
   const lv=LEVELS[id-1];
@@ -1187,16 +1884,19 @@ function apriLivello(id){
   // palette comandi
   const pal=$('#palette'); pal.innerHTML='<span class="eti-pal">comandi</span>';
   const desc={open:'apri',close:'chiudi',wait:'aspetta',repeat:'ripeti','if':'se',pump:'pompa'};
-  lv.cmds.forEach(c=>{ const b=document.createElement('button'); b.className='chip-cmd'+((c==='if'||c==='pump'||c==='repeat')?' nuovo':''); b.textContent=c; b.title=desc[c]||c; b.addEventListener('click',()=>insTesto(c+' ')); pal.appendChild(b); });
-  editorEl.value=''; aggiornaNumeri(); 
+  lv.cmds.forEach(c=>{ const b=document.createElement('button'); b.className='chip-cmd k-'+c+((c==='if'||c==='pump'||c==='repeat')?' nuovo':''); b.textContent=c; b.title=desc[c]||c; b.addEventListener('click',()=>{ suonoChip(); insTesto(c+' '); }); pal.appendChild(b); });
+  preparaStageVivo(); guidaModo=guidaDefault(id); guidaPassoPrec=-1;
+  editorEl.value=''; rigaEsegue=rigaErrore=0; aggiornaNumeri(); 
   setFeedback('');
   disegnaStatico(lv);
+  setTimeout(jingleLivello,350);
   telemetria('apri_livello',{id:id});
 }
 function disegnaStatico(lv){
   const t=targetUtenze(lv); const del={}; for(const k in t) del[k]=0;
   const stato={ valves:{}, pumps:{}, tanks:null, wet:[], leaks:[], demands:t, delivered:del };
   $('#stage').innerHTML=renderStage(lv, stato, 0);
+  StageFX.set(lv, stato);
   $('#c-minuti').textContent='0';
   $('#c-consegnati').textContent='0';
   $('#c-sprecati').textContent='0';
@@ -1209,10 +1909,57 @@ function insTesto(t){
   e.value=e.value.slice(0,s)+t+e.value.slice(en);
   e.selectionStart=e.selectionEnd=s+t.length; e.focus(); aggiornaNumeri();
 }
+// evidenziazione sintassi: <pre> sotto una textarea trasparente (stesse metriche)
+const T_CLASSE={open:'t-valv',close:'t-valv',wait:'t-tempo',repeat:'t-ctrl','if':'t-ctrl',pump:'t-pompa',on:'t-pompa',off:'t-pompa',full:'t-cond',empty:'t-cond',leak:'t-cond',done:'t-cond'};
+const T_CMD=['open','close','wait','repeat','if','pump'];
+function escHtml(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function evidenziaRiga(r){
+  let primo=true;
+  return r.split(/(\s+)/).map(tok=>{
+    if(!tok || /^\s+$/.test(tok)) return tok;
+    const k=tok.toLowerCase(); let cl=T_CLASSE[k]||(/^\d+$/.test(k)?'t-num':'');
+    if(primo && T_CMD.indexOf(k)<0) cl='t-ignoto';
+    primo=false;
+    return cl?'<span class="'+cl+'">'+escHtml(tok)+'</span>':escHtml(tok);
+  }).join('');
+}
+let rigaEsegue=0, rigaErrore=0;
 function aggiornaNumeri(){
-  const n=editorEl.value.split('\n').length;
-  let s=''; for(let i=1;i<=Math.max(n,1);i++) s+=i+'\n';
-  numeriEl.textContent=s;
+  const righe=editorEl.value.split('\n');
+  const G=calcolaGuida(righe);
+  // dove va il prossimo passo: riga corrente (se vuota o in corso) o riga virtuale successiva
+  let rigaGhost=-1, ghost='', prefisso='';
+  if(G.atteso){
+    const ultima=righe[righe.length-1];
+    if(G.stato==='incorso'){ rigaGhost=righe.length-1; ghost=G.atteso.slice(normRiga(ultima).length); }
+    else if(!ultima.trim()){ rigaGhost=righe.length-1; prefisso=ultima; ghost=G.atteso.indexOf(ultima)===0? G.atteso.slice(ultima.length) : G.atteso.trimStart(); }
+    else { rigaGhost=righe.length; ghost=G.atteso; }
+    if(G.modo!=='piena') ghost='';
+  }
+  let s='', h='';
+  for(let i=1;i<=Math.max(righe.length,1);i++){
+    const r=i-1;
+    let cn=(i===rigaEsegue?'esegue':(i===rigaErrore?'errore':''));
+    if(r===rigaGhost) cn+=' prossima'; if(G.stato==='fuori' && i===G.rigaDevia) cn+=' devia';
+    s+='<div class="'+cn.trim()+'">'+i+'</div>';
+    let cont=evidenziaRiga(righe[r]||'');
+    if(r===rigaGhost && ghost) cont+='<span class="ghost">'+escHtml(ghost)+'</span>';
+    h+='<div class="r'+(i===rigaEsegue?' esegue':(i===rigaErrore?' errore':''))+(r===rigaGhost?' slot':'')+'">'+(cont||' ')+'</div>';
+  }
+  if(rigaGhost===righe.length){ s+='<div class="prossima"></div>'; h+='<div class="r slot">'+(ghost?'<span class="ghost">'+escHtml(ghost)+'</span>':' ')+'</div>'; }
+  numeriEl.innerHTML=s; evidEl.innerHTML=h+'<div class="r"> </div><div class="r"> </div>';
+  evidEl.scrollTop=editorEl.scrollTop; evidEl.scrollLeft=editorEl.scrollLeft;
+  aggiornaGuidaUI(G);
+}
+function segnaRiga(esegue, errore){ if(esegue===rigaEsegue && errore===rigaErrore) return; rigaEsegue=esegue||0; rigaErrore=errore||0; aggiornaNumeri(); }
+function erroreRiga(line){
+  suonoErrore();
+  segnaRiga(0, line||0);
+  const ea=$('.editor-area'); ea.classList.remove('scossa'); void ea.offsetWidth; ea.classList.add('scossa');
+}
+function setNum(el, v){
+  const t=String(v); if(el.textContent===t) return;
+  el.textContent=t; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
 }
 function setFeedback(html, tipo){
   const f=$('#feedback'); f.className='feedback'+(tipo?(' '+tipo):''); f.innerHTML=html;
@@ -1226,45 +1973,55 @@ function esegui(){
   const src=editorEl.value;
   let prog;
   try{ prog=F.parseProgram(src); }
-  catch(e){ setFeedback('<strong>Riga '+(e.line||'?')+':</strong> '+e.message, 'ambra'); suonoDrip(); return; }
+  catch(e){ setFeedback('<strong>Riga '+(e.line||'?')+':</strong> '+e.message, 'ambra'); suonoDrip(); erroreRiga(e.line); return; }
   // esegui tutti gli scenari, tieni il peggiore
   let peggiore=null, minStelle=99, frameSet=null;
   for(let si=0; si<lv.scenarios.length; si++){
     const ev=[]; let st;
     try{ st=F.runProgram(lv, prog, lv.scenarios[si], ev); }
-    catch(e){ setFeedback('<strong>Riga '+(e.line||'?')+':</strong> '+e.message,'ambra'); suonoDrip(); return; }
+    catch(e){ setFeedback('<strong>Riga '+(e.line||'?')+':</strong> '+e.message,'ambra'); suonoDrip(); erroreRiga(e.line); return; }
     const dem=Object.entries(lv.scenarios[si].demands).every(([f,d])=>st.delivered[f]>=d-1e-9);
     const s=dem?F.stelle(lv,st):0;
     if(s<minStelle){ minStelle=s; peggiore={st:st,dem:dem,si:si}; frameSet=ev; }
   }
+  segnaRiga(0,0); setFeedback('');
   playback(lv, frameSet, lv.scenarios[peggiore.si].demands, ()=>finale(lv, peggiore, minStelle));
 }
 
 function playback(lv, frames, demands, done){
-  playing=true; $('#btn-esegui').disabled=true;
+  playing=true; const be=$('#btn-esegui'); be.disabled=true; be.textContent='L\'acqua scorre...'; be.style.setProperty('--prog',0);
+  editorEl.readOnly=true; let sprecoPrec=0; let pompaPrec=false;
+  aggiornaNumeri(); luigiStato('lavora'); grooveStart();
   let i=0, minuti=0, consPrec=0;
   const fatti={};
   const tot=frames.length;
   const dur = tot<=18? 620 : (tot<=32? 420 : 300);
   function step(){
-    if(i>=tot){ playing=false; $('#btn-esegui').disabled=false; done(); return; }
+    if(i>=tot){ playing=false; be.disabled=false; be.textContent='Apri l\'acqua'; be.style.setProperty('--prog',0); editorEl.readOnly=false; acquaIntensita(0); pompaRonzio(false); grooveStop(); luigiStato('idle'); rigaEsegue=0; guidaChiave=''; aggiornaNumeri(); done(); return; }
     const fr=frames[i];
     if(!fr.mark) minuti++;
-    $('#stage').innerHTML=renderStage(lv, Object.assign({}, fr, {demands:demands}), minuti);
+    const statoFr=Object.assign({}, fr, {demands:demands});
+    $('#stage').innerHTML=renderStage(lv, statoFr, minuti);
+    StageFX.set(lv, statoFr);
+    segnaRiga(fr.line||0, 0);
+    be.style.setProperty('--prog', ((i+1)/tot).toFixed(3));
     // contatori
     let cons=0; for(const k in fr.delivered) cons+=fr.delivered[k];
-    $('#c-minuti').textContent=minuti;
-    $('#c-consegnati').textContent=Math.round(cons);
-    $('#c-sprecati').textContent=Math.round(fr.waste);
-    $('#c-energia').textContent=fr.energy;
+    setNum($('#c-minuti'),minuti);
+    setNum($('#c-consegnati'),Math.round(cons));
+    setNum($('#c-sprecati'),Math.round(fr.waste));
+    setNum($('#c-energia'),fr.energy);
+    if(fr.waste>sprecoPrec+0.5){ const cs=$('.cont.spreco'); cs.classList.remove('allarme'); void cs.offsetWidth; cs.classList.add('allarme'); sprecoPrec=fr.waste; luigiStato('allarme',700); }
+    acquaIntensita((fr.wet||[]).length);
+    const pOn=Object.values(fr.pumps||{}).some(Boolean); if(pOn!==pompaPrec){ pompaRonzio(pOn); pompaPrec=pOn; }
     // suoni: valvola, sgorgo quando l'acqua arriva, ding a utenza servita
-    if(fr.mark==='valve') suonoValvola();
+    if(fr.mark==='valve'){ suonoValvola(); const ev=lv.edges.find(e=>e.valve===fr.id); if(ev){ const cv=centroValvola(lv,ev); StageFX.anello(cv[0],cv[1], fr.open?'rgba(79,179,240,.95)':'rgba(242,140,40,.95)'); } }
     else {
       if(cons>consPrec+1e-9 && minuti%2===1) suonoSgorgo();
       else if(fr.wet && fr.wet.length && minuti%3===1) suonoSplash();
     }
     for(const k in demands){
-      if(!fatti[k] && fr.delivered && fr.delivered[k]>=demands[k]-1e-9){ fatti[k]=true; suonoDing(); }
+      if(!fatti[k] && fr.delivered && fr.delivered[k]>=demands[k]-1e-9){ fatti[k]=true; suonoDing(); StageFX.scintille(lv.nodes[k].pos[0], 76); luigiStato('festa',900); }
     }
     if(fr.leaks && fr.leaks.some(l=>fr.wet&&fr.wet.indexOf(l)>=0)) { if(minuti%3===2) suonoDrip(); }
     consPrec=cons;
@@ -1278,7 +2035,7 @@ function finale(lv, esito, stelle){
   if(completato){
     if(!gocceLivello[lv.id] || gocceLivello[lv.id]<stelle) gocceLivello[lv.id]=stelle;
     if(lv.id===maxSbloccato && maxSbloccato<12) maxSbloccato++;
-    fanfara();
+    fanfaraVittoria(stelle);
     mostraVittoria(lv, stelle, esito.st);
     telemetria('completato',{id:lv.id, stelle:stelle, spreco:Math.round(esito.st.waste)});
   } else {
@@ -1329,6 +2086,10 @@ function mostraVittoria(lv, stelle, st){
   if(idxStoria>=0) html+='<button class="btn-social" id="vit-story">Luigi ha pubblicato una nuova story: guardala!</button>';
   sc.innerHTML=html;
   $('#overlay-vittoria').classList.add('attiva');
+  const par=sc.querySelector('.codice-vittoria .parola');
+  if(par) par.innerHTML=par.textContent.split('').map((ch,i)=>'<span style="animation-delay:'+(0.9+i*0.07).toFixed(2)+'s">'+ch+'</span>').join('');
+  FX.pioggiaFesta(40+stelle*30);
+  setTimeout(()=>{ const b=sc.querySelector('.stelle-box').getBoundingClientRect(); FX.schizzo(b.left+b.width/2,b.top+b.height/2,18+stelle*8,COL_FESTA,320); },700);
   $('#vit-rigioca').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); apriLivello(lv.id); };
   $('#vit-mappa').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); buildMappa(); show('#mappa'); };
   if($('#vit-next')) $('#vit-next').onclick=()=>{ $('#overlay-vittoria').classList.remove('attiva'); apriLivello(next); };
@@ -1376,8 +2137,13 @@ function apriGuida(){
   $('#overlay-guida').classList.add('attiva');
   $('#chiudi-guida').onclick=()=>$('#overlay-guida').classList.remove('attiva');
 }
-// === MUSICA (una traccia YouTube per livello, toggle on/off) ===
-let musicaOn=false, tracciaCorrente=-1, wrapMusica=null;
+// === MUSICA (colonna sonora unica YouTube: Oliver Onions, "Atlanta") ===
+// Un solo player YouTube IFrame API, persistente fuori schermo: la musica NON
+// riparte cambiando schermata (intro -> mappa -> livelli). Il browser blocca
+// l'audio senza un gesto: il player si prepara all'avvio e parte al primo tocco.
+// Mentre Luigi parla (intro a voce) il volume si abbassa ("ducking").
+const MUSICA_ID='_NU-x3o-TC4', VOL_MUSICA=32, VOL_SOTTO_VOCE=8;
+let musicaOn=true, tracciaCorrente=-1, ytPlayer=null, ytPronto=false, musicaRichiesta=false, musicaSotto=false, fadeMusica=null, ytInCarico=false;
 function iconaMusica(on){
   const c = on? '#1B6D3F' : '#FFFFFF';
   let s='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">'+
@@ -1387,51 +2153,179 @@ function iconaMusica(on){
   if(!on) s+='<line x1="2" y1="16" x2="16" y2="2" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';
   return s+'</svg>';
 }
-function avviaTraccia(n){
-  if(!wrapMusica){
-    wrapMusica=document.createElement('div');
-    wrapMusica.style.cssText='position:fixed;left:-9999px;top:0;width:220px;height:124px;overflow:hidden';
-    document.body.appendChild(wrapMusica);
-  }
-  const id=MUSICHE[((n%MUSICHE.length)+MUSICHE.length)%MUSICHE.length];
-  wrapMusica.innerHTML='<iframe width="220" height="124" src="https://www.youtube.com/embed/'+id+
-    '?rel=0&playsinline=1&enablejsapi=1&autoplay=1&loop=1&playlist='+id+
-    '" frameborder="0" allow="autoplay; encrypted-media"></iframe>';
-  tracciaCorrente=n;
+function caricaPlayerMusica(){
+  if(ytPlayer || ytInCarico) return;
+  ytInCarico=true;
+  const crea=()=>{
+    const wrap=document.createElement('div');
+    wrap.style.cssText='position:fixed;left:-9999px;top:0;width:220px;height:124px;overflow:hidden';
+    wrap.innerHTML='<div id="yt-musica"></div>'; document.body.appendChild(wrap);
+    ytPlayer=new YT.Player('yt-musica',{width:220,height:124,videoId:MUSICA_ID,
+      playerVars:{rel:0,playsinline:1,enablejsapi:1,controls:0,loop:1,playlist:MUSICA_ID,origin:location.origin},
+      events:{
+        onReady:e=>{ ytPronto=true; e.target.setVolume(musicaSotto?VOL_SOTTO_VOCE:VOL_MUSICA); if(musicaOn && musicaRichiesta) e.target.playVideo(); },
+        onStateChange:e=>{ if(e.data===0 && musicaOn){ e.target.seekTo(0); e.target.playVideo(); } } // loop di sicurezza
+      }});
+  };
+  if(window.YT && YT.Player) return crea();
+  const prev=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=()=>{ if(prev) prev(); crea(); };
+  const sc=document.createElement('script'); sc.src='https://www.youtube.com/iframe_api'; document.head.appendChild(sc);
 }
-function fermaMusica(){ if(wrapMusica) wrapMusica.innerHTML=''; tracciaCorrente=-1; }
+function avviaMusica(){
+  musicaRichiesta=true; tracciaCorrente=0;
+  if(!ytPlayer) caricaPlayerMusica();
+  else if(ytPronto){ ytPlayer.setVolume(musicaSotto?VOL_SOTTO_VOCE:VOL_MUSICA); ytPlayer.playVideo(); }
+}
+// compatibilita' con le chiamate esistenti (prima: una traccia per livello)
+function avviaTraccia(){ if(musicaOn) avviaMusica(); }
+function fermaMusica(){ musicaRichiesta=false; tracciaCorrente=-1; if(ytPronto) ytPlayer.pauseVideo(); }
+// volume basso mentre Luigi parla, con dissolvenza morbida
+function musicaSottoVoce(on){
+  musicaSotto=on; if(!ytPronto) return;
+  clearInterval(fadeMusica);
+  const meta=on?VOL_SOTTO_VOCE:VOL_MUSICA;
+  fadeMusica=setInterval(()=>{ const v=ytPlayer.getVolume(); const n=v+Math.sign(meta-v)*Math.min(3,Math.abs(meta-v)); ytPlayer.setVolume(n); if(n===meta) clearInterval(fadeMusica); },40);
+}
 function aggiornaBtnMusica(){
-  $$('.btn-musica').forEach(b=>{ b.classList.toggle('on',musicaOn); b.innerHTML=iconaMusica(musicaOn); b.title=musicaOn?'musica: accesa':'musica: spenta'; });
+  $$('.btn-musica:not(.btn-suoni)').forEach(b=>{ b.classList.toggle('on',musicaOn); b.innerHTML=iconaMusica(musicaOn); b.title=musicaOn?'musica: accesa':'musica: spenta'; });
 }
 function toggleMusica(){
   musicaOn=!musicaOn;
-  if(musicaOn){
-    const schermoLivello=$('#livello').classList.contains('attiva');
-    avviaTraccia(schermoLivello? livelloCorrente-1 : 0);
-  } else fermaMusica();
+  if(musicaOn){ grooveStop(); avviaMusica(); } else fermaMusica();
   aggiornaBtnMusica();
 }
 function setupMusica(){
-  $$('.btn-musica').forEach(b=>b.addEventListener('click',toggleMusica));
+  $$('.btn-musica:not(.btn-suoni)').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); toggleMusica(); }));
+  caricaPlayerMusica();
+  // primo gesto dello studente (qualsiasi tocco o tasto): parte la colonna sonora
+  const primo=e=>{ if(e.target.closest && e.target.closest('.btn-musica:not(.btn-suoni)')) return;
+    document.removeEventListener('pointerdown',primo,true); document.removeEventListener('keydown',primo,true); if(musicaOn) avviaMusica(); };
+  document.addEventListener('pointerdown',primo,true); document.addEventListener('keydown',primo,true);
+  $$('.btn-suoni').forEach(b=>b.addEventListener('click',toggleSuoni)); aggiornaBtnSuoni();
   aggiornaBtnMusica();
+}
+
+// === INTRO A VOCE DI LUIGI ===
+// Voce principale: MP3 in audio/luigi-intro-N.mp3, una frase per file (sottotitoli
+// sincronizzati). Generati UNA volta con Microsoft Edge TTS, gratuito e senza chiave:
+//   python3 -m venv ttsenv && ttsenv/bin/pip install edge-tts
+//   voce it-IT-GiuseppeMultilingualNeural, rate -4% (legge bene open/close/wait).
+// Per cambiare una frase: rigenerare il relativo MP3 con lo stesso testo di "v".
+// Riserva se gli MP3 non si caricano: Web Speech API con la voce italiana del sistema.
+// t = testo mostrato nel fumetto, v = testo pronunciato (i comandi inglesi sono
+// riscritti "a orecchio" perche' la voce italiana li legga in modo comprensibile).
+// Ogni frase e' un'utterance separata: Chrome tronca le utterance lunghe (~15 s).
+const INTRO_VOCE=[
+  {t:'Ciao! Sono <strong>Luigi</strong>, il fontaniere di Orzinuovi.', v:'Ciao! Sono Luigi, il fontaniere di Orzinuovi.'},
+  {t:'Sotto le nostre strade corre una rete di tubi, valvole e cisterne: è lì che lavoro ogni giorno.', v:'Sotto le nostre strade corre una rete di tubi, valvole e cisterne: è lì che lavoro ogni giorno.'},
+  {t:'Ho fatto una promessa: <strong>zero sprechi</strong>. L\'acqua deve arrivare dove serve, senza perderne nemmeno una goccia.', v:'Ho fatto una promessa: zero sprechi. L\'acqua deve arrivare dove serve, senza perderne nemmeno una goccia.'},
+  {t:'Da solo però non ce la faccio: mi serve un apprendista. Tu!', v:'Da solo però non ce la faccio: mi serve un apprendista. Tu!'},
+  {t:'Le valvole non le giri con le mani: le comandi scrivendo, una riga alla volta. <code>open</code> apre, <code>close</code> chiude, <code>wait</code> aspetta che l\'acqua arrivi.', v:'Le valvole non le giri con le mani: le comandi scrivendo, una riga alla volta. Òupen apre, clòus chiude, uèit aspetta che l\'acqua arrivi.'},
+  {t:'Quando il programma è pronto premi <strong>Apri l\'acqua</strong> e guarda se funziona. Se qualcosa va storto, nessun problema: correggi e riprova.', v:'Quando il programma è pronto, premi Apri l\'acqua, e guarda se funziona. Se qualcosa va storto, nessun problema: correggi e riprova.'},
+  {t:'Nei primi livelli ti indico io ogni passo. Poi, piano piano, te la caverai da solo.', v:'Nei primi livelli ti indico io ogni passo. Poi, piano piano, te la caverai da solo.'},
+  {t:'Meno acqua sprechi, più gocce guadagni. Pronto? <strong>Scendiamo nel sottosuolo!</strong>', v:'Meno acqua sprechi, più gocce guadagni. Pronto? Scendiamo nel sottosuolo!'}
+];
+let voceAttiva=false, voceIdx=0, voceTimer=null, fumettoOriginale=null, voceIt=null, voceAudio=null, voceFallback=false;
+function scegliVoce(){
+  if(!('speechSynthesis' in window)) return null;
+  const vs=speechSynthesis.getVoices().filter(v=>/^it[-_]/i.test(v.lang)||v.lang==='it');
+  if(!vs.length) return null;
+  // preferenza: voce maschile (Luigi), poi qualita' migliorata, poi locale
+  // (macOS: Luca; voci Eloquence: Eddy, Reed, Rocko; Windows: Cosimo, Diego)
+  const punti=v=>(/luca|cosimo|diego|paolo|giorgio/i.test(v.name)?5:/eddy|reed|rocko|male|uomo/i.test(v.name)?4:0)+(/premium|enhanced|migliorat|natural|neural/i.test(v.name)?2:0)+(v.localService?1:0);
+  return vs.sort((a,b)=>punti(b)-punti(a))[0];
+}
+if('speechSynthesis' in window){ voceIt=scegliVoce(); speechSynthesis.onvoiceschanged=()=>{ voceIt=scegliVoce(); }; }
+function mostraSottotitolo(i){
+  const f=$('#fumetto-splash'); if(!f) return;
+  let barre=''; for(let k=0;k<INTRO_VOCE.length;k++) barre+='<b class="'+(k<i?'ok':(k===i?'ora':''))+'"></b>';
+  f.innerHTML='<span class="sub">'+INTRO_VOCE[i].t+'</span><span class="avanz">'+barre+'</span>';
+}
+function avviaIntroVoce(){
+  if(voceAttiva){ fermaIntroVoce(); return; }
+  const f=$('#fumetto-splash'); if(f && fumettoOriginale===null) fumettoOriginale=f.innerHTML;
+  voceAttiva=true; voceIdx=0;
+  $('#btn-voce').classList.add('attivo'); $('#btn-voce-txt').textContent='Ferma';
+  // con la musica accesa: 10 s di colonna sonora a volume pieno, poi la voce
+  // (musica abbassata). Con la musica spenta Luigi parla subito.
+  if(!musicaOn){ $('#splash-luigi').classList.add('parlando'); prossimaFrase(); return; }
+  avviaMusica(); musicaSottoVoce(false);
+  const ATTESA=10;
+  if(f) f.innerHTML='<span class="sub">Luigi sta salendo dal tombino… mettiti comodo e ascolta la musica.</span><span class="avanz"><b class="ora" id="attesa-barra" style="flex:none;width:0;transition:width '+ATTESA+'s linear"></b></span>';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ const b=$('#attesa-barra'); if(b) b.style.width='100%'; }));
+  voceTimer=setTimeout(()=>{
+    if(!voceAttiva) return;
+    $('#splash-luigi').classList.add('parlando');
+    musicaSottoVoce(true);
+    voceTimer=setTimeout(prossimaFrase,700); // tempo della dissolvenza
+  },ATTESA*1000);
+}
+function prossimaFrase(){
+  if(!voceAttiva) return;
+  if(voceIdx>=INTRO_VOCE.length){ fineIntroVoce(); return; }
+  const i=voceIdx; mostraSottotitolo(i);
+  const avanti=()=>{ if(!voceAttiva||voceIdx!==i) return; voceIdx++; voceTimer=setTimeout(prossimaFrase,380); };
+  if(!voceFallback){
+    voceAudio=new Audio('audio/luigi-intro-'+(i+1)+'.mp3');
+    voceAudio.onended=avanti;
+    voceAudio.onerror=()=>{ voceFallback=true; if(voceAttiva&&voceIdx===i) prossimaFrase(); };
+    const pr=voceAudio.play(); if(pr&&pr.catch) pr.catch(()=>{ if(voceAudio && voceAudio.error){ voceFallback=true; if(voceAttiva&&voceIdx===i) prossimaFrase(); } });
+    return;
+  }
+  if('speechSynthesis' in window && (voceIt||scegliVoce())){
+    voceIt=voceIt||scegliVoce();
+    const u=new SpeechSynthesisUtterance(INTRO_VOCE[i].v);
+    u.voice=voceIt; u.lang=voceIt.lang; u.rate=0.98; u.pitch=0.95; u.volume=1;
+    const img=$('#splash-luigi img');
+    u.onboundary=()=>{ if(!img) return; img.classList.add('botta'); setTimeout(()=>img.classList.remove('botta'),120); };
+    u.onend=avanti; u.onerror=avanti;
+    speechSynthesis.speak(u);
+  } else {
+    // nessuna voce italiana disponibile: solo sottotitoli a tempo di lettura
+    const parole=INTRO_VOCE[i].v.split(/\s+/).length;
+    voceTimer=setTimeout(avanti, 900+parole*330);
+  }
+}
+function fineIntroVoce(){
+  voceAttiva=false; clearTimeout(voceTimer);
+  musicaSottoVoce(false);
+  $('#btn-voce').classList.remove('attivo'); $('#btn-voce-txt').textContent='Riascolta Luigi';
+  $('#splash-luigi').classList.remove('parlando');
+  // resta l'ultima frase con la barra completa, poi torna il fumetto originale
+  const f=$('#fumetto-splash'); if(f) f.querySelectorAll('.avanz b').forEach(b=>b.className='ok');
+  voceTimer=setTimeout(()=>{ if(!voceAttiva && f && fumettoOriginale!==null) f.innerHTML=fumettoOriginale; },6000);
+}
+function fermaIntroVoce(){
+  if(!voceAttiva && !voceAudio && !('speechSynthesis' in window && speechSynthesis.speaking)) return;
+  voceAttiva=false; clearTimeout(voceTimer);
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  musicaSottoVoce(false);
+  if(voceAudio){ voceAudio.onended=voceAudio.onerror=null; voceAudio.pause(); voceAudio=null; }
+  $('#btn-voce').classList.remove('attivo'); $('#btn-voce-txt').textContent='Ascolta Luigi';
+  $('#splash-luigi').classList.remove('parlando');
+  const f=$('#fumetto-splash'); if(f && fumettoOriginale!==null) f.innerHTML=fumettoOriginale;
 }
 
 // === INIT ===
 function init(){
-  editorEl=$('#codice'); numeriEl=$('#numeri');
-  editorEl.addEventListener('input',aggiornaNumeri);
-  editorEl.addEventListener('scroll',()=>{ numeriEl.scrollTop=editorEl.scrollTop; });
+  editorEl=$('#codice'); numeriEl=$('#numeri'); evidEl=$('#evid');
+  editorEl.addEventListener('input',()=>{ rigaErrore=0; rigaEsegue=0; aggiornaNumeri(); });
+  editorEl.addEventListener('scroll',()=>{ numeriEl.scrollTop=editorEl.scrollTop; evidEl.scrollTop=editorEl.scrollTop; evidEl.scrollLeft=editorEl.scrollLeft; });
   editorEl.addEventListener('keydown',e=>{ if(e.key==='Tab'){ e.preventDefault(); insTesto('  '); } });
   $('#btn-esegui').addEventListener('click',()=>{ ac(); esegui(); });
-  $('#btn-reset').addEventListener('click',()=>{ editorEl.value=''; aggiornaNumeri(); setFeedback(''); disegnaStatico(LEVELS[livelloCorrente-1]); });
+  $('#btn-reset').addEventListener('click',()=>{ if(playing) return; editorEl.value=''; rigaEsegue=rigaErrore=0; aggiornaNumeri(); setFeedback(''); disegnaStatico(LEVELS[livelloCorrente-1]); });
   $('#btn-guida').addEventListener('click',apriGuida);
   $('#btn-mappa-da-lv').addEventListener('click',()=>{ buildMappa(); show('#mappa'); if(musicaOn && tracciaCorrente!==0) avviaTraccia(0); });
-  $('#btn-gioca').addEventListener('click',()=>{ ac(); buildMappa(); show('#mappa'); if(musicaOn && tracciaCorrente!==0) avviaTraccia(0); });
+  $('#btn-voce').addEventListener('click',avviaIntroVoce);
+  $('#btn-gioca').addEventListener('click',()=>{ fermaIntroVoce(); ac(); FX.schizzo(ultimoTocco[0],ultimoTocco[1],26); buildMappa(); show('#mappa'); if(musicaOn && tracciaCorrente!==0) avviaTraccia(0); });
   $('#btn-codice').addEventListener('click',provaCodice);
   $('#input-codice').addEventListener('keydown',e=>{ if(e.key==='Enter') provaCodice(); });
   $('#logo-goccia').addEventListener('click',tapGoccia);
   $('#btn-docente').addEventListener('click',()=>{ location.href='fontaniere-docenti.html'; });
   setupMusica();
+  decoraTestate();
+  $('#gb-toggle').addEventListener('click',toggleGuida);
   // deep link ?livello=N
   const m=location.search.match(/livello=(\d+)/);
   if(m){ const id=Math.max(1,Math.min(12,+m[1])); maxSbloccato=Math.max(maxSbloccato,id); buildMappa(); apriLivello(id); }
